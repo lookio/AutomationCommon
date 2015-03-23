@@ -10,6 +10,7 @@ import com.liveperson.automation.usermanagement.UserManagementTestHelper;
 import com.liveperson.automation.usermanagement.entityoperations.CommonEntityOperations;
 import com.liveperson.automation.usermanagement.enums.UserManagementServiceName;
 import com.liveperson.http.requests.Enums;
+import com.util.properties.PropertiesHandlerImpl;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -19,8 +20,9 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -34,18 +36,31 @@ public class AccountCreation {
     private static final Logger logger = Logger.getLogger(AccountCreation.class);
 
     public static final String CONFIG_FILE = "config.properties";
-    public static final String PROPERTIES_FILES_DIR = "propsDir";
-    public static final String ACCOUNT_CREATION_SERVICE = TestProps.getProperty(CONFIG_FILE, "account_creation_service");
-    public static final String APPSERVER = TestProps.getProperty(CONFIG_FILE, "app_server");
-    public static final String USERNAME = TestProps.getProperty(CONFIG_FILE, "siteUsername");
-    public static final String PASSWORD = TestProps.getProperty(CONFIG_FILE, "sitePassword");
-    public static final String HC1 = TestProps.getProperty(CONFIG_FILE, "app_server_domain");
-    public static final String EMAIL = TestProps.getProperty(CONFIG_FILE, "email");
-    public static final String ENV_PROPS_LOCATION = System.getProperty(PROPERTIES_FILES_DIR);
-    public static final String APPSERVER_DOMAIN = TestProps.getProperty(CONFIG_FILE, "app_server_domain");
-    public static final String AppKey = TestProps.getProperty(CONFIG_FILE, "app_key");
+//    public static final String PROPERTIES_FILES_DIR = "propsDir";
+//    public static final String ENV_PROPS_LOCATION = System.getProperty(PROPERTIES_FILES_DIR);
+    public static final String ENV_PROPS_LOCATION = "C:\\Users\\asih\\IdeaProjects\\AutomationCommon\\src\\main\\java\\com\\config\\entity\\le\\";
+    private static EnvironmentProperties envProps = null;
+
+    static {
+        try {
+            envProps = EnvironmentProperties.create(new FileInputStream(new File(ENV_PROPS_LOCATION + CONFIG_FILE)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static final String ACCOUNT_CREATION_SERVICE = envProps.getProperty("account_creation_service");
+    public static final String APPSERVER = envProps.getProperty("app_server");
+    public static final String USERNAME = envProps.getProperty("siteUsername");
+    public static final String PASSWORD = envProps.getProperty("sitePassword");
+    public static final String HC1 = envProps.getProperty("app_server_domain");
+    public static final String EMAIL = envProps.getProperty("email");
+    public static final String APPSERVER_DOMAIN = envProps.getProperty("app_server_domain");
+    public static final String AppKey = envProps.getProperty("app_key");
     public static final String TokenKey = "rstgyeh4r5hg54y";
-    public static final String AppSecret = TestProps.getProperty(CONFIG_FILE, "app_secret");
+    public static final String AppSecret = envProps.getProperty("app_secret");
     public static final String TokenSecret = "gfdh54y45yh5uy";
 
     public enum PermissionType {
@@ -67,11 +82,11 @@ public class AccountCreation {
     }
 
 
-    private static EnvironmentProperties getEnvironmentProps(String filename) throws Exception {
-        FileInputStream inputStream = new FileInputStream(filename);
-        EnvironmentProperties environmentProperties = EnvironmentProperties.create(inputStream);
-        return environmentProperties;
-    }
+//    private static EnvironmentProperties getEnvironmentProps(String filename) throws Exception {
+//        FileInputStream inputStream = new FileInputStream(filename);
+//        EnvironmentProperties environmentProperties = EnvironmentProperties.create(inputStream);
+//        return environmentProperties;
+//    }
 
     /**
      * create/get site with defaults for LiveEngageV2 with administrator permission
@@ -90,8 +105,8 @@ public class AccountCreation {
         Set<String> acFeatures = setAcFeatures();
         Set<String> acPackages = setAcPackages();
 
-        EnvironmentProperties environmentProperties = getEnvironmentProps(ENV_PROPS_LOCATION + CONFIG_FILE);
-        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, environmentProperties,testAccount,acFeatures,acPackages,"1");
+//        EnvironmentProperties environmentProperties = getEnvironmentProps(ENV_PROPS_LOCATION + CONFIG_FILE);
+        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages,"1");
         createE2EAccountService.extendSiteExpiration(testAccount.getId(),AppKey,AppSecret);
         return (testAccount.getId());
     }
@@ -113,8 +128,8 @@ public class AccountCreation {
         Set<String> acFeatures = setAcFeatures();
         Set<String> acPackages = setAcPackages();
 
-        EnvironmentProperties environmentProperties = getEnvironmentProps(ENV_PROPS_LOCATION + CONFIG_FILE);
-        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, environmentProperties,testAccount,acFeatures,acPackages, String.valueOf(id));
+//        EnvironmentProperties environmentProperties = getEnvironmentProps(ENV_PROPS_LOCATION + CONFIG_FILE);
+        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages, String.valueOf(id));
         createE2EAccountService.extendSiteExpiration(testAccount.getId(),AppKey,AppSecret);
         return testAccount;
     }
@@ -138,8 +153,8 @@ public class AccountCreation {
         Set<String> acFeatures = setAcFeatures(features);
         Set<String> acPackages = setAcPackages(packages);
 
-        EnvironmentProperties environmentProperties = getEnvironmentProps(ENV_PROPS_LOCATION + CONFIG_FILE);
-        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, environmentProperties,testAccount,acFeatures,acPackages,"1");
+//        EnvironmentProperties environmentProperties = getEnvironmentProps(ENV_PROPS_LOCATION + CONFIG_FILE);
+        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages,"1");
         createE2EAccountService.extendSiteExpiration(testAccount.getId(),AppKey,AppSecret);
         return (testAccount.getId());
     }
