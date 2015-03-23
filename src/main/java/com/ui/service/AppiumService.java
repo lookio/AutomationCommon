@@ -1,15 +1,16 @@
 package com.ui.service;
 
-import com.ui.service.base.UIService;
-import com.util.genutil.GeneralUtils;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.AppiumDrivers;
+import com.util.genutil.GeneralUtils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import io.appium.java_client.TouchAction;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.internal.TouchAction;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -19,11 +20,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class AppiumService extends UIService<WebElement, AppiumDriver> {
 
-    private static volatile AppiumDriver driver = null;
+    private volatile AppiumDriver driver = null;
     private static final AppiumService APPIUM_SERVICE_INSTANCE = new AppiumService();
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
-    private static long waitForPageSourceTimeOutInterval = 500;
-
+    private final long waitForPageSourceInterval = 500;
+    private static String lastPageSource = "";
 
 
     public static AppiumService getInstance() {
@@ -96,7 +97,18 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         super.closeBrowser();
     }
 
-    public final MobileElement scroll(String val) throws Exception {
+    public void isMsgInLocator(By by, String msg, String page){
+        implicitWait(1500);
+        WebElement elem = driver.findElement(by);
+        Assert.assertEquals("MESSAGE VALIDATION : \"" + msg + "\" WAS NOT FOUND in page " + page, msg, elem.getText() );
+        logger.info("MESSAGE VALIDATION : \"" + msg + "\" WAS FOUND in page \"" + page + "\"");
+    }
+
+    public final void closeApp() throws Exception {
+        driver.closeApp();
+    }
+
+    public final MobileElement scroll(String val) {
         try{
             return driver.scrollTo(val);
         }
@@ -106,16 +118,14 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         return null;
     }
 
-    public final String getPageSource(long timeOutInMillisec){
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            GeneralUtils.handleError("Failed waiting for page context", e);        }
-        while (driver.getPageSource() == null) {
+    public final String getPageSource(long timeOutInMilisec){
+        implicitWait(1500);
+        while ((driver.getPageSource() == null) ||
+                (driver.getPageSource().equalsIgnoreCase(lastPageSource))){
             try {
-                Thread.sleep(waitForPageSourceTimeOutInterval);
-                timeOutInMillisec -= waitForPageSourceTimeOutInterval;
-                if(timeOutInMillisec <= 0){
+                Thread.sleep(waitForPageSourceInterval);
+                timeOutInMilisec -= waitForPageSourceInterval;
+                if(timeOutInMilisec <= 0){
                     GeneralUtils.handleError("Time out finished without finding results",
                             new Exception("Time out finished without finding results"));
                     return null;
@@ -123,13 +133,16 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
             }catch (InterruptedException e) {
                 GeneralUtils.handleError("Error in wait for time out", e);
             }
-
         }
-        return driver.getPageSource();
+        return lastPageSource = driver.getPageSource();
+    }
+
+    public final void rotate(ScreenOrientation orientation){
+        driver.rotate(orientation);
     }
 
     public void tap(int xLoc, int yLoc){
-        new io.appium.java_client.TouchAction(driver).tap(xLoc, yLoc).release().perform();
+        new TouchAction(driver).tap(xLoc, yLoc).release().perform();
     }
 
     public WebElement getElementByText(By listLocator, String text){
@@ -142,5 +155,6 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         logger.warn("Element not found");
         return null;
     }
+
 
 }

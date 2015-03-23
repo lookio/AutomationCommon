@@ -1,30 +1,34 @@
 package com.ui.service.drivers;
 
 /**
-* Browsers.
-* Handle all browser types
-* Handle all browsers driver activities
-*
-*
-*
-* @author asih
-*/
+ * Browsers.
+ * Handle all browser types
+ * Handle all browsers driver activities
+ *
+ *
+ *
+ * @author asih
+ */
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import com.ui.service.SeleniumService;
+import com.util.genutil.GeneralUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-
-//import config.common.ui.service.SeleniumService;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public enum SeleniumDrivers {
 
@@ -53,7 +57,7 @@ public enum SeleniumDrivers {
 	 *
 	 * @param browser
 	 *            The Enum browsers type.
-	 * @throws java.net.MalformedURLException
+	 * @throws MalformedURLException
 	 */
 
 	public static WebDriver setBrowserToDriver(SeleniumDrivers browser) throws MalformedURLException, Exception {
@@ -221,11 +225,14 @@ public enum SeleniumDrivers {
 	 * @throws Exception
 	 */
 
-	public static void close() throws Exception {
+	public static void close() {
 		logger.info("Test on browser " + SeleniumDrivers.getBrowserType() + " finished succssesfully");
-		SeleniumService.getInstance().closeBrowser();
-		SeleniumService.getInstance().closeDriver();
-
+		try {
+			SeleniumService.getInstance().closeBrowser();
+			SeleniumService.getInstance().closeDriver();
+		}catch (Exception e){
+			GeneralUtils.handleError("Error in close resources", e);
+		}
 	}
 
 

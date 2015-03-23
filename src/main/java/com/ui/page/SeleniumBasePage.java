@@ -2,6 +2,7 @@ package com.ui.page;
 
 import com.ui.page.base.BasePage;
 import com.ui.page.base.NotInPageException;
+import com.ui.service.SeleniumService;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.NoSuchWindowException;
 
@@ -10,13 +11,15 @@ import org.openqa.selenium.NoSuchWindowException;
  */
 public abstract class SeleniumBasePage extends BasePage {
 
+    protected SeleniumService service = SeleniumService.getInstance();
+
     private static final Logger logger = Logger.getLogger(SeleniumBasePage.class);
 
-    protected SeleniumBasePage(boolean isToFailTestOnLocation, boolean isValidateOnPage){
-        super(isToFailTestOnLocation, isValidateOnPage);
+    protected SeleniumBasePage(boolean shouldValidateOnPage, boolean shouldFailTestOnLocation){
+        super(shouldValidateOnPage, shouldFailTestOnLocation);
     }
 
-    protected abstract void prepareElements();
+    public abstract void prepareElements();
 
     @Override
     public boolean validateInPage() throws NotInPageException {
@@ -44,6 +47,6 @@ public abstract class SeleniumBasePage extends BasePage {
         super.report(pageClassName, url);
     }
 
-    public abstract String getPageUniqueIdentifier()throws NotInPageException;
+    public abstract String getPageUniqueIdentifier() throws NotInPageException;
 
 }

@@ -9,8 +9,14 @@ package com.ui.page.base;
 
 public interface Pagable {
 
-     abstract boolean validateInPage() throws NotInPageException;
+     boolean validateInPage() throws NotInPageException;
 
-     abstract String getPageUniqueIdentifier() throws NotInPageException;
+     String getPageUniqueIdentifier() throws NotInPageException;
+
+     void prepareElements();
+
+     public <T> T getValidate() ;
+
+     public <T> T getActivate();
 
 }

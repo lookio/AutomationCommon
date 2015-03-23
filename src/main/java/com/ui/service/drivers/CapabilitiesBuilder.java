@@ -1,5 +1,4 @@
 package com.ui.service.drivers;
-
 import com.util.properties.PropertiesHandlerImpl;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -19,7 +18,7 @@ public class CapabilitiesBuilder {
 
     private static final Logger logger = Logger.getLogger(CapabilitiesBuilder.class);
 
-    public static Properties appiumDriverProps = null;
+    private Properties appiumDriverProps;
 
     public static CapabilitiesBuilder getInstance() {
         return CAPS_BUILDER_INSTANCE;
@@ -44,12 +43,18 @@ public class CapabilitiesBuilder {
     }
 
     private String getAppAbsolutePath(String capFilePath){
-        Properties appiumDriverProps =
-                PropertiesHandlerImpl.getInstance().
-                        parse(capFilePath + Constants.APPIUM_DRIVER_PROPERTY_FILE_PATH);
+        appiumDriverProps = getAppDriverProps(capFilePath);
         File appDir = new File(appiumDriverProps.getProperty(Constants.APPIUM_DRIVER_PROP_APP_DIR_KEY));
         File app = new File(appDir, appiumDriverProps.getProperty(Constants.APPIUM_DRIVER_PROP_APP_NAME_KEY));
         return app.getAbsolutePath();
+    }
+
+    public Properties getAppDriverProps(String capFilePath){
+        return PropertiesHandlerImpl.getInstance().parse(capFilePath + Constants.APPIUM_DRIVER_PROPERTY_FILE_PATH);
+    }
+
+    public Properties getAppDriverProps(){
+        return appiumDriverProps;
     }
 
     private static class Constants{

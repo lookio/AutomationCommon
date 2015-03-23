@@ -1,24 +1,23 @@
 
 package com.ui.service;
 
-
-import com.ui.service.base.UIService;
-import com.util.genutil.GeneralUtils;
-import com.ui.page.base.BasePage;
-import com.ui.service.drivers.SeleniumDrivers;
-import com.ui.service.drivers.SeleniumDrivers;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-import java.awt.*;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import com.ui.page.base.BasePage;
+import com.ui.service.drivers.SeleniumDrivers;
+import com.util.genutil.GeneralUtils;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class SeleniumService extends UIService<WebElement, WebDriver> {
 

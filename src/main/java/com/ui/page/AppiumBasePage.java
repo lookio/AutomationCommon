@@ -4,6 +4,7 @@ import com.ui.page.base.BasePage;
 import com.ui.page.base.NotInPageException;
 import com.ui.service.AppiumService;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchWindowException;
 
 /**
@@ -12,32 +13,33 @@ import org.openqa.selenium.NoSuchWindowException;
 public abstract class AppiumBasePage extends BasePage {
 
     private static final Logger logger = Logger.getLogger(SeleniumBasePage.class);
-    private long waitForPageContextTimeOut = 2000;
+    // problem in wait for page
+    private long waitForPageContextTimeOut = 15000;
+    protected static AppiumService service = AppiumService.getInstance();
 
-    protected AppiumBasePage(boolean isToFailTestOnLocation, boolean isValidateOnPage){
-        super(isToFailTestOnLocation, isValidateOnPage);
+    protected AppiumBasePage(boolean shouldValidateOnPage, boolean shouldFailTestOnLocation){
+        super(shouldValidateOnPage, shouldFailTestOnLocation);
     }
-//
-    protected abstract void prepareElements();
+    //
+    public abstract void prepareElements();
 
     @Override
     public boolean validateInPage() throws NotInPageException {
         logger.debug("Validating is in page to page " + this.getClass().getName());
         try {
-            String driverPageSource = AppiumService.getInstance().getPageSource(waitForPageContextTimeOut);
+            String driverPageSource = service.getPageSource(waitForPageContextTimeOut);
             String dynamicIdentifier = this.getPageUniqueIdentifier();
-            if(driverPageSource.equalsIgnoreCase(this.getPageUniqueIdentifier())) {
-                logger.info("The page URL is as expected, you are in the correct location");
-                logger.info("You expected : " + dynamicIdentifier + " You are in : " + driverPageSource);
+            if(driverPageSource.contains(dynamicIdentifier)) {
+                logger.info("The expected message is contained in page source, you are in the correct location");
+                logger.info("You expected message msg : \"" + dynamicIdentifier + "\" You contained in : \"" + driverPageSource + "\"");
                 return true;
-            }
-            else{
-                logger.warn("The page URL is not as expected, you are not in the correct location");
-                logger.info("You expected : " + dynamicIdentifier + " You are in : " + driverPageSource);
+            } else {
+                logger.warn("The page is not as expected, you are not in the correct location");
+                logger.error("You expected to find the MSG \"" + dynamicIdentifier + "\" in page " + className + " and failed");
                 report(dynamicIdentifier, driverPageSource);
-                return false;
+                throw new NotInPageException("Page " + className + "not in the right location");
             }
-        }catch(NoSuchWindowException e){
+        }catch(Exception e){
             return false;
         }
     }

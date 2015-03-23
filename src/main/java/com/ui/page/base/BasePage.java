@@ -1,8 +1,9 @@
 package com.ui.page.base;
 
-import com.ui.service.base.UIService;
+import com.ui.page.AppiumBasePage;
+import com.ui.service.drivers.AppiumDrivers;
+import com.ui.service.drivers.SeleniumDrivers;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriver;
 
 
 /**
@@ -13,36 +14,37 @@ public abstract class BasePage implements  Pagable{
 
     private static final Logger logger = Logger.getLogger(BasePage.class);
     protected String className = this.getClass().getName();
-
-    protected UIService service = new UIService();
-
-    protected WebDriver driver = service.getDriver();
+    private boolean shouldValidateOnPage;
+    private boolean shouldFailTestOnLocation;
 
 
-    protected BasePage(boolean isToFailTestOnLocation, boolean isValidateOnPage){
-        logger.debug("In page constructor");
-        try{
-            if(isValidateOnPage){ // to validate???
-                if(this.validateInPage()){
-                logger.debug("Starting to prepare page elements for page "  + this.getClass().getName());
-                this.prepareElements(); // polymorphysm
-                logger.debug("Page elements was prepared successfully");
-                }
-            }
-            else{
-                this.prepareElements();
-            }
-            logger.debug("--------------------------------------------");
-            logger.debug("---------- Now opening page with class : " + this.className + " ---------------------");
-            logger.debug("--------------------------------------------");
 
-        }catch(Throwable t){
-            logger.error("Exception in BasePage constructor", t);
-        }
-        logger.info("New instanse of class " + this.getClass().getName() + " was created successfully");
+    protected BasePage(boolean shouldValidateOnPage, boolean shouldFailTestOnLocation){
+        this.shouldValidateOnPage = shouldValidateOnPage;
+        this.shouldFailTestOnLocation = shouldFailTestOnLocation;
+
     }
 
-    protected abstract void prepareElements();
+    public void validate() throws NotInPageException{
+        try {
+            if (shouldValidateOnPage) { // to validate???
+                if (this.validateInPage()) {
+                    logger.info("--------------------------------------------");
+                    logger.info("---------- Now opening page with class : " + className + " ---------------------");
+                    logger.info("--------------------------------------------");
+                    logger.info("New instanse of class " + this.getClass().getName() + " was created successfully");
+                }
+            }
+        }catch(NotInPageException t) {
+            if (shouldFailTestOnLocation) {
+                logger.error("The page " + className + " is not in correct location and exit test was requested", t);
+                this.close();
+                throw new NotInPageException("Page " + className + "not in the right location");
+            }
+        }
+    }
+
+    public abstract void prepareElements();
 
     public abstract boolean validateInPage() throws NotInPageException;
 
@@ -52,5 +54,13 @@ public abstract class BasePage implements  Pagable{
     }
 
     public abstract String getPageUniqueIdentifier() throws NotInPageException;
+
+    private void close(){
+        if(this instanceof AppiumBasePage){
+            AppiumDrivers.close();
+        } else{
+            SeleniumDrivers.close();
+        }
+    }
 
 }
