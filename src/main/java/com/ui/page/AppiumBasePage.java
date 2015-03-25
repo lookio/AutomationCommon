@@ -12,7 +12,7 @@ import org.openqa.selenium.NoSuchWindowException;
  */
 public abstract class AppiumBasePage extends BasePage {
 
-    private static final Logger logger = Logger.getLogger(SeleniumBasePage.class);
+    private static final Logger logger = Logger.getLogger(AppiumBasePage.class);
     // problem in wait for page
     private long waitForPageContextTimeOut = 15000;
     protected static AppiumService service = AppiumService.getInstance();

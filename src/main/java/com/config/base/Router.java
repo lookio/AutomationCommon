@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 /**
  * Created by asih on 03/03/2015.
  */
+@SuppressWarnings("DefaultFileTemplate")
 public class Router {
 
     @SuppressWarnings("NullArgumentToVariableArgMethod")

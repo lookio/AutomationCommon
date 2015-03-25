@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by asih on 05/02/2015.
  */
-public abstract class BaseLegacyConfigItems<T,E> implements Configurable<BaseLEConfigItems>  , Parsable {
+public abstract class BaseLegacyConfigItems<T,E> implements Configurable<BaseLEConfigItems> , Parsable {
 
 
     public static LegacyConfigData confData;

@@ -36,8 +36,6 @@ public class AccountCreation {
     private static final Logger logger = Logger.getLogger(AccountCreation.class);
 
     public static final String CONFIG_FILE = "config.properties";
-//    public static final String PROPERTIES_FILES_DIR = "propsDir";
-//    public static final String ENV_PROPS_LOCATION = System.getProperty(PROPERTIES_FILES_DIR);
     public static final String ENV_PROPS_LOCATION = "C:\\Users\\asih\\IdeaProjects\\AutomationCommon\\src\\main\\java\\com\\config\\entity\\le\\";
     private static EnvironmentProperties envProps = null;
 
@@ -47,8 +45,6 @@ public class AccountCreation {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public static final String ACCOUNT_CREATION_SERVICE = envProps.getProperty("account_creation_service");
@@ -80,13 +76,6 @@ public class AccountCreation {
             return permissionType;
         }
     }
-
-
-//    private static EnvironmentProperties getEnvironmentProps(String filename) throws Exception {
-//        FileInputStream inputStream = new FileInputStream(filename);
-//        EnvironmentProperties environmentProperties = EnvironmentProperties.create(inputStream);
-//        return environmentProperties;
-//    }
 
     /**
      * create/get site with defaults for LiveEngageV2 with administrator permission

@@ -29,13 +29,13 @@ public class ConfigItemsRouter {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> void routeAction(ConfigType type, String folder){
+    public void routeAction(ConfigType type, String folder){
         setConfData(initService(folder + type.docValue, type.confClass));
         Router.route(type.actionClass, type.actionMethodName);
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T initService(String doc, Class confClass){
+    private <T> T initService(String doc, Class<T> confClass){
         return (T)JaxbHandler.unmarshal(doc, confClass);
     }
 
