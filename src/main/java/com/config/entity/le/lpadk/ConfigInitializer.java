@@ -2,6 +2,7 @@ package com.config.entity.le.lpadk;
 
 
 import com.liveperson.automation.datamodel.liveengage.Account;
+import com.liveperson.automation.datamodel.liveengage.user.PermissionType;
 import com.liveperson.automation.datamodel.liveengage.user.User;
 import com.liveperson.automation.e2e.e2e.topology.EnvironmentProperties;
 import com.liveperson.automation.e2e.liveengage.account.accountcreation.CreateE2EAccountService;
@@ -45,15 +46,16 @@ public class ConfigInitializer {
 
     private static final String CONFIG_FILE = "config.properties";
     private static final String ENV_PROPS_LOCATION = "C:\\Users\\asih\\IdeaProjects\\AutomationCommon\\src\\main\\java\\com\\config\\entity\\le\\";
-    private static EnvironmentProperties envProps = null;
+    static EnvironmentProperties envProps = null;
 
     static {
         PropInitializer.initProps();
     }
 
-    private Initializer initializer;
+    private Initializer initializer = new Initializer();
 
-    private static final String ACCOUNT_CREATION_SERVICE = envProps.getProperty("account_creation_service");
+
+    private static final String ACCOUNT_CREATION_SERVICE_KEY = envProps.getProperty("account_creation_service");
     private static final String APPSERVER = envProps.getProperty("app_server");
     private static final String USERNAME = envProps.getProperty("siteUsername");
     private static final String PASSWORD = envProps.getProperty("sitePassword");
@@ -75,10 +77,10 @@ public class ConfigInitializer {
     private String LOGIN_KEY;
     private CommonEntityOperations commonEntityOperations;
 
-    private CreateE2EAccountService createE2EAccountService;
-    private HttpHost accountCreationService;
-    private HttpHost appServer;
-    private Account testAccount;
+    private CreateE2EAccountService E2EAccService;
+    private HttpHost accService;
+    private  HttpHost appServer;
+    Account testAccount;
     private User user;
     private Set<String> acFeatures;
     private Set<String> acPackages;
@@ -114,23 +116,44 @@ public class ConfigInitializer {
 
     public class Initializer {
 
-        private void initSite() {
-            createE2EAccountService = new CreateE2EAccountService();
-            accountCreationService = new HttpHost(ACCOUNT_CREATION_SERVICE);
+        void initSite() {
+            E2EAccService = new CreateE2EAccountService();
+            accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
             appServer = new HttpHost(APPSERVER);
             testAccount = createAccount();
-            user = createUser();
-            testAccount.getUsers().addUser(user);
+
+
+//            user = createUser();
+//            testAccount.getUsers().addUser(user);
+
+
+            User user = new User();
+        user.setName(USERNAME);
+        user.setPassword(PASSWORD);
+        user.setEmail(EMAIL);
+            addUserToSite(user);
+
+
+//            User agent = new User();
+
+//            agent.setName("asi");
+//            agent.setPassword("12345678");
+//            agent.setEmail("asih@liveperson.com");
+//            agent.setPermission(com.liveperson.automation.datamodel.liveengage.user.PermissionType.AGENT);
+
+//            addUserToSite(agent);
+
+//            createUser("asi" ,"asih@liveperson.com" ,PermissionType.AGENT);
+
+
+
             acFeatures = setAcFeatures();
             acPackages = setAcPackages();
         }
 
-        private void initUserSkill(UserManagementServiceName userManagementServiceName) throws Exception {
-            cassandraHosts = "dev-int-unix2,dev-int-unix3,dev-int-unix5";
-            privileges = new HashSet<Integer>();
-            privileges.add(111);
-            privileges.add(112);
-            privileges.add(1501); // user management module privilege
+        void initUserSkill(UserManagementServiceName userManagementServiceName) throws Exception {
+            setCassandraHosts();
+            setPrivilages();
             LOGIN_KEY = UserManagementTestHelper.getLoginSessionKey(
                     testAccount.getUsers().getUsers().get(0).toString(),      // user id
                     testAccount.getUsers().getUsers().get(0).getName(),       // user name
@@ -147,7 +170,18 @@ public class ConfigInitializer {
             );
         }
 
-        private boolean handleResponse(HttpResponse response, String successMsg, String failMsg) throws IOException {
+        private void setPrivilages(){
+            privileges = new HashSet<Integer>();
+            privileges.add(111);
+            privileges.add(112);
+            privileges.add(1501); // user management module privilege
+        }
+
+        private void setCassandraHosts(){
+            cassandraHosts = "dev-int-unix2,dev-int-unix3,dev-int-unix5";
+        }
+
+        boolean handleResponse(HttpResponse response, String successMsg, String failMsg) throws IOException {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
                 logger.info(successMsg);
                 return true;
@@ -164,7 +198,11 @@ public class ConfigInitializer {
             }
         }
 
-        private String getId(UserManagementServiceName userManagementServiceName, String objKey, String expKey, String confType) throws Exception {
+        // is id account number
+        // is site = account
+        // which methods are activated from outside?
+        // why not just set to objects and persist (why so complicated)
+        String getId(UserManagementServiceName userManagementServiceName, String objKey, String expKey, String confType) throws Exception {
             initUserSkill(userManagementServiceName);
             skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0, commonEntityOperations.getResourceUrl().indexOf('?')));
             jsonObject = new JSONObject(skillResponse);
@@ -179,44 +217,39 @@ public class ConfigInitializer {
 
     }
 
-
     public String createSite() throws Exception {
+
         initializer.initSite();
-        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages,"1");
-        createE2EAccountService.extendSiteExpiration(testAccount.getId(),AppKey,AppSecret);
+        testAccount = E2EAccService.getSiteForTest(accService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages,"1");
+        E2EAccService.extendSiteExpiration(testAccount.getId(), AppKey, AppSecret);
         return (testAccount.getId());
     }
 
     public Account createNewSite(int id) throws Exception {
         initializer.initSite();
-        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages, String.valueOf(id));
-        createE2EAccountService.extendSiteExpiration(testAccount.getId(),AppKey,AppSecret);
+        testAccount = E2EAccService.getSiteForTest(accService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages, String.valueOf(id));
+//        E2EAccService.extendSiteExpiration(testAccount.getId(), AppKey, AppSecret);
         return testAccount;
     }
 
-    public String createSite(String[] features , String[] packages) throws Exception {
-        initializer.initSite();
-        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages,"1");
-        createE2EAccountService.extendSiteExpiration(testAccount.getId(),AppKey,AppSecret);
-        return (testAccount.getId());
-    }
-
     public Account createAccount(){
-        Account testAccount = new Account();
+        testAccount = new Account();
         testAccount.setTokenKey(TokenKey);
         testAccount.setTokenSecret(TokenSecret);
         return testAccount;
     }
 
-    public User createUser(){
-        User user = new User();
-        user.setName(USERNAME);
-        user.setPassword(PASSWORD);
-        user.setEmail(EMAIL);
-        return user;
+    public void addUserToSite(User user){
+        testAccount.getUsers().addUser(user);
+
+//        User user = new User();
+//        user.setName(USERNAME);
+//        user.setPassword(PASSWORD);
+//        user.setEmail(EMAIL);
+//        return user;
     }
 
-    public Boolean createUser(Account testAccount ,String displayName ,String loginName ,PermissionType permissionType){
+    public Boolean createUser(String displayName ,String loginName ,PermissionType permissionType){
         try {
             initializer.initUserSkill(UserManagementServiceName.OPERATORS);
             HttpResponse operatorResponse = commonEntityOperations.createEntity("{displayName: "+ displayName +" ,emailAddress: qa@qa.com ,enabled: true ,loginName: "+ loginName +" ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678 ,permissionGroup: "+ permissionType.getPermissionType() +" ,skills: []}", Enums.BodyType.JSON);
@@ -228,7 +261,7 @@ public class ConfigInitializer {
         return null;
     }
 
-    public Boolean createUser(Account testAccount ,String displayName ,String loginName ,PermissionType permissionType ,JSONArray skills){
+    public Boolean createUser(String displayName ,String loginName ,PermissionType permissionType ,JSONArray skills){
         try {
             initializer.initUserSkill(UserManagementServiceName.OPERATORS);
             HttpResponse operatorResponse = commonEntityOperations.createEntity("{displayName: " + displayName + " ,emailAddress: qa@qa.com ,enabled: true ,loginName: " + loginName + " ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678 ,permissionGroup: " + permissionType.getPermissionType() + " ,skills: " + skills + "}", Enums.BodyType.JSON);
@@ -240,10 +273,10 @@ public class ConfigInitializer {
         }
     }
 
-    public Boolean createSkill(Account testAccount ,String skillName){
+    public Boolean createSkill(String skillName){
         try {
             initializer.initUserSkill(UserManagementServiceName.SKILLS);
-            HttpResponse skillResponse = commonEntityOperations.createEntity("{name:"+ skillName +", description:automation, maxWaitTime:120}", Enums.BodyType.JSON);
+            HttpResponse skillResponse = commonEntityOperations.createEntity("{name:" + skillName + ", description:automation, maxWaitTime:120}", Enums.BodyType.JSON);
             initializer.handleResponse(skillResponse, "New skill created", "skill already exist");
             return true;
         }
@@ -253,7 +286,7 @@ public class ConfigInitializer {
         }
     }
 
-    public String getUserId(Account testAccount ,String loginName){
+    private String getUserId(){
         try {
             initializer.initUserSkill(UserManagementServiceName.OPERATORS);
             String skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0,commonEntityOperations.getResourceUrl().indexOf('?')));
@@ -265,7 +298,7 @@ public class ConfigInitializer {
         }
     }
 
-    public String getSkillId(Account testAccount ,String skillName){
+    private String getSkillId(){
         try {
             initializer.initUserSkill(UserManagementServiceName.SKILLS);
             String skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0,commonEntityOperations.getResourceUrl().indexOf('?')));
@@ -278,7 +311,7 @@ public class ConfigInitializer {
     }
 
     private Set<String> setAcFeatures(){
-        Set<String> acFeatures = new HashSet<String>();
+        acFeatures = new HashSet<String>();
         acFeatures.add("LEUI.ConnectionBar_Display");
         acFeatures.add("LEUI.WebAnalytics");
         acFeatures.add("Common.Billing_CPI2");
@@ -288,7 +321,7 @@ public class ConfigInitializer {
     }
 
     private Set<String> setAcFeatures(String[] features){
-        Set<String> acFeatures = new HashSet<String>();
+        acFeatures = new HashSet<String>();
         for(String feature : features){
             acFeatures.add(feature);
         }
@@ -296,7 +329,7 @@ public class ConfigInitializer {
     }
 
     private Set<String> setAcPackages(){
-        Set<String> acPackages = new HashSet<String>();
+        acPackages = new HashSet<String>();
         acPackages.add("LE_Platform");
         acPackages.add("LP_Chat");
         acPackages.add("LIVE_ENGAGEv2");
@@ -304,10 +337,118 @@ public class ConfigInitializer {
     }
 
     private Set<String> setAcPackages(String[] packages){
-        Set<String> acPackages = new HashSet<String>();
+        acPackages = new HashSet<String>();
         for(String acPackage : packages){
             acPackages.add(acPackage);
         }
+        return acPackages;
+    }
+
+    public Initializer getInitializer() {
+        return initializer;
+    }
+
+    public String getACCOUNT_CREATION_SERVICE_KEY() {
+        return ACCOUNT_CREATION_SERVICE_KEY;
+    }
+
+    public String getAPPSERVER() {
+        return APPSERVER;
+    }
+
+    public String getUSERNAME() {
+        return USERNAME;
+    }
+
+    public String getPASSWORD() {
+        return PASSWORD;
+    }
+
+    public String getHC1() {
+        return HC1;
+    }
+
+    public String getEMAIL() {
+        return EMAIL;
+    }
+
+    public String getAPPSERVER_DOMAIN() {
+        return APPSERVER_DOMAIN;
+    }
+
+    public String getAppKey() {
+        return AppKey;
+    }
+
+    public String getTokenKey() {
+        return TokenKey;
+    }
+
+    public String getAppSecret() {
+        return AppSecret;
+    }
+
+    public String getTokenSecret() {
+        return TokenSecret;
+    }
+
+    public String getSkillResponse() {
+        return skillResponse;
+    }
+
+    public JSONObject getJsonObject() {
+        return jsonObject;
+    }
+
+    public JSONArray getJsonArray() {
+        return jsonArray;
+    }
+
+    public JSONObject getExprObject() {
+        return exprObject;
+    }
+
+    public String getCassandraHosts() {
+        return cassandraHosts;
+    }
+
+    public Set<Integer> getPrivileges() {
+        return privileges;
+    }
+
+    public String getLOGIN_KEY() {
+        return LOGIN_KEY;
+    }
+
+    public CommonEntityOperations getCommonEntityOperations() {
+        return commonEntityOperations;
+    }
+
+    public CreateE2EAccountService getCreateE2EAccountService() {
+        return E2EAccService;
+    }
+
+    public HttpHost getAccService() {
+        return accService;
+    }
+
+    public HttpHost getAppServer() {
+        return appServer;
+    }
+
+    public Account getTestAccount() {
+        return testAccount;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Set<String> getAcFeatures() {
+        return acFeatures;
+    }
+
+    public Set<String> getAcPackages() {
         return acPackages;
     }
 }

@@ -17,9 +17,7 @@ public class ConfigCreator {
 
     private static final ConfigCreator INSTANCE = new ConfigCreator();
 
-    private SiteEntity siteEntity = new SiteEntity();
-    private UserSkillEntity userSkillEntity = new UserSkillEntity();
-    private GetIdEntity getIdEntity = new GetIdEntity();
+    private ConfigInitializer baseInitializer = ConfigInitializer.getInstance();
 
 
     private ConfigCreator(){
@@ -31,46 +29,51 @@ public class ConfigCreator {
     }
 
     public String createSite() throws Exception {
-        ConfigInitializer.getInstance().initSite();
-        siteEntity.setTestAccount(siteEntity.getCreateE2EAccountService().getSiteForTest(accountCreationService, appServer, APPSERVER_DOMAIN, envProps, testAccount, acFeatures, acPackages, "1"));
-        siteEntity.getCreateE2EAccountService().extendSiteExpiration(siteEntity.getTestAccount().getId(), ConfigInitializer.getAppKey(), ConfigInitializer.getAppSecret());
-        return (siteEntity.getTestAccount().getId());
+        baseInitializer.getInitializer().initSite();
+        baseInitializer.testAccount = baseInitializer.getCreateE2EAccountService().getSiteForTest(
+                baseInitializer.getAccService(), baseInitializer.getAppServer(), baseInitializer.getAPPSERVER_DOMAIN(),
+                        ConfigInitializer.envProps, baseInitializer.getTestAccount(),
+                                baseInitializer.getAcFeatures(), baseInitializer.getAcPackages(), "1");
+        baseInitializer.getCreateE2EAccountService().extendSiteExpiration(
+                baseInitializer.getTestAccount().getId(), baseInitializer.getAppKey(), baseInitializer.getAppSecret());
+        return (baseInitializer.testAccount.getId());
     }
 
-    public Account createNewSite(int id) throws Exception {
-        ConfigInitializer.getInstance().initSite();
-        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages, String.valueOf(id));
-        createE2EAccountService.extendSiteExpiration(testAccount.getId(),AppKey,AppSecret);
-        return testAccount;
-    }
-
-    public String createSite(String[] features , String[] packages) throws Exception {
-        ConfigInitializer.getInstance().initSite();
-        testAccount = createE2EAccountService.getSiteForTest(accountCreationService,appServer, APPSERVER_DOMAIN, envProps,testAccount,acFeatures,acPackages,"1");
-        createE2EAccountService.extendSiteExpiration(testAccount.getId(),AppKey,AppSecret);
-        return (testAccount.getId());
-    }
+//    public Account createNewSite(int id) throws Exception {
+//        baseInitializer.getInitializer().initSite();
+//        baseInitializer.testAccount = baseInitializer.getCreateE2EAccountService().getSiteForTest(
+//                accountCreationService, appServer, APPSERVER_DOMAIN, envProps, testAccount, acFeatures, acPackages, String.valueOf(id));
+//        baseInitializer.getCreateE2EAccountService().extendSiteExpiration(baseInitializer.testAccount.getId(),baseInitializer.getAppKey(), baseInitializer.getAppSecret());
+//        return baseInitializer.testAccount;
+//    }
+//
+//    public String createSite(String[] features , String[] packages) throws Exception {
+//        baseInitializer.getInitializer().initSite();
+//        baseInitializer.testAccount = baseInitializer.getCreateE2EAccountService().getSiteForTest(accountCreationService, appServer, APPSERVER_DOMAIN, envProps, baseInitializer.testAccount, acFeatures, acPackages, "1");
+//        baseInitializer.getCreateE2EAccountService().extendSiteExpiration(baseInitializer.testAccount.getId(),baseInitializer.getAppKey(),baseInitializer.getAppSecret());
+//        return (baseInitializer.testAccount.getId());
+//    }
 
     public Account createAccount(){
         Account testAccount = new Account();
-        testAccount.setTokenKey(TokenKey);
-        testAccount.setTokenSecret(TokenSecret);
+        testAccount.setTokenKey(baseInitializer.getTokenKey());
+        testAccount.setTokenSecret(baseInitializer.getTokenSecret());
         return testAccount;
     }
 
     public User createUser(){
         User user = new User();
-        user.setName(USERNAME);
-        user.setPassword(PASSWORD);
-        user.setEmail(EMAIL);
+        user.setName(baseInitializer.getUSERNAME());
+        user.setPassword(baseInitializer.getPASSWORD());
+        user.setEmail(baseInitializer.getEMAIL());
         return user;
     }
 
-    public Boolean createUser(Account testAccount ,String displayName ,String loginName ,PermissionType permissionType){
+    public Boolean createUser(Account testAccount ,String displayName ,String loginName ,ConfigInitializer.PermissionType permissionType){
         try {
-            ConfigInitializer.getInstance().initUserSkill(UserManagementServiceName.OPERATORS);
-            HttpResponse operatorResponse = commonEntityOperations.createEntity("{displayName: " + displayName + " ,emailAddress: qa@qa.com ,enabled: true ,loginName: " + loginName + " ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678 ,permissionGroup: " + permissionType.getPermissionType() + " ,skills: []}", Enums.BodyType.JSON);
-            handleResponse(operatorResponse, "New operator created", "operator already exist");
+            baseInitializer.getInitializer().initUserSkill(UserManagementServiceName.OPERATORS);
+            HttpResponse operatorResponse = baseInitializer.getCommonEntityOperations().createEntity("{displayName: " + displayName + " ,emailAddress: qa@qa.com ,enabled: true ,loginName: " + loginName + " ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678 ,permissionGroup: " + permissionType.getPermissionType() + " ,skills: []}", Enums.BodyType.JSON);
+            baseInitializer.getInitializer().handleResponse(operatorResponse, "New operator created", "operator already exist");
         } catch(Exception e){
             logger.error("error create operator");
             return null;
@@ -78,11 +81,14 @@ public class ConfigCreator {
         return null;
     }
 
-    public Boolean createUser(Account testAccount ,String displayName ,String loginName ,PermissionType permissionType ,JSONArray skills){
+    public Boolean createUser(Account testAccount ,String displayName ,String loginName ,ConfigInitializer.PermissionType permissionType ,JSONArray skills){
         try {
-            ConfigInitializer.getInstance().initUserSkill(UserManagementServiceName.OPERATORS);
-            HttpResponse operatorResponse = commonEntityOperations.createEntity("{displayName: " + displayName + " ,emailAddress: qa@qa.com ,enabled: true ,loginName: " + loginName + " ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678 ,permissionGroup: " + permissionType.getPermissionType() + " ,skills: " + skills + "}", Enums.BodyType.JSON);
-            handleResponse(operatorResponse, "New operator created", "operator already exist");
+            baseInitializer.getInitializer().initUserSkill(UserManagementServiceName.OPERATORS);
+            HttpResponse operatorResponse = baseInitializer.getCommonEntityOperations().createEntity(
+                    "{displayName: " + displayName + " ,emailAddress: qa@qa.com ,enabled: true ,loginName: " +
+                            loginName + " ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678" +
+                            " ,permissionGroup: " + permissionType.getPermissionType() + " ,skills: " + skills + "}", Enums.BodyType.JSON);
+            baseInitializer.getInitializer().handleResponse(operatorResponse, "New operator created", "operator already exist");
             return true;
         } catch(Exception e){
             logger.error("error create operator");
@@ -92,9 +98,9 @@ public class ConfigCreator {
 
     public Boolean createSkill(Account testAccount ,String skillName){
         try {
-            ConfigInitializer.getInstance().initUserSkill(UserManagementServiceName.SKILLS);
-            HttpResponse skillResponse = commonEntityOperations.createEntity("{name:"+ skillName +", description:automation, maxWaitTime:120}", Enums.BodyType.JSON);
-            ConfigInitializer.getInstance().handleResponse(skillResponse, "New skill created", "skill already exist");
+            baseInitializer.getInitializer().initUserSkill(UserManagementServiceName.SKILLS);
+            HttpResponse skillResponse = baseInitializer.getCommonEntityOperations().createEntity("{name:"+ skillName +", description:automation, maxWaitTime:120}", Enums.BodyType.JSON);
+            baseInitializer.getInitializer().handleResponse(skillResponse, "New skill created", "skill already exist");
             return true;
         }
         catch(Exception e){
@@ -105,9 +111,11 @@ public class ConfigCreator {
 
     public String getUserId(Account testAccount ,String loginName){
         try {
-            ConfigInitializer.getInstance().initUserSkill(UserManagementServiceName.OPERATORS);
-            String skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0,commonEntityOperations.getResourceUrl().indexOf('?')));
-            return ConfigInitializer.getInstance().getId(UserManagementServiceName.OPERATORS, "loginName", "loginName", "operators");
+            baseInitializer.getInitializer().initUserSkill(UserManagementServiceName.OPERATORS);
+            String skillResponse = baseInitializer.getCommonEntityOperations().getEntity(
+                    baseInitializer.getCommonEntityOperations().getResourceUrl().substring(
+                            0, baseInitializer.getCommonEntityOperations().getResourceUrl().indexOf('?')));
+            return baseInitializer.getInitializer().getId(UserManagementServiceName.OPERATORS, "loginName", "loginName", "operators");
         }
         catch(Exception e){
             logger.error("error get  operator id");
@@ -117,9 +125,11 @@ public class ConfigCreator {
 
     public String getSkillId(Account testAccount ,String skillName){
         try {
-            ConfigInitializer.getInstance().initUserSkill(UserManagementServiceName.SKILLS);
-            String skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0,commonEntityOperations.getResourceUrl().indexOf('?')));
-            return ConfigInitializer.getInstance().getId(UserManagementServiceName.OPERATORS, "name", "skillName", "Skill");
+            baseInitializer.getInitializer().initUserSkill(UserManagementServiceName.SKILLS);
+            String skillResponse = baseInitializer.getCommonEntityOperations().getEntity(
+                    baseInitializer.getCommonEntityOperations().getResourceUrl().substring(
+                            0, baseInitializer.getCommonEntityOperations().getResourceUrl().indexOf('?')));
+            return baseInitializer.getInitializer().getId(UserManagementServiceName.OPERATORS, "name", "skillName", "Skill");
         }
         catch(Exception e){
             logger.error("error get  operator id");

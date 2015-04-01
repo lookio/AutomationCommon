@@ -15,8 +15,8 @@ public interface Pagable {
 
      void prepareElements();
 
-     public <T> T getValidate() ;
+     <T> T getValidate() ;
 
-     public <T> T getActivate();
+     <T> T getActivate();
 
 }
