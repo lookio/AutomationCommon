@@ -3,6 +3,10 @@ package com.config.entity.le;
 import com.config.entity.le.lpadk.ConfigInitializer;
 import com.liveperson.automation.datamodel.liveengage.user.PermissionType;
 import com.liveperson.automation.datamodel.liveengage.user.User;
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by asih on 22/03/2015.
@@ -12,32 +16,28 @@ public class T {
     static ConfigInitializer initializer = ConfigInitializer.getInstance();
 
     public static final void main(String[] args) throws Exception {
-//        initializer.createSite();
 
-        initializer.createNewSite(89497843);
+        initializer.createNewSite();
+
+        initializer.updateConfigurationInSite(null, true);
 
 //        iterate over jaxb
 
-//        User adminUser = new User();
-
-//        adminUser.setName(initializer.getUSERNAME());
-//        adminUser.setPassword(initializer.getPASSWORD());
-//        adminUser.setEmail(initializer.getEMAIL());
-
-        initializer.createUser("asi" ,"asihliveperson" , ConfigInitializer.PermissionType.AGENT);
-
-
-//        User agent = new User();
-//
-//        agent.setName("asi");
-//        agent.setPassword("12345678");
-//        agent.setEmail("asih@liveperson.com");
-//        agent.setPermission(PermissionType.AGENT);
-//
-//        initializer.addUserToSite(agent);
-
         initializer.createSkill("mobile");
-        initializer.createSkill("tech");
+        initializer.updateConfigurationInSite(null, true);
+        initializer.createSkill("TechSupport");
+        initializer.updateConfigurationInSite(null, true);
         initializer.createSkill("sales");
+        initializer.updateConfigurationInSite(null, true);
+
+//        initializer.createAgent("asi", "asih@liveperson.com", ConfigInitializer.PermissionType.AGENT, new JSONArray(Arrays.asList("mobile", "techSupport")));
+
+//        initializer.createAgent("asi", "asih@liveperson.com", ConfigInitializer.PermissionType.AGENT, new JSONArray(Arrays.asList("mobile")));
+        initializer.createAgent("asi", "asih@liveperson.com");
+
+
+        initializer.updateConfigurationInSite(null, true);
+
+//        initializer.deleteSite();
     }
 }
