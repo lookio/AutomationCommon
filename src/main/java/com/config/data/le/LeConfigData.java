@@ -27,31 +27,15 @@ import java.util.List;
  *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                           &lt;sequence>
  *                             &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                             &lt;element name="siteUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                           &lt;/sequence>
- *                         &lt;/restriction>
- *                       &lt;/complexContent>
- *                     &lt;/complexType>
- *                   &lt;/element>
- *                   &lt;element name="modify_site">
- *                     &lt;complexType>
- *                       &lt;complexContent>
- *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                           &lt;sequence>
- *                             &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                             &lt;element name="siteUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                           &lt;/sequence>
- *                         &lt;/restriction>
- *                       &lt;/complexContent>
- *                     &lt;/complexType>
- *                   &lt;/element>
- *                   &lt;element name="delete_site">
- *                     &lt;complexType>
- *                       &lt;complexContent>
- *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                           &lt;sequence>
- *                             &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *                             &lt;element name="siteUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                             &lt;element name="isExtentExpiration" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *                             &lt;element name="creationType">
+ *                               &lt;simpleType>
+ *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                   &lt;enumeration value="CreateNew"/>
+ *                                   &lt;enumeration value="ConnectToExisting"/>
+ *                                 &lt;/restriction>
+ *                               &lt;/simpleType>
+ *                             &lt;/element>
  *                           &lt;/sequence>
  *                         &lt;/restriction>
  *                       &lt;/complexContent>
@@ -67,7 +51,17 @@ import java.util.List;
  *                                 &lt;complexContent>
  *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                                     &lt;sequence>
- *                                       &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                                       &lt;element name="userType">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;enumeration value="Administrator"/>
+ *                                             &lt;enumeration value="Agent"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="user" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                                       &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                                       &lt;element name="email" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                                       &lt;element name="skill" maxOccurs="unbounded">
  *                                         &lt;simpleType>
  *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -99,6 +93,8 @@ import java.util.List;
  *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                                     &lt;sequence>
  *                                       &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                                       &lt;element name="deleteSkillData" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                                       &lt;element name="deleteUserData" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                                     &lt;/sequence>
  *                                   &lt;/restriction>
  *                                 &lt;/complexContent>
@@ -216,17 +212,17 @@ import java.util.List;
 public class LeConfigData {
 
     @XmlElement(required = true)
-    protected Site site;
+    protected LeConfigData.Site site;
 
     /**
      * Gets the value of the site property.
      *
      * @return
      *     possible object is
-     *     {@link com.config.data.le.LeConfigData.Site }
+     *     {@link LeConfigData.Site }
      *
      */
-    public Site getSite() {
+    public LeConfigData.Site getSite() {
         return site;
     }
 
@@ -235,10 +231,10 @@ public class LeConfigData {
      *
      * @param value
      *     allowed object is
-     *     {@link com.config.data.le.LeConfigData.Site }
+     *     {@link LeConfigData.Site }
      *
      */
-    public void setSite(Site value) {
+    public void setSite(LeConfigData.Site value) {
         this.site = value;
     }
 
@@ -259,31 +255,15 @@ public class LeConfigData {
      *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *                 &lt;sequence>
      *                   &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                   &lt;element name="siteUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                 &lt;/sequence>
-     *               &lt;/restriction>
-     *             &lt;/complexContent>
-     *           &lt;/complexType>
-     *         &lt;/element>
-     *         &lt;element name="modify_site">
-     *           &lt;complexType>
-     *             &lt;complexContent>
-     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                 &lt;sequence>
-     *                   &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                   &lt;element name="siteUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                 &lt;/sequence>
-     *               &lt;/restriction>
-     *             &lt;/complexContent>
-     *           &lt;/complexType>
-     *         &lt;/element>
-     *         &lt;element name="delete_site">
-     *           &lt;complexType>
-     *             &lt;complexContent>
-     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                 &lt;sequence>
-     *                   &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
-     *                   &lt;element name="siteUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                   &lt;element name="isExtentExpiration" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+     *                   &lt;element name="creationType">
+     *                     &lt;simpleType>
+     *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                         &lt;enumeration value="CreateNew"/>
+     *                         &lt;enumeration value="ConnectToExisting"/>
+     *                       &lt;/restriction>
+     *                     &lt;/simpleType>
+     *                   &lt;/element>
      *                 &lt;/sequence>
      *               &lt;/restriction>
      *             &lt;/complexContent>
@@ -299,7 +279,17 @@ public class LeConfigData {
      *                       &lt;complexContent>
      *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *                           &lt;sequence>
-     *                             &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                             &lt;element name="userType">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;enumeration value="Administrator"/>
+     *                                   &lt;enumeration value="Agent"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="user" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                             &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                             &lt;element name="email" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                             &lt;element name="skill" maxOccurs="unbounded">
      *                               &lt;simpleType>
      *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -331,6 +321,8 @@ public class LeConfigData {
      *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *                           &lt;sequence>
      *                             &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                             &lt;element name="deleteSkillData" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *                             &lt;element name="deleteUserData" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *                           &lt;/sequence>
      *                         &lt;/restriction>
      *                       &lt;/complexContent>
@@ -438,8 +430,6 @@ public class LeConfigData {
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "createSite",
-        "modifySite",
-        "deleteSite",
         "usersData",
         "visitorsData",
         "campaignData"
@@ -447,11 +437,7 @@ public class LeConfigData {
     public static class Site {
 
         @XmlElement(name = "create_site", required = true)
-        protected CreateSite createSite;
-        @XmlElement(name = "modify_site", required = true)
-        protected ModifySite modifySite;
-        @XmlElement(name = "delete_site", required = true)
-        protected DeleteSite deleteSite;
+        protected LeConfigData.Site.CreateSite createSite;
         @XmlElement(name = "users_data", required = true)
         protected List<UsersData> usersData;
         @XmlElement(name = "visitors_data", required = true)
@@ -464,10 +450,10 @@ public class LeConfigData {
          *
          * @return
          *     possible object is
-         *     {@link com.config.data.le.LeConfigData.Site.CreateSite }
+         *     {@link LeConfigData.Site.CreateSite }
          *
          */
-        public CreateSite getCreateSite() {
+        public LeConfigData.Site.CreateSite getCreateSite() {
             return createSite;
         }
 
@@ -476,59 +462,11 @@ public class LeConfigData {
          *
          * @param value
          *     allowed object is
-         *     {@link com.config.data.le.LeConfigData.Site.CreateSite }
+         *     {@link LeConfigData.Site.CreateSite }
          *
          */
-        public void setCreateSite(CreateSite value) {
+        public void setCreateSite(LeConfigData.Site.CreateSite value) {
             this.createSite = value;
-        }
-
-        /**
-         * Gets the value of the modifySite property.
-         *
-         * @return
-         *     possible object is
-         *     {@link com.config.data.le.LeConfigData.Site.ModifySite }
-         *
-         */
-        public ModifySite getModifySite() {
-            return modifySite;
-        }
-
-        /**
-         * Sets the value of the modifySite property.
-         *
-         * @param value
-         *     allowed object is
-         *     {@link com.config.data.le.LeConfigData.Site.ModifySite }
-         *
-         */
-        public void setModifySite(ModifySite value) {
-            this.modifySite = value;
-        }
-
-        /**
-         * Gets the value of the deleteSite property.
-         *
-         * @return
-         *     possible object is
-         *     {@link com.config.data.le.LeConfigData.Site.DeleteSite }
-         *
-         */
-        public DeleteSite getDeleteSite() {
-            return deleteSite;
-        }
-
-        /**
-         * Sets the value of the deleteSite property.
-         *
-         * @param value
-         *     allowed object is
-         *     {@link com.config.data.le.LeConfigData.Site.DeleteSite }
-         *
-         */
-        public void setDeleteSite(DeleteSite value) {
-            this.deleteSite = value;
         }
 
         /**
@@ -549,7 +487,7 @@ public class LeConfigData {
          *
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link com.config.data.le.LeConfigData.Site.UsersData }
+         * {@link LeConfigData.Site.UsersData }
          *
          *
          */
@@ -578,7 +516,7 @@ public class LeConfigData {
          *
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link com.config.data.le.LeConfigData.Site.VisitorsData }
+         * {@link LeConfigData.Site.VisitorsData }
          *
          *
          */
@@ -607,7 +545,7 @@ public class LeConfigData {
          *
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link com.config.data.le.LeConfigData.Site.CampaignData }
+         * {@link LeConfigData.Site.CampaignData }
          *
          *
          */
@@ -679,21 +617,21 @@ public class LeConfigData {
         public static class CampaignData {
 
             @XmlElement(name = "create_campaign", required = true)
-            protected CreateCampaign createCampaign;
+            protected LeConfigData.Site.CampaignData.CreateCampaign createCampaign;
             @XmlElement(name = "modify_campaign", required = true)
-            protected ModifyCampaign modifyCampaign;
+            protected LeConfigData.Site.CampaignData.ModifyCampaign modifyCampaign;
             @XmlElement(name = "delete_campaign", required = true)
-            protected DeleteCampaign deleteCampaign;
+            protected LeConfigData.Site.CampaignData.DeleteCampaign deleteCampaign;
 
             /**
              * Gets the value of the createCampaign property.
              *
              * @return
              *     possible object is
-             *     {@link com.config.data.le.LeConfigData.Site.CampaignData.CreateCampaign }
+             *     {@link LeConfigData.Site.CampaignData.CreateCampaign }
              *
              */
-            public CreateCampaign getCreateCampaign() {
+            public LeConfigData.Site.CampaignData.CreateCampaign getCreateCampaign() {
                 return createCampaign;
             }
 
@@ -702,10 +640,10 @@ public class LeConfigData {
              *
              * @param value
              *     allowed object is
-             *     {@link com.config.data.le.LeConfigData.Site.CampaignData.CreateCampaign }
+             *     {@link LeConfigData.Site.CampaignData.CreateCampaign }
              *
              */
-            public void setCreateCampaign(CreateCampaign value) {
+            public void setCreateCampaign(LeConfigData.Site.CampaignData.CreateCampaign value) {
                 this.createCampaign = value;
             }
 
@@ -714,10 +652,10 @@ public class LeConfigData {
              *
              * @return
              *     possible object is
-             *     {@link com.config.data.le.LeConfigData.Site.CampaignData.ModifyCampaign }
+             *     {@link LeConfigData.Site.CampaignData.ModifyCampaign }
              *
              */
-            public ModifyCampaign getModifyCampaign() {
+            public LeConfigData.Site.CampaignData.ModifyCampaign getModifyCampaign() {
                 return modifyCampaign;
             }
 
@@ -726,10 +664,10 @@ public class LeConfigData {
              *
              * @param value
              *     allowed object is
-             *     {@link com.config.data.le.LeConfigData.Site.CampaignData.ModifyCampaign }
+             *     {@link LeConfigData.Site.CampaignData.ModifyCampaign }
              *
              */
-            public void setModifyCampaign(ModifyCampaign value) {
+            public void setModifyCampaign(LeConfigData.Site.CampaignData.ModifyCampaign value) {
                 this.modifyCampaign = value;
             }
 
@@ -738,10 +676,10 @@ public class LeConfigData {
              *
              * @return
              *     possible object is
-             *     {@link com.config.data.le.LeConfigData.Site.CampaignData.DeleteCampaign }
+             *     {@link LeConfigData.Site.CampaignData.DeleteCampaign }
              *
              */
-            public DeleteCampaign getDeleteCampaign() {
+            public LeConfigData.Site.CampaignData.DeleteCampaign getDeleteCampaign() {
                 return deleteCampaign;
             }
 
@@ -750,10 +688,10 @@ public class LeConfigData {
              *
              * @param value
              *     allowed object is
-             *     {@link com.config.data.le.LeConfigData.Site.CampaignData.DeleteCampaign }
+             *     {@link LeConfigData.Site.CampaignData.DeleteCampaign }
              *
              */
-            public void setDeleteCampaign(DeleteCampaign value) {
+            public void setDeleteCampaign(LeConfigData.Site.CampaignData.DeleteCampaign value) {
                 this.deleteCampaign = value;
             }
 
@@ -936,7 +874,15 @@ public class LeConfigData {
          *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
          *       &lt;sequence>
          *         &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *         &lt;element name="siteUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *         &lt;element name="isExtentExpiration" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+         *         &lt;element name="creationType">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;enumeration value="CreateNew"/>
+         *               &lt;enumeration value="ConnectToExisting"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
          *       &lt;/sequence>
          *     &lt;/restriction>
          *   &lt;/complexContent>
@@ -948,14 +894,16 @@ public class LeConfigData {
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
             "siteId",
-            "siteUrl"
+            "isExtentExpiration",
+            "creationType"
         })
         public static class CreateSite {
 
             @XmlElement(required = true)
             protected String siteId;
+            protected boolean isExtentExpiration;
             @XmlElement(required = true)
-            protected String siteUrl;
+            protected String creationType;
 
             /**
              * Gets the value of the siteId property.
@@ -982,193 +930,43 @@ public class LeConfigData {
             }
 
             /**
-             * Gets the value of the siteUrl property.
+             * Gets the value of the isExtentExpiration property.
+             *
+             */
+            public boolean isIsExtentExpiration() {
+                return isExtentExpiration;
+            }
+
+            /**
+             * Sets the value of the isExtentExpiration property.
+             *
+             */
+            public void setIsExtentExpiration(boolean value) {
+                this.isExtentExpiration = value;
+            }
+
+            /**
+             * Gets the value of the creationType property.
              *
              * @return
              *     possible object is
              *     {@link String }
              *
              */
-            public String getSiteUrl() {
-                return siteUrl;
+            public String getCreationType() {
+                return creationType;
             }
 
             /**
-             * Sets the value of the siteUrl property.
+             * Sets the value of the creationType property.
              *
              * @param value
              *     allowed object is
              *     {@link String }
              *
              */
-            public void setSiteUrl(String value) {
-                this.siteUrl = value;
-            }
-
-        }
-
-
-        /**
-         * <p>Java class for anonymous complex type.
-         *
-         * <p>The following schema fragment specifies the expected content contained within this class.
-         *
-         * <pre>
-         * &lt;complexType>
-         *   &lt;complexContent>
-         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *       &lt;sequence>
-         *         &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *         &lt;element name="siteUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *       &lt;/sequence>
-         *     &lt;/restriction>
-         *   &lt;/complexContent>
-         * &lt;/complexType>
-         * </pre>
-         *
-         *
-         */
-        @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(name = "", propOrder = {
-            "siteId",
-            "siteUrl"
-        })
-        public static class DeleteSite {
-
-            @XmlElement(required = true)
-            protected String siteId;
-            @XmlElement(required = true)
-            protected String siteUrl;
-
-            /**
-             * Gets the value of the siteId property.
-             *
-             * @return
-             *     possible object is
-             *     {@link String }
-             *
-             */
-            public String getSiteId() {
-                return siteId;
-            }
-
-            /**
-             * Sets the value of the siteId property.
-             *
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *
-             */
-            public void setSiteId(String value) {
-                this.siteId = value;
-            }
-
-            /**
-             * Gets the value of the siteUrl property.
-             *
-             * @return
-             *     possible object is
-             *     {@link String }
-             *
-             */
-            public String getSiteUrl() {
-                return siteUrl;
-            }
-
-            /**
-             * Sets the value of the siteUrl property.
-             *
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *
-             */
-            public void setSiteUrl(String value) {
-                this.siteUrl = value;
-            }
-
-        }
-
-
-        /**
-         * <p>Java class for anonymous complex type.
-         *
-         * <p>The following schema fragment specifies the expected content contained within this class.
-         *
-         * <pre>
-         * &lt;complexType>
-         *   &lt;complexContent>
-         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *       &lt;sequence>
-         *         &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *         &lt;element name="siteUrl" type="{http://www.w3.org/2001/XMLSchema}string"/>
-         *       &lt;/sequence>
-         *     &lt;/restriction>
-         *   &lt;/complexContent>
-         * &lt;/complexType>
-         * </pre>
-         *
-         *
-         */
-        @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(name = "", propOrder = {
-            "siteId",
-            "siteUrl"
-        })
-        public static class ModifySite {
-
-            @XmlElement(required = true)
-            protected String siteId;
-            @XmlElement(required = true)
-            protected String siteUrl;
-
-            /**
-             * Gets the value of the siteId property.
-             *
-             * @return
-             *     possible object is
-             *     {@link String }
-             *
-             */
-            public String getSiteId() {
-                return siteId;
-            }
-
-            /**
-             * Sets the value of the siteId property.
-             *
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *
-             */
-            public void setSiteId(String value) {
-                this.siteId = value;
-            }
-
-            /**
-             * Gets the value of the siteUrl property.
-             *
-             * @return
-             *     possible object is
-             *     {@link String }
-             *
-             */
-            public String getSiteUrl() {
-                return siteUrl;
-            }
-
-            /**
-             * Sets the value of the siteUrl property.
-             *
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *
-             */
-            public void setSiteUrl(String value) {
-                this.siteUrl = value;
+            public void setCreationType(String value) {
+                this.creationType = value;
             }
 
         }
@@ -1189,7 +987,17 @@ public class LeConfigData {
          *             &lt;complexContent>
          *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
          *                 &lt;sequence>
-         *                   &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *                   &lt;element name="userType">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;enumeration value="Administrator"/>
+         *                         &lt;enumeration value="Agent"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="user" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *                   &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *                   &lt;element name="email" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *                   &lt;element name="skill" maxOccurs="unbounded">
          *                     &lt;simpleType>
          *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -1221,6 +1029,8 @@ public class LeConfigData {
          *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
          *                 &lt;sequence>
          *                   &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *                   &lt;element name="deleteSkillData" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *                   &lt;element name="deleteUserData" type="{http://www.w3.org/2001/XMLSchema}string"/>
          *                 &lt;/sequence>
          *               &lt;/restriction>
          *             &lt;/complexContent>
@@ -1243,21 +1053,21 @@ public class LeConfigData {
         public static class UsersData {
 
             @XmlElement(name = "create_user", required = true)
-            protected CreateUser createUser;
+            protected LeConfigData.Site.UsersData.CreateUser createUser;
             @XmlElement(name = "modify_user", required = true)
-            protected ModifyUser modifyUser;
+            protected LeConfigData.Site.UsersData.ModifyUser modifyUser;
             @XmlElement(name = "delete_user", required = true)
-            protected DeleteUser deleteUser;
+            protected LeConfigData.Site.UsersData.DeleteUser deleteUser;
 
             /**
              * Gets the value of the createUser property.
              *
              * @return
              *     possible object is
-             *     {@link com.config.data.le.LeConfigData.Site.UsersData.CreateUser }
+             *     {@link LeConfigData.Site.UsersData.CreateUser }
              *
              */
-            public CreateUser getCreateUser() {
+            public LeConfigData.Site.UsersData.CreateUser getCreateUser() {
                 return createUser;
             }
 
@@ -1266,10 +1076,10 @@ public class LeConfigData {
              *
              * @param value
              *     allowed object is
-             *     {@link com.config.data.le.LeConfigData.Site.UsersData.CreateUser }
+             *     {@link LeConfigData.Site.UsersData.CreateUser }
              *
              */
-            public void setCreateUser(CreateUser value) {
+            public void setCreateUser(LeConfigData.Site.UsersData.CreateUser value) {
                 this.createUser = value;
             }
 
@@ -1278,10 +1088,10 @@ public class LeConfigData {
              *
              * @return
              *     possible object is
-             *     {@link com.config.data.le.LeConfigData.Site.UsersData.ModifyUser }
+             *     {@link LeConfigData.Site.UsersData.ModifyUser }
              *
              */
-            public ModifyUser getModifyUser() {
+            public LeConfigData.Site.UsersData.ModifyUser getModifyUser() {
                 return modifyUser;
             }
 
@@ -1290,10 +1100,10 @@ public class LeConfigData {
              *
              * @param value
              *     allowed object is
-             *     {@link com.config.data.le.LeConfigData.Site.UsersData.ModifyUser }
+             *     {@link LeConfigData.Site.UsersData.ModifyUser }
              *
              */
-            public void setModifyUser(ModifyUser value) {
+            public void setModifyUser(LeConfigData.Site.UsersData.ModifyUser value) {
                 this.modifyUser = value;
             }
 
@@ -1302,10 +1112,10 @@ public class LeConfigData {
              *
              * @return
              *     possible object is
-             *     {@link com.config.data.le.LeConfigData.Site.UsersData.DeleteUser }
+             *     {@link LeConfigData.Site.UsersData.DeleteUser }
              *
              */
-            public DeleteUser getDeleteUser() {
+            public LeConfigData.Site.UsersData.DeleteUser getDeleteUser() {
                 return deleteUser;
             }
 
@@ -1314,10 +1124,10 @@ public class LeConfigData {
              *
              * @param value
              *     allowed object is
-             *     {@link com.config.data.le.LeConfigData.Site.UsersData.DeleteUser }
+             *     {@link LeConfigData.Site.UsersData.DeleteUser }
              *
              */
-            public void setDeleteUser(DeleteUser value) {
+            public void setDeleteUser(LeConfigData.Site.UsersData.DeleteUser value) {
                 this.deleteUser = value;
             }
 
@@ -1332,7 +1142,17 @@ public class LeConfigData {
              *   &lt;complexContent>
              *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
              *       &lt;sequence>
-             *         &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+             *         &lt;element name="userType">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;enumeration value="Administrator"/>
+             *               &lt;enumeration value="Agent"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="user" type="{http://www.w3.org/2001/XMLSchema}string"/>
+             *         &lt;element name="password" type="{http://www.w3.org/2001/XMLSchema}string"/>
+             *         &lt;element name="email" type="{http://www.w3.org/2001/XMLSchema}string"/>
              *         &lt;element name="skill" maxOccurs="unbounded">
              *           &lt;simpleType>
              *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -1352,38 +1172,119 @@ public class LeConfigData {
              */
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "", propOrder = {
-                "siteId",
+                "userType",
+                "user",
+                "password",
+                "email",
                 "skill"
             })
             public static class CreateUser {
 
                 @XmlElement(required = true)
-                protected String siteId;
+                protected String userType;
+                @XmlElement(required = true)
+                protected String user;
+                @XmlElement(required = true)
+                protected String password;
+                @XmlElement(required = true)
+                protected String email;
                 @XmlElement(required = true)
                 protected List<String> skill;
 
                 /**
-                 * Gets the value of the siteId property.
+                 * Gets the value of the userType property.
                  *
                  * @return
                  *     possible object is
                  *     {@link String }
                  *
                  */
-                public String getSiteId() {
-                    return siteId;
+                public String getUserType() {
+                    return userType;
                 }
 
                 /**
-                 * Sets the value of the siteId property.
+                 * Sets the value of the userType property.
                  *
                  * @param value
                  *     allowed object is
                  *     {@link String }
                  *
                  */
-                public void setSiteId(String value) {
-                    this.siteId = value;
+                public void setUserType(String value) {
+                    this.userType = value;
+                }
+
+                /**
+                 * Gets the value of the user property.
+                 *
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *
+                 */
+                public String getUser() {
+                    return user;
+                }
+
+                /**
+                 * Sets the value of the user property.
+                 *
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *
+                 */
+                public void setUser(String value) {
+                    this.user = value;
+                }
+
+                /**
+                 * Gets the value of the password property.
+                 *
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *
+                 */
+                public String getPassword() {
+                    return password;
+                }
+
+                /**
+                 * Sets the value of the password property.
+                 *
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *
+                 */
+                public void setPassword(String value) {
+                    this.password = value;
+                }
+
+                /**
+                 * Gets the value of the email property.
+                 *
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *
+                 */
+                public String getEmail() {
+                    return email;
+                }
+
+                /**
+                 * Sets the value of the email property.
+                 *
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *
+                 */
+                public void setEmail(String value) {
+                    this.email = value;
                 }
 
                 /**
@@ -1429,6 +1330,8 @@ public class LeConfigData {
              *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
              *       &lt;sequence>
              *         &lt;element name="siteId" type="{http://www.w3.org/2001/XMLSchema}string"/>
+             *         &lt;element name="deleteSkillData" type="{http://www.w3.org/2001/XMLSchema}string"/>
+             *         &lt;element name="deleteUserData" type="{http://www.w3.org/2001/XMLSchema}string"/>
              *       &lt;/sequence>
              *     &lt;/restriction>
              *   &lt;/complexContent>
@@ -1439,12 +1342,18 @@ public class LeConfigData {
              */
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "", propOrder = {
-                "siteId"
+                "siteId",
+                "deleteSkillData",
+                "deleteUserData"
             })
             public static class DeleteUser {
 
                 @XmlElement(required = true)
                 protected String siteId;
+                @XmlElement(required = true)
+                protected String deleteSkillData;
+                @XmlElement(required = true)
+                protected String deleteUserData;
 
                 /**
                  * Gets the value of the siteId property.
@@ -1468,6 +1377,54 @@ public class LeConfigData {
                  */
                 public void setSiteId(String value) {
                     this.siteId = value;
+                }
+
+                /**
+                 * Gets the value of the deleteSkillData property.
+                 *
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *
+                 */
+                public String getDeleteSkillData() {
+                    return deleteSkillData;
+                }
+
+                /**
+                 * Sets the value of the deleteSkillData property.
+                 *
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *
+                 */
+                public void setDeleteSkillData(String value) {
+                    this.deleteSkillData = value;
+                }
+
+                /**
+                 * Gets the value of the deleteUserData property.
+                 *
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *
+                 */
+                public String getDeleteUserData() {
+                    return deleteUserData;
+                }
+
+                /**
+                 * Sets the value of the deleteUserData property.
+                 *
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *
+                 */
+                public void setDeleteUserData(String value) {
+                    this.deleteUserData = value;
                 }
 
             }
@@ -1590,21 +1547,21 @@ public class LeConfigData {
         public static class VisitorsData {
 
             @XmlElement(name = "create_visitors", required = true)
-            protected CreateVisitors createVisitors;
+            protected LeConfigData.Site.VisitorsData.CreateVisitors createVisitors;
             @XmlElement(name = "modify_visitors", required = true)
-            protected ModifyVisitors modifyVisitors;
+            protected LeConfigData.Site.VisitorsData.ModifyVisitors modifyVisitors;
             @XmlElement(name = "delete_visitors", required = true)
-            protected DeleteVisitors deleteVisitors;
+            protected LeConfigData.Site.VisitorsData.DeleteVisitors deleteVisitors;
 
             /**
              * Gets the value of the createVisitors property.
              *
              * @return
              *     possible object is
-             *     {@link com.config.data.le.LeConfigData.Site.VisitorsData.CreateVisitors }
+             *     {@link LeConfigData.Site.VisitorsData.CreateVisitors }
              *
              */
-            public CreateVisitors getCreateVisitors() {
+            public LeConfigData.Site.VisitorsData.CreateVisitors getCreateVisitors() {
                 return createVisitors;
             }
 
@@ -1613,10 +1570,10 @@ public class LeConfigData {
              *
              * @param value
              *     allowed object is
-             *     {@link com.config.data.le.LeConfigData.Site.VisitorsData.CreateVisitors }
+             *     {@link LeConfigData.Site.VisitorsData.CreateVisitors }
              *
              */
-            public void setCreateVisitors(CreateVisitors value) {
+            public void setCreateVisitors(LeConfigData.Site.VisitorsData.CreateVisitors value) {
                 this.createVisitors = value;
             }
 
@@ -1625,10 +1582,10 @@ public class LeConfigData {
              *
              * @return
              *     possible object is
-             *     {@link com.config.data.le.LeConfigData.Site.VisitorsData.ModifyVisitors }
+             *     {@link LeConfigData.Site.VisitorsData.ModifyVisitors }
              *
              */
-            public ModifyVisitors getModifyVisitors() {
+            public LeConfigData.Site.VisitorsData.ModifyVisitors getModifyVisitors() {
                 return modifyVisitors;
             }
 
@@ -1637,10 +1594,10 @@ public class LeConfigData {
              *
              * @param value
              *     allowed object is
-             *     {@link com.config.data.le.LeConfigData.Site.VisitorsData.ModifyVisitors }
+             *     {@link LeConfigData.Site.VisitorsData.ModifyVisitors }
              *
              */
-            public void setModifyVisitors(ModifyVisitors value) {
+            public void setModifyVisitors(LeConfigData.Site.VisitorsData.ModifyVisitors value) {
                 this.modifyVisitors = value;
             }
 
@@ -1649,10 +1606,10 @@ public class LeConfigData {
              *
              * @return
              *     possible object is
-             *     {@link com.config.data.le.LeConfigData.Site.VisitorsData.DeleteVisitors }
+             *     {@link LeConfigData.Site.VisitorsData.DeleteVisitors }
              *
              */
-            public DeleteVisitors getDeleteVisitors() {
+            public LeConfigData.Site.VisitorsData.DeleteVisitors getDeleteVisitors() {
                 return deleteVisitors;
             }
 
@@ -1661,10 +1618,10 @@ public class LeConfigData {
              *
              * @param value
              *     allowed object is
-             *     {@link com.config.data.le.LeConfigData.Site.VisitorsData.DeleteVisitors }
+             *     {@link LeConfigData.Site.VisitorsData.DeleteVisitors }
              *
              */
-            public void setDeleteVisitors(DeleteVisitors value) {
+            public void setDeleteVisitors(LeConfigData.Site.VisitorsData.DeleteVisitors value) {
                 this.deleteVisitors = value;
             }
 

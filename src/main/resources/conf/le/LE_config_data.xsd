@@ -10,6 +10,7 @@
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="siteId" type="xs:string" />
+                                        <xs:element name="isExtentExpiration" type="xs:boolean" />
                                         <xs:element name="creationType">
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:string">
@@ -86,6 +87,8 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
+
+
 
                             <xs:element name="visitors_data" maxOccurs="unbounded">
                                 <xs:complexType>

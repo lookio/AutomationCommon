@@ -2,14 +2,8 @@ package com.config.entity.le;
 
 import com.config.base.BaseLEConfigItems;
 import com.config.data.le.LeConfigData.Site;
-import com.config.entity.le.LECampaigns;
-import com.config.entity.le.LEUsers;
-import com.config.entity.le.LEVisitors;
+import com.config.lpadk.ConfigInitializer;
 import com.config.service.ISite;
-import com.config.service.Parsable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by asih on 09/02/2015.
@@ -17,6 +11,7 @@ import java.util.List;
 public class LESites implements ISite{
 
     private Site site;
+    private ConfigInitializer initializer = ConfigInitializer.getInstance();
 
     public LESites(){
         site = getSite(Site.class);
@@ -29,12 +24,13 @@ public class LESites implements ISite{
         return (T)BaseLEConfigItems.confData.getSite();
     }
 
-    public void create() {
-//        create(sites);
+    public void create() throws Exception {
+        Site.CreateSite createSite = site.getCreateSite();
+        initializer.createNewSite(new Integer(createSite.getSiteId()), createSite.isIsExtentExpiration());
         String siteId = site.getCreateSite().getSiteId();
         new LEUsers().create();
-        new LEVisitors().create();
-        new LECampaigns().create();
+//        new LEVisitors().create();
+//        new LECampaigns().create();
     }
 
     public void modify() {

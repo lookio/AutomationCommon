@@ -78,22 +78,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link LeConfigData.Site.ModifySite }
-     * 
-     */
-    public LeConfigData.Site.ModifySite createLeConfigDataSiteModifySite() {
-        return new LeConfigData.Site.ModifySite();
-    }
-
-    /**
-     * Create an instance of {@link LeConfigData.Site.DeleteSite }
-     * 
-     */
-    public LeConfigData.Site.DeleteSite createLeConfigDataSiteDeleteSite() {
-        return new LeConfigData.Site.DeleteSite();
-    }
-
-    /**
      * Create an instance of {@link LeConfigData.Site.CampaignData.CreateCampaign }
      * 
      */

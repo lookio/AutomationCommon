@@ -3,6 +3,9 @@ package com.config.entity.le;
 import com.config.base.BaseLEConfigItems;
 import com.config.data.le.LeConfigData;
 import com.config.data.le.LeConfigData.Site.UsersData;
+import com.config.lpadk.ConfigInitializer;
+import org.json.JSONArray;
+
 
 import java.util.List;
 
@@ -12,6 +15,7 @@ import java.util.List;
 public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
 
     private List<UsersData> usersData;
+    private ConfigInitializer initializer = ConfigInitializer.getInstance();
 
     public LEUsers(){
         usersData = super.parseObjects(LEUsers.class);
@@ -32,9 +36,20 @@ public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
 
     @Override
     public <E> void create(List<E> ConfigItem) {
+        JSONArray skills = new JSONArray();
         LeConfigData.Site.UsersData.CreateUser createUsers;
         for(LeConfigData.Site.UsersData user : usersData){
             createUsers = user.getCreateUser();
+            if(createUsers.getSkill().size() == 0){
+                initializer.createAgent(createUsers.getUser(), createUsers.getEmail());
+            }
+            else{
+                for(String skill : createUsers.getSkill()){
+                    initializer.createSkill(skill);
+                    skills.put(skill);
+                }
+                initializer.createAgent(createUsers.getUser(), createUsers.getEmail(), skills);
+            }
             createUsers.getSkill();
         }
     }

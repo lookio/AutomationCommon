@@ -1,14 +1,7 @@
 package com.config.entity.le;
 
-import com.config.entity.le.lpadk.ConfigInitializer;
-import com.liveperson.AgentAPIFactory;
-import com.liveperson.automation.datamodel.liveengage.user.PermissionType;
-import com.liveperson.automation.datamodel.liveengage.user.User;
+import com.config.lpadk.ConfigInitializer;
 import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by asih on 22/03/2015.
