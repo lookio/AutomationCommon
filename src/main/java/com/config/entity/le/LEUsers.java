@@ -4,9 +4,12 @@ import com.config.base.BaseLEConfigItems;
 import com.config.data.le.LeConfigData;
 import com.config.data.le.LeConfigData.Site.UsersData;
 import com.config.lpadk.ConfigInitializer;
+import com.util.genutil.GeneralUtils;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,7 +18,11 @@ import java.util.List;
 public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
 
     private List<UsersData> usersData;
+    private LeConfigData.Site.UsersData.CreateUser createUsers;
     private ConfigInitializer initializer = ConfigInitializer.getInstance();
+
+    private static final Logger logger = Logger.getLogger(LEUsers.class);
+
 
     public LEUsers(){
         usersData = super.parseObjects(LEUsers.class);
@@ -36,22 +43,32 @@ public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
 
     @Override
     public <E> void create(List<E> ConfigItem) {
-        JSONArray skills = new JSONArray();
-        LeConfigData.Site.UsersData.CreateUser createUsers;
         for(LeConfigData.Site.UsersData user : usersData){
             createUsers = user.getCreateUser();
             if(createUsers.getSkill().size() == 0){
-                initializer.createAgent(createUsers.getUser(), createUsers.getEmail());
-            }
-            else{
-                for(String skill : createUsers.getSkill()){
-                    initializer.createSkill(skill);
-                    skills.put(skill);
+                if(createUsers.getUserType().equalsIgnoreCase("Administrator")){
+                    try {
+                        initializer.createAdminUser(createUsers);
+                    } catch (IOException e) {
+                        GeneralUtils.handleError("Error creating admin user", e);
+                        continue;
+                    }
+                }else{
+                    initializer.createAgent(createUsers.getUser(), createUsers.getEmail());
                 }
-                initializer.createAgent(createUsers.getUser(), createUsers.getEmail(), skills);
+            }else{
+                initializer.createAgent(createUsers.getUser(), createUsers.getEmail(), getSkills());
             }
-            createUsers.getSkill();
         }
+    }
+
+    private JSONArray getSkills(){
+        JSONArray skills = new JSONArray();
+        for(String skill : createUsers.getSkill()){
+            initializer.createSkill(skill);
+            skills.put(skill);
+        }
+        return skills;
     }
 
     @Override

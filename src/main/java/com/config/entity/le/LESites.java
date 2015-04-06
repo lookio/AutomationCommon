@@ -26,7 +26,9 @@ public class LESites implements ISite{
 
     public void create() throws Exception {
         Site.CreateSite createSite = site.getCreateSite();
-        initializer.createNewSite(new Integer(createSite.getSiteId()), createSite.isIsExtentExpiration());
+        if(createSite.getCreationType().equalsIgnoreCase("CreateNew")) {
+            initializer.createNewSite(new Integer(createSite.getSiteId()), createSite.isIsExtentExpiration());
+        }
         String siteId = site.getCreateSite().getSiteId();
         new LEUsers().create();
 //        new LEVisitors().create();
