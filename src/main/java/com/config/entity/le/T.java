@@ -1,9 +1,11 @@
 package com.config.entity.le;
 
 import com.config.entity.le.lpadk.ConfigInitializer;
+import com.liveperson.AgentAPIFactory;
 import com.liveperson.automation.datamodel.liveengage.user.PermissionType;
 import com.liveperson.automation.datamodel.liveengage.user.User;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,26 +19,51 @@ public class T {
 
     public static final void main(String[] args) throws Exception {
 
-        initializer.createNewSite();
+        initializer.createNewSite(34236547, true);
 
-        initializer.updateConfigurationInSite(null, true);
+//        initializer.updateConfigurationInSite(null, true);
 
 //        iterate over jaxb
 
         initializer.createSkill("mobile");
-        initializer.updateConfigurationInSite(null, true);
+//        initializer.updateConfigurationInSite(null, true);
         initializer.createSkill("TechSupport");
-        initializer.updateConfigurationInSite(null, true);
+//        initializer.updateConfigurationInSite(null, true);
         initializer.createSkill("sales");
-        initializer.updateConfigurationInSite(null, true);
+//        initializer.updateConfigurationInSite(null, true);
 
-//        initializer.createAgent("asi", "asih@liveperson.com", ConfigInitializer.PermissionType.AGENT, new JSONArray(Arrays.asList("mobile", "techSupport")));
-
-//        initializer.createAgent("asi", "asih@liveperson.com", ConfigInitializer.PermissionType.AGENT, new JSONArray(Arrays.asList("mobile")));
-        initializer.createAgent("asi", "asih@liveperson.com");
+//        String id = initializer.getSkillId("mobile");
 
 
-        initializer.updateConfigurationInSite(null, true);
+
+
+//        ConfigInitializer.createUser(initializer.testAccount , "asih", "asih@liveperson.com" ,ConfigInitializer.PermissionType.AGENT , new JSONArray(Arrays.asList("mobile", "techSupport")));
+
+
+//        JSONObject jo = new JSONObject();
+//        jo.put("skills", "mobile");
+//        jo.put("skills", "techSupport");
+
+        JSONArray ja = new JSONArray();
+        ja.put("mobile");
+        ja.put("techSupport");
+
+        initializer.createAgent("asihhh@liveperson.com", "12345678", ja);
+
+//        initializer.createAgent("asih", "asih@liveperson.com", new JSONArray(Arrays.asList("mobile", "techSupport")));
+//        initializer.createAgent("asih", "asih@liveperson.com", ja);
+//        initializer.updateConfigurationInSite(null, true);
+//        initializer.createAgent("asihh", "asihh@liveperson.com", new JSONArray(Arrays.asList("mobile")));
+//        initializer.updateConfigurationInSite(null, true);
+
+
+
+//        initializer.createAgent("asihhh", "asihhh@liveperson.com");
+//        initializer.deleteSite();
+
+
+//        initializer.updateConfigurationInSite(null, true);
+
 
 //        initializer.deleteSite();
     }

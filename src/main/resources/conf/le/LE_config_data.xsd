@@ -10,11 +10,19 @@
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="siteId" type="xs:string" />
-                                        <xs:element name="siteUrl" type="xs:string" />
+                                        <xs:element name="creationType">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:enumeration value="CreateNew" />
+                                                    <xs:enumeration value="ConnectToExisting" />
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="modify_site">
+
+                            <!--<xs:element name="modify_site">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="siteId" type="xs:string" />
@@ -29,14 +37,24 @@
                                         <xs:element name="siteUrl" type="xs:string" />
                                     </xs:sequence>
                                 </xs:complexType>
-                            </xs:element>
+                            </xs:element> -->
                             <xs:element name="users_data" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="create_user">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="siteId" type="xs:string" />
+                                                    <xs:element name="userType">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:enumeration value="Administrator" />
+                                                                <xs:enumeration value="Agent" />
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="user" type="xs:string" />
+                                                    <xs:element name="password" type="xs:string" />
+                                                    <xs:element name="email" type="xs:string" />
                                                     <xs:element name="skill" maxOccurs="unbounded">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
@@ -60,12 +78,15 @@
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element name="siteId" type="xs:string" />
+                                                    <xs:element name="deleteSkillData" type="xs:string" />
+                                                    <xs:element name="deleteUserData" type="xs:string" />
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
+
                             <xs:element name="visitors_data" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:sequence>
@@ -120,6 +141,7 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
+
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
