@@ -55,23 +55,14 @@ public class ConfigInitializer {
 
     private Initializer initializer = new Initializer();
 
-
     private static final String ACCOUNT_CREATION_SERVICE_KEY = envProps.getProperty("account_creation_service");
-    private static final String APPSERVER = envProps.getProperty("app_server");
-    private static final String USERNAME = envProps.getProperty("siteUsername");
-    private static final String PASSWORD = envProps.getProperty("sitePassword");
+    private static final String APP_SERVER = envProps.getProperty("app_server");
     private static final String HC1 = envProps.getProperty("app_server_domain");
-    private static final String EMAIL = envProps.getProperty("email");
-    private static final String APPSERVER_DOMAIN = envProps.getProperty("app_server_domain");
+    private static final String APP_SERVER_DOMAIN = envProps.getProperty("app_server_domain");
     private static final String AppKey = envProps.getProperty("app_key");
     private static final String TokenKey = "rstgyeh4r5hg54y";
     private static final String AppSecret = envProps.getProperty("app_secret");
     private static final String TokenSecret = "gfdh54y45yh5uy";
-
-    private String skillResponse;
-    private JSONObject jsonObject;
-    private JSONArray jsonArray;
-    private JSONObject exprObject;
 
     private String cassandraHosts;
     private Set<Integer> privileges;
@@ -122,7 +113,7 @@ public class ConfigInitializer {
         void initSite() {
             E2EAccService = new CreateE2EAccountService();
             accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
-            appServer = new HttpHost(APPSERVER);
+            appServer = new HttpHost(APP_SERVER);
             testAccount = createAccount();
             acFeatures = setAcFeatures();
             acPackages = setAcPackages();
@@ -187,9 +178,9 @@ public class ConfigInitializer {
 
     public void updateConfigurationInSite() throws IOException {
         if (siteId != null) {
-            testAccount = E2EAccService.getSiteForTest(accService, appServer, APPSERVER_DOMAIN, envProps, testAccount, acFeatures, acPackages, String.valueOf(siteId));
+            testAccount = E2EAccService.getSiteForTest(accService, appServer, APP_SERVER_DOMAIN, envProps, testAccount, acFeatures, acPackages, String.valueOf(siteId));
         } else {
-            testAccount = E2EAccService.getSiteForTest(accService, appServer, APPSERVER_DOMAIN, envProps, testAccount, acFeatures, acPackages, "1");
+            testAccount = E2EAccService.getSiteForTest(accService, appServer, APP_SERVER_DOMAIN, envProps, testAccount, acFeatures, acPackages, "1");
         }
         if (isExtentExpiration) {
             E2EAccService.extendSiteExpiration(testAccount.getId(), AppKey, AppSecret);
@@ -219,32 +210,56 @@ public class ConfigInitializer {
     public void createAgent(String displayName, String loginName) {
         try {
             initializer.initUserSkill(UserManagementServiceName.OPERATORS);
-            HttpResponse operatorResponse = commonEntityOperations.createEntity("{displayName: " + displayName + " ,emailAddress: qa@qa.com ,enabled: true ,loginName: " + loginName + " ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678 ,permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ,skills: []}", Enums.BodyType.JSON);
+            HttpResponse operatorResponse = commonEntityOperations.createEntity("" +
+                    "{displayName: " + displayName + " ,emailAddress: qa@qa.com ,enabled: true ,loginName: " + loginName + " ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678 ,permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ,skills: []}", Enums.BodyType.JSON);
             initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
         } catch (Exception e) {
             logger.error("error create operator");
         }
     }
 
-    public void createAgent(String displayName, String loginName, JSONArray skills) {
+    public void createAgent(LeConfigData.Site.UsersData.CreateUser user, JSONArray skills) {
         try {
             initializer.initUserSkill(UserManagementServiceName.OPERATORS);
             HttpResponse operatorResponse = commonEntityOperations.createEntity(
-                    "{displayName: " + displayName + " ," +
-                            "emailAddress: " + loginName + " ," +
-                            "enabled: true ," +
-                            "loginName: " + loginName + " " +
-                            ",maxNumberOfChats: Unlimited ," +
-                            "nickName: automation ," +
-                            "password: 12345678 ," +
-                            "permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ," +
-                            "skills: " + skills + "}", Enums.BodyType.JSON);
+                    new StringBuilder().
+                            append("{displayName: ").append(user.getUser()).append(" ,").
+                            append("emailAddress: ").append(user.getEmail()).append(" ,").
+                            append("enabled: true ,").
+                            append("loginName: ").append(user.getEmail()).append(" ,").
+                            append(",maxNumberOfChats: Unlimited ,").
+                            append("nickName: automation ,").
+                            append("password: ").append(user.getPassword()).append(" ,").
+                            append("permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ,").
+                            append("skills: " + skills + "}").
+                            toString(), Enums.BodyType.JSON);
             initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
             updateConfigurationInSite();
         } catch (Exception e) {
             logger.error("error create operator");
         }
     }
+
+//    public void createAgent(String displayName, String loginName, JSONArray skills) {
+//        try {
+//            initializer.initUserSkill(UserManagementServiceName.OPERATORS);
+//            HttpResponse operatorResponse = commonEntityOperations.createEntity(
+//                    new StringBuilder().append(
+//                            "{displayName: " + displayName + " ," +
+//                                    "emailAddress: " + loginName + " ," +
+//                                    "enabled: true ," +
+//                                    "loginName: " + loginName + " " +
+//                                    ",maxNumberOfChats: Unlimited ," +
+//                                    "nickName: automation ," +
+//                                    "password: 12345678 ," +
+//                                    "permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ," +
+//                                    "skills: " + skills + "}", Enums.BodyType.JSON);
+//            initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
+//            updateConfigurationInSite();
+//        } catch (Exception e) {
+//            logger.error("error create operator");
+//        }
+//    }
 
     public static Boolean createUser(Account testAccount, String displayName, String loginName, PermissionType permissionType, JSONArray skills) {
         try {

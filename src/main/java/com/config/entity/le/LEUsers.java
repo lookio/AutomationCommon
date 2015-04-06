@@ -54,10 +54,10 @@ public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
                         continue;
                     }
                 }else{
-                    initializer.createAgent(createUsers.getUser(), createUsers.getEmail());
+//                    initializer.createAgent(createUsers);
                 }
             }else{
-                initializer.createAgent(createUsers.getUser(), createUsers.getEmail(), getSkills());
+                initializer.createAgent(createUsers, getSkills());
             }
         }
     }
