@@ -21,7 +21,9 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.xml.ws.http.HTTPException;
 import java.io.*;
+import java.net.HttpRetryException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +39,7 @@ public class ConfigInjector {
     private static final Logger logger = Logger.getLogger(ConfigInjector.class);
 
     private static final ConfigInjector INSTANCE = new ConfigInjector();
-    private CrossConfInitializer cross = new CrossConfInitializer();
+    private CrossConfInitializer crossConfInitializer;
 
     private ConfigInjector() {
 
@@ -80,6 +82,11 @@ public class ConfigInjector {
     Set<String> acFeatures;
     Set<String> acPackages;
 
+    private String skillResponse;
+    private JSONArray jsonArray;
+    private JSONObject jsonObject;
+    private JSONObject exprObject;
+
     public enum PermissionType {
 
         ADMINISTRATOR("0"),
@@ -111,18 +118,27 @@ public class ConfigInjector {
 
     public class Initializer {
 
-        void initSite() {
+        private void initSite() {
+            crossConfInitializer = new CrossConfInitializer();
             E2EAccService = new CreateE2EAccountService();
-            accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
-            appServer = new HttpHost(APP_SERVER);
+            try {
+                accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
+                appServer = new HttpHost(APP_SERVER);
+            }catch (HTTPException e){
+                GeneralUtils.handleError("Error creating services", e);
+            }
             testAccount = creator.createAccount();
-            acFeatures = cross.setAcFeatures();
-            acPackages = cross.setAcPackages();
+            setCrossConf();
         }
 
-        void initUserSkill(UserManagementServiceName userManagementServiceName) throws Exception {
-            cross.setCassandraHosts();
-            cross.setPrivilages();
+        private void setCrossConf(){
+            acFeatures = crossConfInitializer.setAcFeatures();
+            acPackages = crossConfInitializer.setAcPackages();
+        }
+
+        private void initUserSkill(UserManagementServiceName userManagementServiceName) throws Exception {
+            crossConfInitializer.setCassandraHosts();
+            crossConfInitializer.setPrivilages();
             LOGIN_KEY = UserManagementTestHelper.getLoginSessionKey(
                     testAccount.getUsers().getUsers().get(0).toString(),      // user id
                     testAccount.getUsers().getUsers().get(0).getName(),       // user name
@@ -139,18 +155,7 @@ public class ConfigInjector {
             );
         }
 
-//        private void setPrivilages() {
-//            privileges = new HashSet<Integer>();
-//            privileges.add(111);
-//            privileges.add(112);
-//            privileges.add(1501); // user management module privilege
-//        }
-//
-//        private void setCassandraHosts() {
-//            cassandraHosts = "dev-int-unix2,dev-int-unix3,dev-int-unix5";
-//        }
-
-        boolean handleResponse(HttpResponse response, String successMsg, String failMsg) throws IOException {
+        private boolean handleResponse(HttpResponse response, String successMsg, String failMsg) throws IOException {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
                 logger.info(successMsg);
                 creator.updateConfigurationInSite();
@@ -168,12 +173,7 @@ public class ConfigInjector {
             }
         }
 
-        private String skillResponse;
-        private JSONArray jsonArray;
-        private JSONObject jsonObject;
-        private JSONObject exprObject;
-
-        String getId(String objKey, String expKey, String confType) throws Exception {
+        private String getId(String objKey, String expKey, String confType) throws Exception {
             skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0, commonEntityOperations.getResourceUrl().indexOf('?')));
             if(expKey.equalsIgnoreCase("mobile")){
                 return skillResponse.substring(skillResponse.indexOf("id") + 5, skillResponse.indexOf("\",\"name\":\"mobile"));
@@ -187,40 +187,6 @@ public class ConfigInjector {
             }
             return null;
         }
-
-//        private Set<String> setAcFeatures() {
-//            acFeatures = new HashSet<String>();
-//            acFeatures.add("LEUI.ConnectionBar_Display");
-//            acFeatures.add("LEUI.WebAnalytics");
-//            acFeatures.add("Common.Billing_CPI2");
-//            acFeatures.add("Common.LiveEngage_2");
-//            acFeatures.add("Common.LiveEngage_2_Unified_window");
-//            return acFeatures;
-//        }
-//
-//        private Set<String> setAcFeatures(String[] features) {
-//            acFeatures = new HashSet<String>();
-//            for (String feature : features) {
-//                acFeatures.add(feature);
-//            }
-//            return acFeatures;
-//        }
-//
-//        private Set<String> setAcPackages() {
-//            acPackages = new HashSet<String>();
-//            acPackages.add("LE_Platform");
-//            acPackages.add("LP_Chat");
-//            acPackages.add("LIVE_ENGAGEv2");
-//            return acPackages;
-//        }
-//
-//        private Set<String> setAcPackages(String[] packages) {
-//            acPackages = new HashSet<String>();
-//            for (String acPackage : packages) {
-//                acPackages.add(acPackage);
-//            }
-//            return acPackages;
-//        }
 
     }
 

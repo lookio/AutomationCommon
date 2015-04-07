@@ -40,4 +40,3 @@ public class RequestBuilder {
     }
 
 }
-//"{displayName: " + user.getUser() + " ,emailAddress: qa@qa.com ,enabled: true ,loginName: " + user.getEmail() + " ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678 ,permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ,skills: []}"
