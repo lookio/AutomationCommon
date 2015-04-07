@@ -2,7 +2,7 @@ package com.config.entity.le;
 
 import com.config.base.BaseLEConfigItems;
 import com.config.data.le.LeConfigData.Site;
-import com.config.lpadk.ConfigInitializer;
+import com.config.lpadk.ConfigInjector;
 import com.config.service.ISite;
 
 /**
@@ -11,7 +11,7 @@ import com.config.service.ISite;
 public class LESites implements ISite{
 
     private Site site;
-    private ConfigInitializer initializer = ConfigInitializer.getInstance();
+    private ConfigInjector.Creator confCreator = ConfigInjector.getInstance().getCreator();
 
     public LESites(){
         site = getSite(Site.class);
@@ -27,7 +27,9 @@ public class LESites implements ISite{
     public void create() throws Exception {
         Site.CreateSite createSite = site.getCreateSite();
         if(createSite.getCreationType().equalsIgnoreCase("CreateNew")) {
-            initializer.createNewSite(new Integer(createSite.getSiteId()), createSite.isIsExtentExpiration());
+            confCreator.createNewSite(new Integer(createSite.getSiteId()),
+                    createSite.isIsExtentExpiration(),
+                            site.getUsersData().get(0).getCreateUser());
         }
         String siteId = site.getCreateSite().getSiteId();
         new LEUsers().create();

@@ -30,7 +30,7 @@ public class RequestBuilder {
                 append("maxNumberOfChats: Unlimited ,").
                 append("nickName: automation ,").
                 append("password: ").append(user.getPassword()).append(" ,").
-                append("permissionGroup: " + ConfigInitializer.PermissionType.AGENT.getPermissionType() + " ,");
+                append("permissionGroup: " + ConfigInjector.PermissionType.AGENT.getPermissionType() + " ,");
         if(skills != null) {
             baseRequest.append("skills: " + skills + "}");
         }else {

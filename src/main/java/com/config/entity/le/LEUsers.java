@@ -3,15 +3,13 @@ package com.config.entity.le;
 import com.config.base.BaseLEConfigItems;
 import com.config.data.le.LeConfigData;
 import com.config.data.le.LeConfigData.Site.UsersData;
-import com.config.lpadk.ConfigInitializer;
+import com.config.lpadk.ConfigInjector;
 import com.sun.istack.Nullable;
-import com.util.genutil.GeneralUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.junit.Assert;
 
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,7 +19,7 @@ public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
 
     private List<UsersData> usersData;
     private LeConfigData.Site.UsersData.CreateUser createUsers;
-    private ConfigInitializer initializer = ConfigInitializer.getInstance();
+    private ConfigInjector.Creator confCreator = ConfigInjector.getInstance().getCreator();
     private final String ADMIN = "Administrator";
 
     private static final Logger logger = Logger.getLogger(LEUsers.class);
@@ -47,18 +45,19 @@ public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
     @Nullable
     @Override
     public <E> void create(List<E> ConfigItem) {
+        int index = 0;
         for(LeConfigData.Site.UsersData user : usersData){
+            index++;
+            if(index == 1){ // admin user
+                continue;
+            }
             createUsers = user.getCreateUser();
             if(createUsers.getSkill().size() == 0){
-                if(createUsers.getUserType().equalsIgnoreCase(ADMIN)){
-                    initializer.createAdminUser(createUsers);
-                }else{
-                    Assert.assertTrue("Failed to create agent ",
-                            initializer.createAgent(createUsers, null));
-                }
+                Assert.assertTrue("Failed to create agent ",
+                        confCreator.createAgent(createUsers, null));
             }else{
                 Assert.assertTrue("Failed to create agent ",
-                        initializer.createAgent(createUsers, getSkills()));
+                        confCreator.createAgent(createUsers, getSkills()));
             }
         }
     }
@@ -66,10 +65,10 @@ public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
     private JSONArray getSkills(){
         JSONArray skills = new JSONArray();
         for(String skill : createUsers.getSkill()){
-            Assert.assertTrue("Failed to create skill ",
-                    initializer.createSkill(skill));
-            skills.put(skill);
+            Assert.assertTrue("Failed to create skill ", confCreator.createSkill(skill));
+            skills.put(confCreator.getSkillId(skill));
         }
+
         return skills;
     }
 
