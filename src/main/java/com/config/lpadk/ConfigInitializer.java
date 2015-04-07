@@ -2,7 +2,6 @@ package com.config.lpadk;
 
 
 import com.config.data.le.LeConfigData;
-import com.config.entity.le.LEUsers;
 import com.liveperson.automation.datamodel.liveengage.Account;
 import com.liveperson.automation.datamodel.liveengage.user.User;
 import com.liveperson.automation.e2e.e2e.topology.EnvironmentProperties;
@@ -11,6 +10,7 @@ import com.liveperson.automation.usermanagement.UserManagementTestHelper;
 import com.liveperson.automation.usermanagement.entityoperations.CommonEntityOperations;
 import com.liveperson.automation.usermanagement.enums.UserManagementServiceName;
 import com.liveperson.http.requests.Enums;
+import com.sun.istack.Nullable;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -18,7 +18,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.util.HashSet;
@@ -167,6 +166,40 @@ public class ConfigInitializer {
             }
         }
 
+        private Set<String> setAcFeatures() {
+            acFeatures = new HashSet<String>();
+            acFeatures.add("LEUI.ConnectionBar_Display");
+            acFeatures.add("LEUI.WebAnalytics");
+            acFeatures.add("Common.Billing_CPI2");
+            acFeatures.add("Common.LiveEngage_2");
+            acFeatures.add("Common.LiveEngage_2_Unified_window");
+            return acFeatures;
+        }
+
+        private Set<String> setAcFeatures(String[] features) {
+            acFeatures = new HashSet<String>();
+            for (String feature : features) {
+                acFeatures.add(feature);
+            }
+            return acFeatures;
+        }
+
+        private Set<String> setAcPackages() {
+            acPackages = new HashSet<String>();
+            acPackages.add("LE_Platform");
+            acPackages.add("LP_Chat");
+            acPackages.add("LIVE_ENGAGEv2");
+            return acPackages;
+        }
+
+        private Set<String> setAcPackages(String[] packages) {
+            acPackages = new HashSet<String>();
+            for (String acPackage : packages) {
+                acPackages.add(acPackage);
+            }
+            return acPackages;
+        }
+
     }
 
     public void createNewSite(Integer siteId, boolean isExtentExpiration) throws Exception {
@@ -194,12 +227,16 @@ public class ConfigInitializer {
         return testAccount;
     }
 
-    public void createAdminUser(LeConfigData.Site.UsersData.CreateUser leUser) throws IOException {
+    public void createAdminUser(LeConfigData.Site.UsersData.CreateUser leUser) {
         User user = new User();
         user.setName(leUser.getUser());
         user.setPassword(leUser.getPassword());
         user.setEmail(leUser.getEmail());
-        addUserToSite(user);
+        try {
+            addUserToSite(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addUserToSite(User user) throws IOException {
@@ -207,59 +244,40 @@ public class ConfigInitializer {
         updateConfigurationInSite();
     }
 
-    public void createAgent(String displayName, String loginName) {
-        try {
-            initializer.initUserSkill(UserManagementServiceName.OPERATORS);
-            HttpResponse operatorResponse = commonEntityOperations.createEntity("" +
-                    "{displayName: " + displayName + " ,emailAddress: qa@qa.com ,enabled: true ,loginName: " + loginName + " ,maxNumberOfChats: Unlimited ,nickName: automation ,password: 12345678 ,permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ,skills: []}", Enums.BodyType.JSON);
-            initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
-        } catch (Exception e) {
-            logger.error("error create operator");
-        }
-    }
-
-    public void createAgent(LeConfigData.Site.UsersData.CreateUser user, JSONArray skills) {
+    @Nullable
+    public Boolean createAgent(LeConfigData.Site.UsersData.CreateUser user, JSONArray skills) {
         try {
             initializer.initUserSkill(UserManagementServiceName.OPERATORS);
             HttpResponse operatorResponse = commonEntityOperations.createEntity(
-                    new StringBuilder().
-                            append("{displayName: ").append(user.getUser()).append(" ,").
-                            append("emailAddress: ").append(user.getEmail()).append(" ,").
-                            append("enabled: true ,").
-                            append("loginName: ").append(user.getEmail()).append(" ,").
-                            append(",maxNumberOfChats: Unlimited ,").
-                            append("nickName: automation ,").
-                            append("password: ").append(user.getPassword()).append(" ,").
-                            append("permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ,").
-                            append("skills: " + skills + "}").
-                            toString(), Enums.BodyType.JSON);
+                    RequestBuilder.getAgentRequest(user, skills), Enums.BodyType.JSON);
             initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
             updateConfigurationInSite();
+            return true;
         } catch (Exception e) {
             logger.error("error create operator");
+            return false;
         }
     }
 
-//    public void createAgent(String displayName, String loginName, JSONArray skills) {
-//        try {
-//            initializer.initUserSkill(UserManagementServiceName.OPERATORS);
-//            HttpResponse operatorResponse = commonEntityOperations.createEntity(
-//                    new StringBuilder().append(
-//                            "{displayName: " + displayName + " ," +
-//                                    "emailAddress: " + loginName + " ," +
-//                                    "enabled: true ," +
-//                                    "loginName: " + loginName + " " +
-//                                    ",maxNumberOfChats: Unlimited ," +
-//                                    "nickName: automation ," +
-//                                    "password: 12345678 ," +
-//                                    "permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ," +
-//                                    "skills: " + skills + "}", Enums.BodyType.JSON);
-//            initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
-//            updateConfigurationInSite();
-//        } catch (Exception e) {
-//            logger.error("error create operator");
-//        }
-//    }
+    public Boolean createSkill(String skillName) {
+        try {
+            initializer.initUserSkill(UserManagementServiceName.SKILLS);
+            HttpResponse skillResponse = commonEntityOperations.createEntity(
+                    "{name:" + skillName + ", " +
+                            "description:automation, " +
+                            "maxWaitTime:120}", Enums.BodyType.JSON);
+            initializer.handleResponse(skillResponse, "New skill created", "skill already exist");
+            updateConfigurationInSite();
+            return true;
+        } catch (Exception e) {
+            logger.error("error skill operator");
+            return false;
+        }
+    }
+
+    public Initializer getInitializer() {
+        return initializer;
+    }
 
     public static Boolean createUser(Account testAccount, String displayName, String loginName, PermissionType permissionType, JSONArray skills) {
         try {
@@ -301,58 +319,6 @@ public class ConfigInitializer {
             logger.error("error create operator");
             return null;
         }
-    }
-
-    public void createSkill(String skillName) {
-        try {
-            initializer.initUserSkill(UserManagementServiceName.SKILLS);
-            HttpResponse skillResponse = commonEntityOperations.createEntity(
-                    "{name:" + skillName + ", " +
-                            "description:automation, " +
-                            "maxWaitTime:120}", Enums.BodyType.JSON);
-            initializer.handleResponse(skillResponse, "New skill created", "skill already exist");
-            updateConfigurationInSite();
-        } catch (Exception e) {
-            logger.error("error skill operator");
-        }
-    }
-
-    private Set<String> setAcFeatures() {
-        acFeatures = new HashSet<String>();
-        acFeatures.add("LEUI.ConnectionBar_Display");
-        acFeatures.add("LEUI.WebAnalytics");
-        acFeatures.add("Common.Billing_CPI2");
-        acFeatures.add("Common.LiveEngage_2");
-        acFeatures.add("Common.LiveEngage_2_Unified_window");
-        return acFeatures;
-    }
-
-    private Set<String> setAcFeatures(String[] features) {
-        acFeatures = new HashSet<String>();
-        for (String feature : features) {
-            acFeatures.add(feature);
-        }
-        return acFeatures;
-    }
-
-    private Set<String> setAcPackages() {
-        acPackages = new HashSet<String>();
-        acPackages.add("LE_Platform");
-        acPackages.add("LP_Chat");
-        acPackages.add("LIVE_ENGAGEv2");
-        return acPackages;
-    }
-
-    private Set<String> setAcPackages(String[] packages) {
-        acPackages = new HashSet<String>();
-        for (String acPackage : packages) {
-            acPackages.add(acPackage);
-        }
-        return acPackages;
-    }
-
-    public Initializer getInitializer() {
-        return initializer;
     }
 
 }
@@ -481,3 +447,23 @@ public class ConfigInitializer {
 
 
 
+
+//    public void createAgent(String displayName, String loginName, JSONArray skills) {
+//        try {
+//            initializer.initUserSkill(UserManagementServiceName.OPERATORS);
+//            HttpResponse operatorResponse = commonEntityOperations.createEntity(
+//                            "{displayName: " + displayName + " ," +
+//                                    "emailAddress: " + loginName + " ," +
+//                                    "enabled: true ," +
+//                                    "loginName: " + loginName + " " +
+//                                    ",maxNumberOfChats: Unlimited ," +
+//                                    "nickName: automation ," +
+//                                    "password: 12345678 ," +
+//                                    "permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ," +
+//                                    "skills: " + skills + "}", Enums.BodyType.JSON);
+//            initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
+//            updateConfigurationInSite();
+//        } catch (Exception e) {
+//            logger.error("error create operator");
+//        }
+//    }
