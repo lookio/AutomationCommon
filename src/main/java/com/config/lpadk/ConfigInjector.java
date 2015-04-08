@@ -12,16 +12,11 @@ import com.liveperson.automation.usermanagement.enums.UserManagementServiceName;
 import com.liveperson.http.requests.Enums;
 import com.sun.istack.Nullable;
 import com.util.genutil.GeneralUtils;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import javax.xml.ws.http.HTTPException;
 import java.io.*;
 
 /**
@@ -70,10 +65,10 @@ public class ConfigInjector {
     private CommonEntityOperations commonEntityOperations; // ALL
     private CreateE2EAccountService E2EAccService = new CreateE2EAccountService();
     private CrossConfInitializer crossInitializer = new CrossConfInitializer();
-    private JsonRequestService jsonService = JsonRequestService.getInstance();
+    private JsonService jsonService = JsonService.getInstance();
 
-    private HttpHost accService;
-    private HttpHost appServer;
+    private static HttpHost accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
+    private static HttpHost appServer = new HttpHost(APP_SERVER);
     public Account testAccount;
 
     public enum PermissionType {
@@ -110,12 +105,6 @@ public class ConfigInjector {
     public class Initializer {
 
         private void initSite() {
-            try {
-                accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
-                appServer = new HttpHost(APP_SERVER);
-            }catch (HTTPException e){
-                GeneralUtils.handleError("Error creating services", e);
-            }
             crossInitializer.initCrossConf();
             creator.createAccount();
         }
@@ -136,25 +125,7 @@ public class ConfigInjector {
                     LOGIN_KEY
             );
         }
-
-        private boolean handleResponse(HttpResponse response, String successMsg, String failMsg) throws IOException {
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-                logger.info(successMsg);
-                creator.updateConfigurationInSite();
-                return true;
-            } else {
-                HttpEntity entity = response.getEntity();
-                String responseString = EntityUtils.toString(entity, "UTF-8");
-                logger.info(responseString);
-                if (responseString.contains("unique")) {
-                    logger.warn(failMsg);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-
+        
     }
 
     public class Creator {
@@ -216,7 +187,7 @@ public class ConfigInjector {
                 initializer.initUserSkill(UserManagementServiceName.OPERATORS);
                 HttpResponse operatorResponse = commonEntityOperations.createEntity(
                         jsonService.getAgentRequest(user, skills), Enums.BodyType.JSON);
-                initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
+                jsonService.handleResponse(operatorResponse, "New operator created", "operator already exist");
                 updateConfigurationInSite();
                 return true;
             } catch (Exception e) {
@@ -231,8 +202,8 @@ public class ConfigInjector {
                 HttpResponse skillResponse = commonEntityOperations.createEntity(
                         "{name:" + skillName + ", " +
                                 "description:automation, " +
-                                "maxWaitTime:120}", Enums.BodyType.JSON);
-                initializer.handleResponse(skillResponse, "New skill created", "skill already exist");
+                                        "maxWaitTime:120}", Enums.BodyType.JSON);
+                jsonService.handleResponse(skillResponse, "New skill created", "skill already exist");
                 updateConfigurationInSite();
                 return true;
             } catch (Exception e) {

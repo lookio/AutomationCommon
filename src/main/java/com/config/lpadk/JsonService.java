@@ -3,23 +3,32 @@ package com.config.lpadk;
 import com.config.data.le.LeConfigData;
 import com.liveperson.automation.usermanagement.entityoperations.CommonEntityOperations;
 import com.sun.istack.Nullable;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 /**
  * Created by asih on 06/04/2015.
  */
-public class JsonRequestService {
+public class JsonService {
 
-    private static final JsonRequestService INSTANCE = new JsonRequestService();
+    private static final JsonService INSTANCE = new JsonService();
+    private static final Logger logger = Logger.getLogger(JsonService.class);
+
 
     StringBuilder baseRequest;
 
-    private JsonRequestService() {
+    private JsonService() {
 
     }
 
-    public static JsonRequestService getInstance() {
+    public static JsonService getInstance() {
         return INSTANCE;
     }
 
@@ -82,6 +91,24 @@ public class JsonRequestService {
 
     private String getSkillResponse(CommonEntityOperations commonEntityOperations){
         return commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0, commonEntityOperations.getResourceUrl().indexOf('?')));
+    }
+
+    boolean handleResponse(HttpResponse response, String successMsg, String failMsg) throws IOException {
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
+            logger.info(successMsg);
+            ConfigInjector.getInstance().getCreator().updateConfigurationInSite();
+            return true;
+        } else {
+            HttpEntity entity = response.getEntity();
+            String responseString = EntityUtils.toString(entity, "UTF-8");
+            logger.info(responseString);
+            if (responseString.contains("unique")) {
+                logger.warn(failMsg);
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
 }
