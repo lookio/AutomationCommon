@@ -27,7 +27,7 @@ public class LESites implements ISite{
     public void create() throws Exception {
         Site.CreateSite createSite = site.getCreateSite();
         if(createSite.getCreationType().equalsIgnoreCase("CreateNew")) {
-            confCreator.createNewSite(new Integer(createSite.getSiteId()),
+            confCreator.createNewSite(null,
                     createSite.isIsExtentExpiration(),
                             site.getUsersData().get(0).getCreateUser());
         }

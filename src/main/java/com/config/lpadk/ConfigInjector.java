@@ -20,7 +20,6 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.junit.Assert;
 
 import javax.xml.ws.http.HTTPException;
 import java.io.*;
@@ -57,27 +56,25 @@ public class ConfigInjector {
     private Initializer initializer = new Initializer();
     private Creator creator = new Creator();
 
-    private static final String ACCOUNT_CREATION_SERVICE_KEY = envProps.getProperty("account_creation_service"); // only init
-    private static final String APP_SERVER = envProps.getProperty("app_server");  // only init
-    private static final String HC1 = envProps.getProperty("app_server_domain"); // only init
-    public static final String APP_SERVER_DOMAIN = envProps.getProperty("app_server_domain"); // only create
-    public static final String AppKey = envProps.getProperty("app_key"); // only create
-    public static final String TokenKey = "rstgyeh4r5hg54y"; // only create
-    public static final String AppSecret = envProps.getProperty("app_secret"); // only create
-    public static final String TokenSecret = "gfdh54y45yh5uy"; // only create
+    private static final String ACCOUNT_CREATION_SERVICE_KEY = envProps.getProperty("account_creation_service");
+    private static final String APP_SERVER = envProps.getProperty("app_server");
+    private static final String HC1 = envProps.getProperty("app_server_domain");
+    public static final String APP_SERVER_DOMAIN = envProps.getProperty("app_server_domain");
+    public static final String AppKey = envProps.getProperty("app_key");
+    public static final String TokenKey = "rstgyeh4r5hg54y";
+    public static final String AppSecret = envProps.getProperty("app_secret");
+    public static final String TokenSecret = "gfdh54y45yh5uy";
 
     private String LOGIN_KEY;
-    private CommonEntityOperations commonEntityOperations; // ALL
-    private CreateE2EAccountService E2EAccService = new CreateE2EAccountService(); // only create
-    private CrossConfInitializer crossInitializer = new CrossConfInitializer(); // ALL
-    private HttpHost accService; // ALL
-    private HttpHost appServer; // ALL
-    public Account testAccount; // ALL
 
-    private String skillResponse; // only init
-    private JSONArray jsonArray; // only init
-    private JSONObject jsonObject; // only init
-    private JSONObject exprObject; // only init
+    private CommonEntityOperations commonEntityOperations; // ALL
+    private CreateE2EAccountService E2EAccService = new CreateE2EAccountService();
+    private CrossConfInitializer crossInitializer = new CrossConfInitializer();
+    private JsonRequestService jsonService = JsonRequestService.getInstance();
+
+    private HttpHost accService;
+    private HttpHost appServer;
+    public Account testAccount;
 
     public enum PermissionType {
 
@@ -112,27 +109,18 @@ public class ConfigInjector {
 
     public class Initializer {
 
-        private Boolean initSite() {
+        private void initSite() {
             try {
                 accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
                 appServer = new HttpHost(APP_SERVER);
             }catch (HTTPException e){
                 GeneralUtils.handleError("Error creating services", e);
-                return false;
             }
-            testAccount = creator.createAccount();
-            setCrossConf();
-            return true;
-        }
-
-        private void setCrossConf(){
-            crossInitializer.initFeatures();
-            crossInitializer.initAcPackages();
+            crossInitializer.initCrossConf();
+            creator.createAccount();
         }
 
         private void initUserSkill(UserManagementServiceName userManagementServiceName) throws Exception {
-            crossInitializer.setCassandraHosts();
-            crossInitializer.setPrivilages();
             LOGIN_KEY = UserManagementTestHelper.getLoginSessionKey(
                     testAccount.getUsers().getUsers().get(0).toString(),      // user id
                     testAccount.getUsers().getUsers().get(0).getName(),       // user name
@@ -167,21 +155,6 @@ public class ConfigInjector {
             }
         }
 
-        private String getId(String objKey, String expKey, String confType) throws Exception {
-            skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0, commonEntityOperations.getResourceUrl().indexOf('?')));
-            if(expKey.equalsIgnoreCase("mobile")){
-                return skillResponse.substring(skillResponse.indexOf("id") + 5, skillResponse.indexOf("\",\"name\":\"mobile"));
-            }
-            jsonObject = new JSONObject(skillResponse);
-            jsonArray = jsonObject.getJSONArray(confType);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                exprObject = jsonArray.getJSONObject(i);
-                if (exprObject.get(objKey).equals(expKey))
-                    return exprObject.get("id").toString();
-            }
-            return null;
-        }
-
     }
 
     public class Creator {
@@ -190,10 +163,10 @@ public class ConfigInjector {
         private boolean isExtentExpiration;
 
         public void createNewSite(Integer siteId, boolean isExtentExpiration, LeConfigData.Site.UsersData.CreateUser leUser) throws Exception {
-            Assert.assertTrue("Failed to initialize site ", initializer.initSite());
-            createAdminUser(leUser);
             this.siteId = siteId;
             this.isExtentExpiration = isExtentExpiration;
+            initializer.initSite();
+            createAdminUser(leUser);
         }
 
         public void updateConfigurationInSite() throws IOException {
@@ -214,11 +187,10 @@ public class ConfigInjector {
             }
         }
 
-        public Account createAccount() {
+        public void createAccount() {
             testAccount = new Account();
             testAccount.setTokenKey(TokenKey);
             testAccount.setTokenSecret(TokenSecret);
-            return testAccount;
         }
 
         private void createAdminUser(LeConfigData.Site.UsersData.CreateUser leUser) {
@@ -228,10 +200,6 @@ public class ConfigInjector {
             user.setEmail(leUser.getEmail());
             try {
                 addUserToSite(user);
-            } catch (IOException e) {
-                GeneralUtils.handleError("Failed create admin user" , e);
-            }
-            try {
                 updateConfigurationInSite();
             } catch (IOException e) {
                 GeneralUtils.handleError("Failed to update configuration", e);
@@ -240,7 +208,6 @@ public class ConfigInjector {
 
         public void addUserToSite(User user) throws IOException {
             testAccount.getUsers().addUser(user);
-            updateConfigurationInSite();
         }
 
         @Nullable
@@ -248,7 +215,7 @@ public class ConfigInjector {
             try {
                 initializer.initUserSkill(UserManagementServiceName.OPERATORS);
                 HttpResponse operatorResponse = commonEntityOperations.createEntity(
-                        RequestBuilder.getAgentRequest(user, skills), Enums.BodyType.JSON);
+                        jsonService.getAgentRequest(user, skills), Enums.BodyType.JSON);
                 initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
                 updateConfigurationInSite();
                 return true;
@@ -280,7 +247,7 @@ public class ConfigInjector {
         public String getSkillId(String skillName){
             try {
                 initializer.initUserSkill(UserManagementServiceName.SKILLS);
-                return initializer.getId(objKey, skillName, confType);
+                return jsonService.getId(objKey, skillName, confType, commonEntityOperations);
             }
             catch(Exception e){
                 logger.error("error get  operator id");

@@ -1,5 +1,7 @@
 package com.config.lpadk;
 
+import com.util.genutil.GeneralUtils;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,18 +18,29 @@ public class CrossConfInitializer {
     CrossConfInitializer(){
     }
 
-    void setPrivilages() {
+    void initCrossConf(){
+        try {
+            initFeatures();
+            initAcPackages();
+            setPrivilages();
+            setCassandraHosts();
+        }catch (Exception e){
+            GeneralUtils.handleError("Failed to init cross configuration", e);
+        }
+    }
+
+    private void setPrivilages() throws Exception {
         privileges = new HashSet<Integer>();
         privileges.add(111);
         privileges.add(112);
         privileges.add(1501); // user management module privilege
     }
 
-    void setCassandraHosts() {
+    private void setCassandraHosts() throws Exception {
         cassandraHosts = "dev-int-unix2,dev-int-unix3,dev-int-unix5";
     }
 
-    Set<String> initFeatures() {
+    private Set<String> initFeatures() throws Exception {
         acFeatures = new HashSet<String>();
         acFeatures.add("LEUI.ConnectionBar_Display");
         acFeatures.add("LEUI.WebAnalytics");
@@ -37,7 +50,7 @@ public class CrossConfInitializer {
         return acFeatures;
     }
 
-    Set<String> initAcFeatures(String[] features) {
+    private Set<String> initAcFeatures(String[] features) throws Exception {
         acFeatures = new HashSet<String>();
         for (String feature : features) {
             acFeatures.add(feature);
@@ -45,7 +58,7 @@ public class CrossConfInitializer {
         return acFeatures;
     }
 
-    Set<String> initAcPackages() {
+    private Set<String> initAcPackages() throws Exception {
         acPackages = new HashSet<String>();
         acPackages.add("LE_Platform");
         acPackages.add("LP_Chat");
@@ -53,7 +66,7 @@ public class CrossConfInitializer {
         return acPackages;
     }
 
-    Set<String> initAcPackages(String[] packages) {
+    private Set<String> initAcPackages(String[] packages) throws Exception {
         acPackages = new HashSet<String>();
         for (String acPackage : packages) {
             acPackages.add(acPackage);
