@@ -62,6 +62,7 @@ public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
         }
     }
 
+    @Nullable
     private JSONArray getSkills(){
         JSONArray skills = new JSONArray();
         for(String skill : createUsers.getSkill()){

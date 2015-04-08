@@ -20,12 +20,10 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.Assert;
 
 import javax.xml.ws.http.HTTPException;
 import java.io.*;
-import java.net.HttpRetryException;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,7 +37,6 @@ public class ConfigInjector {
     private static final Logger logger = Logger.getLogger(ConfigInjector.class);
 
     private static final ConfigInjector INSTANCE = new ConfigInjector();
-    private CrossConfInitializer crossConfInitializer;
 
     private ConfigInjector() {
 
@@ -50,7 +47,7 @@ public class ConfigInjector {
     }
 
     private static final String CONFIG_FILE = "config.properties";
-    private static final String ENV_PROPS_LOCATION = "C:\\Users\\asih\\IdeaProjects\\AutomationCommon\\src\\main\\resources\\conf\\";
+    private static final String ENV_PROPS_LOCATION = "./src/main/resources/conf/";
     private static EnvironmentProperties envProps = null;
 
     static {
@@ -60,32 +57,27 @@ public class ConfigInjector {
     private Initializer initializer = new Initializer();
     private Creator creator = new Creator();
 
-    private static final String ACCOUNT_CREATION_SERVICE_KEY = envProps.getProperty("account_creation_service");
-    private static final String APP_SERVER = envProps.getProperty("app_server");
-    private static final String HC1 = envProps.getProperty("app_server_domain");
-    private static final String APP_SERVER_DOMAIN = envProps.getProperty("app_server_domain");
-    private static final String AppKey = envProps.getProperty("app_key");
-    private static final String TokenKey = "rstgyeh4r5hg54y";
-    private static final String AppSecret = envProps.getProperty("app_secret");
-    private static final String TokenSecret = "gfdh54y45yh5uy";
+    private static final String ACCOUNT_CREATION_SERVICE_KEY = envProps.getProperty("account_creation_service"); // only init
+    private static final String APP_SERVER = envProps.getProperty("app_server");  // only init
+    private static final String HC1 = envProps.getProperty("app_server_domain"); // only init
+    public static final String APP_SERVER_DOMAIN = envProps.getProperty("app_server_domain"); // only create
+    public static final String AppKey = envProps.getProperty("app_key"); // only create
+    public static final String TokenKey = "rstgyeh4r5hg54y"; // only create
+    public static final String AppSecret = envProps.getProperty("app_secret"); // only create
+    public static final String TokenSecret = "gfdh54y45yh5uy"; // only create
 
-    String cassandraHosts;
-    Set<Integer> privileges;
     private String LOGIN_KEY;
-    private CommonEntityOperations commonEntityOperations;
+    private CommonEntityOperations commonEntityOperations; // ALL
+    private CreateE2EAccountService E2EAccService = new CreateE2EAccountService(); // only create
+    private CrossConfInitializer crossInitializer = new CrossConfInitializer(); // ALL
+    private HttpHost accService; // ALL
+    private HttpHost appServer; // ALL
+    public Account testAccount; // ALL
 
-    private CreateE2EAccountService E2EAccService;
-    private HttpHost accService;
-    private HttpHost appServer;
-    public Account testAccount;
-    private User user;
-    Set<String> acFeatures;
-    Set<String> acPackages;
-
-    private String skillResponse;
-    private JSONArray jsonArray;
-    private JSONObject jsonObject;
-    private JSONObject exprObject;
+    private String skillResponse; // only init
+    private JSONArray jsonArray; // only init
+    private JSONObject jsonObject; // only init
+    private JSONObject exprObject; // only init
 
     public enum PermissionType {
 
@@ -108,42 +100,44 @@ public class ConfigInjector {
     public static class PropInitializer {
 
         private static void initProps() {
+            String fileName = ENV_PROPS_LOCATION + CONFIG_FILE;
             try {
-                envProps = EnvironmentProperties.create(new FileInputStream(new File(ENV_PROPS_LOCATION + CONFIG_FILE)));
+                envProps = EnvironmentProperties.create(
+                        new FileInputStream(new File(fileName)));
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                GeneralUtils.handleError("Error parsing prop file " + fileName, e);
             }
         }
     }
 
     public class Initializer {
 
-        private void initSite() {
-            crossConfInitializer = new CrossConfInitializer();
-            E2EAccService = new CreateE2EAccountService();
+        private Boolean initSite() {
             try {
                 accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
                 appServer = new HttpHost(APP_SERVER);
             }catch (HTTPException e){
                 GeneralUtils.handleError("Error creating services", e);
+                return false;
             }
             testAccount = creator.createAccount();
             setCrossConf();
+            return true;
         }
 
         private void setCrossConf(){
-            acFeatures = crossConfInitializer.setAcFeatures();
-            acPackages = crossConfInitializer.setAcPackages();
+            crossInitializer.initFeatures();
+            crossInitializer.initAcPackages();
         }
 
         private void initUserSkill(UserManagementServiceName userManagementServiceName) throws Exception {
-            crossConfInitializer.setCassandraHosts();
-            crossConfInitializer.setPrivilages();
+            crossInitializer.setCassandraHosts();
+            crossInitializer.setPrivilages();
             LOGIN_KEY = UserManagementTestHelper.getLoginSessionKey(
                     testAccount.getUsers().getUsers().get(0).toString(),      // user id
                     testAccount.getUsers().getUsers().get(0).getName(),       // user name
                     testAccount.getId(),              // account id
-                    privileges, cassandraHosts);
+                    crossInitializer.getPrivileges(), crossInitializer.getCassandraHosts());
             commonEntityOperations = new CommonEntityOperations(
                     "https",
                     HC1,
@@ -196,21 +190,27 @@ public class ConfigInjector {
         private boolean isExtentExpiration;
 
         public void createNewSite(Integer siteId, boolean isExtentExpiration, LeConfigData.Site.UsersData.CreateUser leUser) throws Exception {
-            initializer.initSite();
+            Assert.assertTrue("Failed to initialize site ", initializer.initSite());
             createAdminUser(leUser);
             this.siteId = siteId;
             this.isExtentExpiration = isExtentExpiration;
-            updateConfigurationInSite();
         }
 
         public void updateConfigurationInSite() throws IOException {
-            if (siteId != null) {
-                testAccount = E2EAccService.getSiteForTest(accService, appServer, APP_SERVER_DOMAIN, envProps, testAccount, acFeatures, acPackages, String.valueOf(siteId));
-            } else {
-                testAccount = E2EAccService.getSiteForTest(accService, appServer, APP_SERVER_DOMAIN, envProps, testAccount, acFeatures, acPackages, "1");
-            }
+            testAccount = E2EAccService.getSiteForTest(
+                    accService, appServer, APP_SERVER_DOMAIN, envProps, testAccount,
+                            crossInitializer.getAcFeatures(), crossInitializer.getAcPackages(), getSiteIdByType());
             if (isExtentExpiration) {
                 E2EAccService.extendSiteExpiration(testAccount.getId(), AppKey, AppSecret);
+            }
+        }
+
+        private String getSiteIdByType(){
+            String id;
+            if (siteId != null) {
+                return String.valueOf(siteId);
+            } else{
+                return  "1";
             }
         }
 
@@ -230,6 +230,11 @@ public class ConfigInjector {
                 addUserToSite(user);
             } catch (IOException e) {
                 GeneralUtils.handleError("Failed create admin user" , e);
+            }
+            try {
+                updateConfigurationInSite();
+            } catch (IOException e) {
+                GeneralUtils.handleError("Failed to update configuration", e);
             }
         }
 
