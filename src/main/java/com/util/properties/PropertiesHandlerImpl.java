@@ -5,7 +5,7 @@ package com.util.properties;
  * Properties Handler Impl.
  * Implements property service.
  * Manages all property files parsing
- * Strongly immmutable object
+ * Strongly immutable object
  * Single tone object
  *
  *
@@ -32,13 +32,12 @@ public class PropertiesHandlerImpl implements PropertyHandlerService
 
 	private static final String encodingAction  = "UTF-8";
 
-	private static final String fileName  = "env.properties";
+	private static final String fileName  = "environment/env.properties";
 
 	/**
 	 *  Static factory method.
 	 *
 	 *            xml file pathname.
-	 * @throws Exception
 	 */
 
 	public static PropertiesHandlerImpl getInstance() {
@@ -61,12 +60,12 @@ public class PropertiesHandlerImpl implements PropertyHandlerService
 		File f = new File(propFilePath);
 		try (InputStream is = new FileInputStream(f);)
 		{
-			if(f == null)
-				parseToJar();
-			else
-			{
-				props.load(is);
-			}
+//			if(f == null)
+//				parseToJar();
+//			else
+//			{
+			props.load(is);
+//			}
 		} catch (Exception e) {
 			GeneralUtils.handleError("Problem with the property file", e);
 		}
@@ -75,24 +74,35 @@ public class PropertiesHandlerImpl implements PropertyHandlerService
 
 
 	@SuppressWarnings({"TryFinallyCanBeTryWithResources", "ConstantConditions"})
-	private void parseToJar() throws IOException{
+	public Properties parseFromJar(String fileName){
 		InputStream configStream = null;
 		BufferedReader configReader = null;
 		try{
 			configStream = getClass().getResourceAsStream(fileName);
 			configReader = new BufferedReader(new InputStreamReader(configStream, encodingAction));
 			props.load(configReader);
+			return props;
+		}catch (IOException ioe){
+			GeneralUtils.handleError("Error parsing property file", ioe);
 		}
 		finally{
-			configStream.close();
-			configReader.close();
+			try{
+				configStream.close();
+				configReader.close();
+			}catch (IOException ioe){
+				GeneralUtils.handleError("Error closing resources", ioe);
+			}
 		}
-		logger.debug("Parsed to jar finished successfully");
+		return props;
+	}
+
+	public InputStream parseStreamFromJar(String fileName) throws IOException{
+		return getClass().getResourceAsStream(fileName);
 	}
 
 	/**
-	 *  Get the proprty object.
-	 *  @return  Tthe proprty object
+	 *  Get the property object.
+	 *  @return  The property object
 	 *
 	 */
 

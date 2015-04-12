@@ -12,12 +12,15 @@ import com.liveperson.automation.usermanagement.enums.UserManagementServiceName;
 import com.liveperson.http.requests.Enums;
 import com.sun.istack.Nullable;
 import com.util.genutil.GeneralUtils;
+import com.util.properties.PropertiesHandlerImpl;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,16 +35,9 @@ public class ConfigInjector {
 
     private static final ConfigInjector INSTANCE = new ConfigInjector();
 
-    private ConfigInjector() {
-
-    }
-
-    public static ConfigInjector getInstance() {
-        return INSTANCE;
-    }
-
     private static final String CONFIG_FILE = "config.properties";
-    private static final String ENV_PROPS_LOCATION = "./src/main/resources/conf/";
+//        private static final String ENV_PROPS_LOCATION = "./src/main/resources/conf/lpadk/";
+    private static final String ENV_PROPS_LOCATION = "/conf/lpadk/";
     private static EnvironmentProperties envProps = null;
 
     static {
@@ -62,7 +58,7 @@ public class ConfigInjector {
 
     private String LOGIN_KEY;
 
-    private CommonEntityOperations commonEntityOperations; // ALL
+    private CommonEntityOperations commonEntityOperations;
     private CreateE2EAccountService E2EAccService = new CreateE2EAccountService();
     private CrossConfInitializer crossInitializer = new CrossConfInitializer();
     private JsonService jsonService = JsonService.getInstance();
@@ -70,6 +66,16 @@ public class ConfigInjector {
     private static HttpHost accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
     private static HttpHost appServer = new HttpHost(APP_SERVER);
     public Account testAccount;
+
+
+    private ConfigInjector() {
+
+    }
+
+    public static ConfigInjector getInstance() {
+        return INSTANCE;
+    }
+
 
     public enum PermissionType {
 
@@ -94,12 +100,15 @@ public class ConfigInjector {
         private static void initProps() {
             String fileName = ENV_PROPS_LOCATION + CONFIG_FILE;
             try {
+//                envProps = EnvironmentProperties.create(
+//                        new FileInputStream(new File(fileName)));
                 envProps = EnvironmentProperties.create(
-                        new FileInputStream(new File(fileName)));
-            } catch (FileNotFoundException e) {
+                        PropertiesHandlerImpl.getInstance().parseStreamFromJar(fileName));
+            } catch (IOException e) {
                 GeneralUtils.handleError("Error parsing prop file " + fileName, e);
             }
         }
+
     }
 
     public class Initializer {
@@ -125,7 +134,7 @@ public class ConfigInjector {
                     LOGIN_KEY
             );
         }
-        
+
     }
 
     public class Creator {
@@ -141,9 +150,10 @@ public class ConfigInjector {
         }
 
         public void updateConfigurationInSite() throws IOException {
+            String id = getSiteIdByType();
             testAccount = E2EAccService.getSiteForTest(
                     accService, appServer, APP_SERVER_DOMAIN, envProps, testAccount,
-                            crossInitializer.getAcFeatures(), crossInitializer.getAcPackages(), getSiteIdByType());
+                    crossInitializer.getAcFeatures(), crossInitializer.getAcPackages(), id);
             if (isExtentExpiration) {
                 E2EAccService.extendSiteExpiration(testAccount.getId(), AppKey, AppSecret);
             }
