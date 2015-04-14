@@ -12,7 +12,8 @@ public class T {
 
     public static final void main(String[] args) throws Exception {
 
-        ConfigItemsRouter.getInstance().routeAction(ConfigItemsRouter.ConfigType.LECreate, "C:\\Users\\asih\\IdeaProjects\\Sdk2WhiteBoxAndroid\\test\\src\\main\\resources\\first_test_demo\\");
+        ConfigItemsRouter.getInstance().routeAction(ConfigItemsRouter.ConfigType.LECreate,
+                "C:\\Users\\asih\\IdeaProjects\\Sdk2WhiteBoxAndroid2\\test\\src\\main\\resources\\first_test_demo\\");
 
 
     }

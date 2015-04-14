@@ -26,15 +26,21 @@ public class LESites implements ISite{
 
     public void create() throws Exception {
         Site.CreateSite createSite = site.getCreateSite();
-        if(createSite.getCreationType().equalsIgnoreCase("CreateNew")) {
-            confCreator.createNewSite(null,
+            confCreator.createNewSite(getSiteId(createSite),
                     createSite.isIsExtentExpiration(),
                             site.getUsersData().get(0).getCreateUser());
-        }
         String siteId = site.getCreateSite().getSiteId();
         new LEUsers().create();
 //        new LEVisitors().create();
 //        new LECampaigns().create();
+    }
+
+    private String getSiteId(Site.CreateSite createSite){
+        if(createSite.getCreationType().equalsIgnoreCase("CreateNew")) {
+            return createSite.getSiteId();
+        }else{
+            return null;
+        }
     }
 
     public void modify() {

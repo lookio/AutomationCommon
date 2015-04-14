@@ -34,8 +34,8 @@
     <orderEntry type="library" name="Maven: xalan:serializer:2.7.1" level="project" />
     <orderEntry type="library" name="Maven: xml-apis:xml-apis:1.4.01" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpmime:4.1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpmime:4.3.2" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.htmlunit:htmlunit-core-js:2.14" level="project" />
     <orderEntry type="library" name="Maven: xerces:xercesImpl:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.nekohtml:nekohtml:1.9.20" level="project" />
@@ -91,18 +91,18 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-client:1.16" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.16" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-json:1.17" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-client:1.9.1" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.9.1" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-json:1.9.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jettison:jettison:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.2" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.2" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-jaxrs:1.9.2" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-xc:1.9.2" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.3" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.3" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-jaxrs:1.8.3" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-xc:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.18" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson:ldapComm:3.0.1-101" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.bundles:ow2-bundles-externals-jsch:1.0.29" level="project" />
-    <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.49" level="project" />
+    <orderEntry type="library" name="Maven: com.jcraft:jsch:0.1.44" level="project" />
     <orderEntry type="library" name="Maven: commons-httpclient:commons-httpclient:3.1" level="project" />
     <orderEntry type="library" name="Maven: oauth.signpost:signpost-commonshttp4:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: oauth.signpost:signpost-core:1.2.1" level="project" />
@@ -112,7 +112,7 @@
     <orderEntry type="library" name="Maven: org.apache.ant:ant:1.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson:gateKeeper:2.0.21-141" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson:KeyRepository:2.0.0-118" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson:KeyRepository:2.0.0-111" level="project" />
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.0.3.RELEASE" level="project" />
@@ -120,16 +120,17 @@
     <orderEntry type="library" name="Maven: org.springframework.ldap:spring-ldap-core-tiger:1.3.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.3" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson:JerseyErrorHandling:2.0.1-112" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson:webComponent:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson:webComponent:2.0.1-115" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson:ServiceStatus:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson:SnmpMonitoring:2.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson:ServiceDirectory:2.0.0" level="project" />
-    <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.3" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.4" level="project" />
     <orderEntry type="library" name="Maven: jboss:jboss-j2se:200504122039" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.4" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.9.1" level="project" />
+    <orderEntry type="library" name="Maven: asm:asm:3.1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey.contribs.jersey-oauth:oauth-signature:1.16" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey.contribs.jersey-oauth:oauth-client:1.16" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson:RestApiCommon:1.0.2-6" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson:RestApiCommon:2.0.0.7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.3rdparty.j2ee:j2ee:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.api-ads:ads-lib:1.10.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject:guice:3.0" level="project" />
@@ -157,7 +158,7 @@
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml:3.9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml-schemas:3.9" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-admin-console:21.5.0.7" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-common:24.0.1.9" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-common:21.5.0.7" level="project" />
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.dot:dot-test-common:1.0.0.7" level="project" />
@@ -169,6 +170,7 @@
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate:3.2.7.ga" level="project" />
     <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache:1.2.3" level="project" />
+    <orderEntry type="library" name="Maven: asm:asm-attrs:1.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-visitor:21.5.0.7" level="project" />
     <orderEntry type="library" name="Maven: commons-jxpath:commons-jxpath:1.3" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.whale:whale-test-utils:1.0.46" level="project" />
@@ -176,7 +178,7 @@
     <orderEntry type="library" name="Maven: com.liveperson.schema:lp-schema-repo-zk-impl:5.0.0.41" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.schema:lp-schema-repo-api:5.0.0.41" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.zk:lp-zookeeper-main:1.0.0.5" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.zookeeper:zookeeper:3.3.3-cdh3u0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.zookeeper:zookeeper:3.3.3" level="project" />
     <orderEntry type="library" name="Maven: jline:jline:0.9.94" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.whale:whale-header:1.0.46" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.whale:whale-message-api:1.0.46" level="project" />
@@ -229,7 +231,7 @@
     <orderEntry type="library" name="Maven: com.esotericsoftware.kryo:kryo:2.17" level="project" />
     <orderEntry type="library" name="Maven: com.esotericsoftware.reflectasm:reflectasm:shaded:1.07" level="project" />
     <orderEntry type="library" name="Maven: com.esotericsoftware.minlog:minlog:1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.objenesis:objenesis:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.objenesis:objenesis:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.9" level="project" />
     <orderEntry type="library" name="Maven: storm:tools.cli:0.2.2" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.disruptor:disruptor:2.10.1" level="project" />
@@ -288,7 +290,7 @@
     <orderEntry type="library" name="Maven: com.liveperson.account-config:ac-common:1.2.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.lecommon:app-proxy-client:2.0.0.2" level="project" />
     <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.6.6" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson.security:esapi-service:1.0.0.6" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson.security:esapi-service:1.0.0.40" level="project" />
     <orderEntry type="library" name="Maven: org.owasp.esapi:esapi:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: xom:xom:1.1" level="project" />
     <orderEntry type="library" name="Maven: jaxen:jaxen:1.1-beta-8" level="project" />
@@ -303,7 +305,11 @@
     <orderEntry type="library" name="Maven: com.liveperson.account-config:ac-client:1.2.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson:cbe-core-test:1.0.0.10" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.account-config:ac-db-access:1.2.1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.4.0.GA" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:4.1.4.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.1.0.GA" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.1_spec:1.0.0.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate.common:hibernate-commons-annotations:4.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.lecommon:DBAccessUtil-core:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.3rdparty.oracle:runtime12:10.2.0.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.derby:derby:10.9.1.0" level="project" />
@@ -362,10 +368,11 @@
     <orderEntry type="library" name="Maven: com.sun.grizzly:grizzly-rcm:1.9.18-i" level="project" />
     <orderEntry type="library" name="Maven: com.sun.grizzly:grizzly-portunif:1.9.18-i" level="project" />
     <orderEntry type="library" name="Maven: com.sun.grizzly:grizzly-http-servlet:1.9.18-i" level="project" />
-    <orderEntry type="library" name="Maven: com.thoughtworks.xstream:xstream:1.3.1" level="project" />
+    <orderEntry type="library" name="Maven: com.thoughtworks.xstream:xstream:1.4.2" level="project" />
     <orderEntry type="library" name="Maven: xpp3:xpp3_min:1.1.4c" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.svenson:svenson:1.3.8" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.le-platform:LiveEngageAuto:2.0.0.1" level="project" />
+    <orderEntry type="library" name="Maven: xmlpull:xmlpull:1.1.3.1" level="project" />
     <orderEntry type="library" name="Maven: com.jamesmurty.utils:java-xmlbuilder:0.4" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.account-config:ac-engagementwindow-client:1.1.0.10" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.account-config:ac-engagementwindow-api:1.1.0.10" level="project" />
@@ -379,21 +386,18 @@
     <orderEntry type="library" name="Maven: com.liveperson.account-config:ac-utils:1.0.0.8" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.lecommon:app-proxy:1.0.6" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.provisioning:features:2.0.0.1" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson:AppServerAuto:24.0.1.9" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-collaboration-api:24.0.1.9" level="project" />
-    <orderEntry type="library" name="Maven: org.mockito:mockito-core:1.9.5" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson.live-engage-fe:FramworkAuto:3.7.3.28" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.lechat:LPChatAuto:4.2.1.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.appengine:appengine-api-stubs:1.5.4" level="project" />
     <orderEntry type="library" name="Maven: net.sf.json-lib:json-lib-ext-spring:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:2.5.4" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.ldap:spring-ldap:all:1.3.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.ldap:spring-ldap-core:1.3.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.jersey.oauth:oauth-client:1.1.1-ea" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.jersey.oauth:oauth-signature:1.1.1-ea" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:2.5.4" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:2.5.4" level="project" />
     <orderEntry type="library" name="Maven: burp.suite:burp:1.4.06" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.lechat:lechat-studio:war:3.5.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson:AppServerAuto:24.0.1.9" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-collaboration-api:24.0.1.9" level="project" />
+    <orderEntry type="library" name="Maven: org.mockito:mockito-core:1.9.5" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-admin-console-api:24.0.1.9" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-data-platform:1.0.8" level="project" />
     <orderEntry type="library" name="Maven: org.apache.hbase:hbase:0.90.1-cdh3u0" level="project" />

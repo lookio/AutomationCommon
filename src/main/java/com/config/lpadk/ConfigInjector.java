@@ -139,10 +139,10 @@ public class ConfigInjector {
 
     public class Creator {
 
-        private Integer siteId;
+        private String siteId;
         private boolean isExtentExpiration;
 
-        public void createNewSite(Integer siteId, boolean isExtentExpiration, LeConfigData.Site.UsersData.CreateUser leUser) throws Exception {
+        public void createNewSite(String siteId, boolean isExtentExpiration, LeConfigData.Site.UsersData.CreateUser leUser) throws Exception {
             this.siteId = siteId;
             this.isExtentExpiration = isExtentExpiration;
             initializer.initSite();
@@ -162,9 +162,9 @@ public class ConfigInjector {
         private String getSiteIdByType(){
             String id;
             if (siteId != null) {
-                return String.valueOf(siteId);
+                return siteId;
             } else{
-                return  "1";
+                return "1";
             }
         }
 
