@@ -30,7 +30,8 @@ public abstract class AppiumBasePage extends BasePage {
             String driverPageSource = service.getPageSource(waitForPageContextTimeOut);
             String dynamicIdentifier = this.getPageUniqueIdentifier();
             if(driverPageSource.contains(dynamicIdentifier)) {
-                logger.info("The expected message is contained in page source, you are in the correct location");
+                logger.info("The expected message is contained in page source of page " + className +
+                        ", you are in the correct location");
                 logger.info("You expected message msg : \"" + dynamicIdentifier + "\" You contained in : \"" + driverPageSource + "\"");
                 return true;
             } else {
