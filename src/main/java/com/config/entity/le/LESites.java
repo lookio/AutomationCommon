@@ -57,6 +57,9 @@ public class LESites implements ISite{
         new LECampaigns().delete();
     }
 
-
+    @Override
+    public boolean isAllreadyContains() {
+        return false;
+    }
 
 }

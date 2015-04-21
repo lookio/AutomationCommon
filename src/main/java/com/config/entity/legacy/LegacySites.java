@@ -47,4 +47,9 @@ public class LegacySites implements ISite {
         new LegacyRules().delete();
     }
 
+    @Override
+    public boolean isAllreadyContains() {
+        return false;
+    }
+
 }

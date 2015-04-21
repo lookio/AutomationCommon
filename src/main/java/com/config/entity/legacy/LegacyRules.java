@@ -54,5 +54,10 @@ public class LegacyRules extends BaseLegacyConfigItems<LegacyRules, RulesData> {
         }
     }
 
+    @Override
+    public boolean isAllreadyContains() {
+        return false;
+    }
+
 
 }

@@ -53,6 +53,11 @@ public class LEVisitors extends BaseLEConfigItems<LEVisitors,VisitorsData> {
         }
     }
 
+    @Override
+    public boolean isAllreadyContains() {
+        return false;
+    }
+
 
 
 }

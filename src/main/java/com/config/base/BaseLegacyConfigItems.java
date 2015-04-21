@@ -46,5 +46,6 @@ public abstract class BaseLegacyConfigItems<T,E> implements Configurable<BaseLEC
 
     public abstract <E> void delete(List<E> ConfigItem);
 
+    public abstract boolean isAllreadyContains();
 
 }

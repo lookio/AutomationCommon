@@ -54,5 +54,10 @@ public class LegacyVisitors extends BaseLegacyConfigItems<LegacyVisitors, Visito
         }
     }
 
+    @Override
+    public boolean isAllreadyContains() {
+        return false;
+    }
+
 
 }

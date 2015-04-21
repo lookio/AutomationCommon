@@ -6,4 +6,7 @@ package com.config.service;
 public interface ISite {
 
      <T> T getSite(Class<T> site);
+
+     abstract boolean isAllreadyContains();
+
 }

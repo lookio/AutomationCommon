@@ -91,5 +91,10 @@ public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
         }
     }
 
+    @Override
+    public boolean isAllreadyContains() {
+        return false;
+    }
+
 
 }

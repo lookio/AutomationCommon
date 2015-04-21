@@ -59,4 +59,9 @@ public class LegacyUsers extends BaseLegacyConfigItems<LegacyUsers, UsersData> {
 //            deleteUsers.getSkill();
         }
     }
+
+    @Override
+    public boolean isAllreadyContains() {
+        return false;
+    }
 }

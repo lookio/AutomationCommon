@@ -52,6 +52,10 @@ public class LECampaigns extends BaseLEConfigItems<LECampaigns, CampaignData> {
         }
     }
 
+    @Override
+    public boolean isAllreadyContains() {
+        return false;
+    }
 
 
 }

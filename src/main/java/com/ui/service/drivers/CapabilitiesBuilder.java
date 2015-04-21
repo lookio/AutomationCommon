@@ -60,7 +60,7 @@ public class CapabilitiesBuilder {
     private static class Constants{
 
         private static final String CAPS_PROPERTY_FILE_PATH = "capabilities.properties";
-        private static final String APPIUM_DRIVER_PROPERTY_FILE_PATH = "appium_driver.properties";
+        private static final String APPIUM_DRIVER_PROPERTY_FILE_PATH = "native_app.properties";
 
         private static final String DESIRED_CAP_APP_KEY = "app";
         private static final String APPIUM_DRIVER_PROP_APP_DIR_KEY = "appDir";

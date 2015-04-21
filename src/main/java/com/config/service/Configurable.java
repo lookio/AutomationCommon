@@ -9,11 +9,15 @@ import java.util.List;
 @SuppressWarnings({"TypeParameterHidesVisibleType"})
 public interface Configurable<T> {
 
+     public final static String STATE_FILE = "/conf/state/config_state.xml";
+
      abstract <E> void create(List<E> ConfigItem);
 
      abstract <E> void modify(List<E> ConfigItem);
 
      abstract <E> void delete(List<E> ConfigItem);
+
+     abstract boolean isAllreadyContains();
 
 
 }

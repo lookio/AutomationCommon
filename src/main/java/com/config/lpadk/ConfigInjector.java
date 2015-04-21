@@ -236,6 +236,17 @@ public class ConfigInjector {
             }
         }
 
+        public String getAgentId(String skillName){
+            try {
+                initializer.initUserSkill(UserManagementServiceName.OPERATORS);
+                return jsonService.getId(objKey, skillName, confType, commonEntityOperations);
+            }
+            catch(Exception e){
+                logger.error("error get  operator id");
+                return null;
+            }
+        }
+
     }
 
     public Creator getCreator() {
