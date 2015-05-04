@@ -24,7 +24,7 @@ import java.util.List;
 public class AgentService {
 
     public final static AgentService INSTANCE = new AgentService();
-    private String propsFileName = "AgentAvailabilityRates.properties";
+
     public String chatRequest;
     private int numOfAgents ; // will be redundant after
     private PreConfiguredSite siteEntity;
@@ -38,10 +38,10 @@ public class AgentService {
         return INSTANCE;
     }
 
-    public void setup(String propsFilePath,int numOfAgents, List<Rep> agents) {
+    public void setup(String testPath,int numOfAgents, List<Rep> agents) {
         this.numOfAgents = numOfAgents;
         this.agents = agents;
-        AgentInitializer.initTest(chatRequest, propsFilePath + propsFileName, numOfAgents, agents, siteEntity);
+        AgentInitializer.initTest(testPath, agents, siteEntity);
     }
 
     public void logInAndSetState(List<Rep> agents, List<AgentState> agentsState){

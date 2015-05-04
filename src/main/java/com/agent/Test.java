@@ -15,7 +15,7 @@ import static com.liveperson.AgentState.*;
  */
 public class Test {
 
-    protected static String propsFilePath = "./src/main/resources/agent/"; // get from test
+    protected static String propsFilePath = "./src/main/resources/agent/"; // get from test the test path
     private static int numOfAgents ;
     private static List<Rep> agents = new ArrayList<Rep>();
     private static List<Rep> repsState = new ArrayList<Rep>();
@@ -46,6 +46,5 @@ public class Test {
         agentStates.add(Online);
         agentStates.add(Online);
     }
-
 
 }

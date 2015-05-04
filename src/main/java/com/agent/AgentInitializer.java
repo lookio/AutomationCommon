@@ -1,5 +1,7 @@
 package com.agent;
 
+import com.config.base.ConfigItemsRouter;
+import com.config.data.le.LeConfigData;
 import com.liveperson.AgentAPIFactory;
 import com.liveperson.AgentState;
 import com.liveperson.Rep;
@@ -8,6 +10,8 @@ import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
 import com.util.properties.PropertiesHandlerImpl;
 import humanclick.logging.ContextLogger;
 import org.apache.log4j.Logger;
+import com.config.data.le.LeConfigData.Site.UsersData;
+import com.config.data.le.LeConfigData.Site.UsersData.CreateUser;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -28,25 +32,29 @@ public class AgentInitializer {
 
     private static Properties prop;
     private static final Logger logger = Logger.getLogger(AgentInitializer.class);
+    private String propsFileName = "agent.properties";
+    private static String confFileName = "Legacy_config_data.xml";
+    private static List<LeConfigData.Site.UsersData> usersData;
 
-    public static void initTest(String chatRequest, String propsFilePath, int numOfAgents, List<Rep> agents, PreConfiguredSite siteEntity) {
+    public static void initTest(String propsFilePath, List<Rep> agents, PreConfiguredSite siteEntity) {
         prop = PropertiesHandlerImpl.getInstance().parse(propsFilePath);
-        chatRequest = "<request><skill>" + prop.getProperty("skill.name")+"</skill><maxWaitTime>150</maxWaitTime></request>";
+        usersData = ConfigItemsRouter.getInstance().initService(confFileName, LeConfigData.class).getSite().getUsersData();
         try {
             siteEntity = new PreConfiguredSite(prop, (InetAddress.getLocalHost().getHostName()));
         } catch (UnknownHostException e) {
             logger.error("Unrecognized host");
         }
-        initReps(numOfAgents, agents, siteEntity);
+        initReps(agents, siteEntity);
     }
 
-    private static void initReps(int numOfAgents, List<Rep> agents, PreConfiguredSite siteEntity){
-        numOfAgents = Integer.parseInt(prop.getProperty("numOfAgents"));
+    private static void initReps(List<Rep> agents, PreConfiguredSite siteEntity){
         agents.clear();
-        for(int i=0 ; i < numOfAgents ; i++) { // take data from conf data file
+        CreateUser create;
+        for(UsersData userData : usersData) { // take data from conf data file
+            create = userData.getCreateUser();
             agents.add(AgentAPIFactory.createAgent(
                     siteEntity.getSiteId(), siteEntity.getAppKey(), siteEntity.getAppSecret(), siteEntity.getTokenKey(), siteEntity.getTokenSecret(),
-                            prop.getProperty("user.email"), prop.getProperty("user.password"), prop.getProperty("skill.name"), siteEntity.getProtocol(), siteEntity.getDomain(), siteEntity.getSiteURL())
+                            create.getUser(), create.getPassword(), create.getSkill().get(0), siteEntity.getProtocol(), siteEntity.getDomain(), siteEntity.getSiteURL())
             );
         }
     }

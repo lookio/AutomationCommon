@@ -35,7 +35,7 @@ public class ConfigItemsRouter {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T initService(String doc, Class<T> confClass){
+    public <T> T initService(String doc, Class<T> confClass){
         return (T)JaxbHandler.unmarshal(doc, confClass);
     }
 
