@@ -33,11 +33,7 @@ public class JsonService {
     }
 
     String getAgentRequest(LeConfigData.Site.UsersData.CreateUser user, JSONArray skills){
-        if(skills != null){
             return getRequest(user, skills);
-        }else{
-            return getRequest(user, null);
-        }
     }
 
     @Nullable
@@ -50,7 +46,7 @@ public class JsonService {
                 append("maxNumberOfChats: Unlimited ,").
                 append("nickName: automation ,").
                 append("password: ").append(user.getPassword()).append(" ,").
-                append("permissionGroup: " + ConfigInjector.PermissionType.AGENT.getPermissionType() + " ,");
+                append("permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ,");
         if(skills != null) {
             baseRequest.append("skills: " + skills + "}");
         }else {

@@ -19,8 +19,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +34,7 @@ public class ConfigInjector {
     private static final ConfigInjector INSTANCE = new ConfigInjector();
 
     private static final String CONFIG_FILE = "config.properties";
-//        private static final String ENV_PROPS_LOCATION = "./src/main/resources/conf/lpadk/";
+    //        private static final String ENV_PROPS_LOCATION = "./src/main/resources/conf/lpadk/";
     private static final String ENV_PROPS_LOCATION = "/conf/lpadk/";
     private static EnvironmentProperties envProps = null;
 
@@ -63,8 +61,8 @@ public class ConfigInjector {
     private CrossConfInitializer crossInitializer = new CrossConfInitializer();
     private JsonService jsonService = JsonService.getInstance();
 
-    private static HttpHost accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
-    private static HttpHost appServer = new HttpHost(APP_SERVER);
+    private HttpHost accService = new HttpHost(ACCOUNT_CREATION_SERVICE_KEY);
+    private HttpHost appServer = new HttpHost(APP_SERVER);
     public Account testAccount;
 
 
@@ -76,32 +74,11 @@ public class ConfigInjector {
         return INSTANCE;
     }
 
-
-    public enum PermissionType {
-
-        ADMINISTRATOR("0"),
-        AGENT("1"),
-        AGENT_MANAGER("2"),
-        CAMPAIGN_MANAGER("3");
-
-        private String permissionType;
-
-        PermissionType(String permissionType) {
-            this.permissionType = permissionType;
-        }
-
-        public String getPermissionType() {
-            return permissionType;
-        }
-    }
-
     public static class PropInitializer {
 
         private static void initProps() {
             String fileName = ENV_PROPS_LOCATION + CONFIG_FILE;
             try {
-//                envProps = EnvironmentProperties.create(
-//                        new FileInputStream(new File(fileName)));
                 envProps = EnvironmentProperties.create(
                         PropertiesHandlerImpl.getInstance().parseStreamFromJar(fileName));
             } catch (IOException e) {
@@ -152,18 +129,23 @@ public class ConfigInjector {
         public void updateConfigurationInSite() throws IOException {
             String id = getSiteIdByType();
             testAccount = E2EAccService.getSiteForTest(
-                    accService, appServer, APP_SERVER_DOMAIN, envProps, testAccount,
-                    crossInitializer.getAcFeatures(), crossInitializer.getAcPackages(), id);
+                    accService,
+                    appServer,
+                    APP_SERVER_DOMAIN,
+                    envProps,
+                    testAccount,
+                    crossInitializer.getAcFeatures(),
+                    crossInitializer.getAcPackages(), id);
             if (isExtentExpiration) {
                 E2EAccService.extendSiteExpiration(testAccount.getId(), AppKey, AppSecret);
             }
         }
 
-        private String getSiteIdByType(){
+        private String getSiteIdByType() {
             String id;
             if (siteId != null) {
                 return siteId;
-            } else{
+            } else {
                 return "1";
             }
         }
@@ -212,7 +194,7 @@ public class ConfigInjector {
                 HttpResponse skillResponse = commonEntityOperations.createEntity(
                         "{name:" + skillName + ", " +
                                 "description:automation, " +
-                                        "maxWaitTime:120}", Enums.BodyType.JSON);
+                                "maxWaitTime:120}", Enums.BodyType.JSON);
                 jsonService.handleResponse(skillResponse, "New skill created", "skill already exist");
                 updateConfigurationInSite();
                 return true;
@@ -225,23 +207,21 @@ public class ConfigInjector {
         private final String objKey = "name";
         private final String confType = "Skill";
 
-        public String getSkillId(String skillName){
+        public String getSkillId(String skillName) {
             try {
                 initializer.initUserSkill(UserManagementServiceName.SKILLS);
                 return jsonService.getId(objKey, skillName, confType, commonEntityOperations);
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 logger.error("error get  operator id");
                 return null;
             }
         }
 
-        public String getAgentId(String skillName){
+        public String getAgentId(String skillName) {
             try {
                 initializer.initUserSkill(UserManagementServiceName.OPERATORS);
                 return jsonService.getId(objKey, skillName, confType, commonEntityOperations);
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 logger.error("error get  operator id");
                 return null;
             }
@@ -257,151 +237,4 @@ public class ConfigInjector {
         return initializer;
     }
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    private String getUserId(){
-//        try {
-//            initializer.initUserSkill(UserManagementServiceName.OPERATORS);
-//            String skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0,commonEntityOperations.getResourceUrl().indexOf('?')));
-//            return initializer.getId(UserManagementServiceName.OPERATORS, "loginName", "loginName", "operators");
-//        }
-//        catch(Exception e){
-//            logger.error("error get  operator id");
-//            return null;
-//        }
-//    }
-
-//    public String getSkillId(String skillName){
-//        try {
-//            initializer.initUserSkill(UserManagementServiceName.SKILLS);
-//            String skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0,commonEntityOperations.getResourceUrl().indexOf('?')));
-//            return initializer.getId(UserManagementServiceName.SKILLS, "name", skillName, "Skill");
-//        }
-//        catch(Exception e){
-//            logger.error("error get  operator id");
-//            return null;
-//        }
-//    }
-
-//    public void deleteSite(){
-//
-//        new OperatorOperations("https", APPSERVER, testAccount.getId(), "asihhh", PASSWORD).setMultipleSkillsToOperatorTransaction("asihhh", new String[] {"sales"});
-////        HibernateUtils.deleteSite(testAccount.getId//());
-//    }
-
-//            String getId(UserManagementServiceName userManagementServiceName, String objKey, String expKey, String confType) throws Exception {
-//            initUserSkill(userManagementServiceName);
-//            skillResponse = commonEntityOperations.getEntity(commonEntityOperations.getResourceUrl().substring(0, commonEntityOperations.getResourceUrl().indexOf('?')));
-//            jsonObject = new JSONObject(skillResponse);
-//            jsonArray = jsonObject.getJSONArray(confType);
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                exprObject = jsonArray.getJSONObject(i);
-//                if (exprObject.get(objKey).equals(expKey))
-//                    return exprObject.get("id").toString();
-//            }
-//            return null;
-//        }
-
-
-
-//    public void createAgent(String userNameProp, String passwordNameProp){
-////        AgentAPIFactory.createAgent(ENV_PROPS_LOCATION + CONFIG_FILE, userNameProp, passwordNameProp);
-//
-//
-//
-//
-//
-//
-//
-//        AgentAPIFactory.createAgent(testAccount.getId(), AppKey,  AppSecret,
-//                 TokenKey,  TokenSecret,  userNameProp,  passwordNameProp,
-//                 "6",  "https",  "qtvr-wap08.dev.lprnd.net",
-//                 null);
-//
-//
-//
-//
-//
-//
-//
-//    }
-
-
-
-
-//    public void createAgent(String displayName, String loginName, JSONArray skills) {
-//        try {
-//            initializer.initUserSkill(UserManagementServiceName.OPERATORS);
-//            HttpResponse operatorResponse = commonEntityOperations.createEntity(
-//                            "{displayName: " + displayName + " ," +
-//                                    "emailAddress: " + loginName + " ," +
-//                                    "enabled: true ," +
-//                                    "loginName: " + loginName + " " +
-//                                    ",maxNumberOfChats: Unlimited ," +
-//                                    "nickName: automation ," +
-//                                    "password: 12345678 ," +
-//                                    "permissionGroup: " + PermissionType.AGENT.getPermissionType() + " ," +
-//                                    "skills: " + skills + "}", Enums.BodyType.JSON);
-//            initializer.handleResponse(operatorResponse, "New operator created", "operator already exist");
-//            updateConfigurationInSite();
-//        } catch (Exception e) {
-//            logger.error("error create operator");
-//        }
-//    }

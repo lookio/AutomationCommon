@@ -1,0 +1,22 @@
+<config_state>
+  <sites>
+    <!--1 or more repetitions:-->
+    <site>
+      <!--<siteId>string</siteId>-->
+    </site>
+  </sites>
+  <Agents>
+    <!--1 or more repetitions:-->
+    <agent>
+      <!--<siteId>str/ing</siteId>-->
+      <!--<agentId>string</agentId>-->
+    </agent>
+  </Agents>
+  <Skills>
+    <!--1 or more repetitions:-->
+    <skill>
+      <!--<siteId>string</siteId>-->
+      <!--<skillId>string</skillId>-->
+    </skill>
+  </Skills>
+</config_state>

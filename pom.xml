@@ -4,6 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+
     <parent>
         <groupId>com.liveperson.maven</groupId>
         <artifactId>liveperson-parent</artifactId>
@@ -94,6 +95,14 @@
             <artifactId>RestApiCommon</artifactId>
             <version>2.0.0.7-20150330.061035-1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.liveperson.automation.lpadk</groupId>
+            <artifactId>lpadk-agent</artifactId>
+            <version>18.2.0.1</version>
+            <classifier>sources</classifier>
+        </dependency>
+
 
 
         <!--<exclusions>-->
