@@ -62,7 +62,6 @@ public class JsonService {
         JSONObject exprObject;
 
         skillResponse = getSkillResponse(commonEntityOperations);
-
         String result= handleFirstSkill(expKey, getSkillResponse(commonEntityOperations));
         if (result != null) {
             return result;

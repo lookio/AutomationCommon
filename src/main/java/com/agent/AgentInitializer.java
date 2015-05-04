@@ -7,6 +7,7 @@ import com.liveperson.impl.ChatAPIClientObject;;
 import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
 import com.util.properties.PropertiesHandlerImpl;
 import humanclick.logging.ContextLogger;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -26,8 +27,7 @@ import java.util.Properties;
 public class AgentInitializer {
 
     private static Properties prop;
-    private static final ContextLogger log = ContextLogger.getContextLogger(AgentInitializer.class);
-
+    private static final Logger logger = Logger.getLogger(AgentInitializer.class);
 
     public static void initTest(String chatRequest, String propsFilePath, int numOfAgents, List<Rep> agents, PreConfiguredSite siteEntity) {
         prop = PropertiesHandlerImpl.getInstance().parse(propsFilePath);
@@ -35,7 +35,7 @@ public class AgentInitializer {
         try {
             siteEntity = new PreConfiguredSite(prop, (InetAddress.getLocalHost().getHostName()));
         } catch (UnknownHostException e) {
-            log.error("Unrecognized host");
+            logger.error("Unrecognized host");
         }
         initReps(numOfAgents, agents, siteEntity);
     }

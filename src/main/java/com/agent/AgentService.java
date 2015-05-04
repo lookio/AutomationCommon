@@ -5,7 +5,9 @@ import com.liveperson.AgentState;
 import com.liveperson.Rep;
 import com.liveperson.impl.ChatAPIClientObject;
 import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
+import com.util.genutil.GeneralUtils;
 import humanclick.logging.ContextLogger;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -24,14 +26,11 @@ public class AgentService {
     public final static AgentService INSTANCE = new AgentService();
     private String propsFileName = "AgentAvailabilityRates.properties";
     public String chatRequest;
-    private static final ContextLogger log = ContextLogger.getContextLogger(AgentService.class);
-    private int numOfAgents ;
+    private int numOfAgents ; // will be redundant after
     private PreConfiguredSite siteEntity;
     private List<Rep> agents = new ArrayList<Rep>();
 
-    public static final int MINUTE = 60000;
-    private static TestHelper RequestHelper;
-
+    private static final Logger logger = Logger.getLogger(AgentService.class);
 
     private AgentService(){}
 
@@ -39,37 +38,53 @@ public class AgentService {
         return INSTANCE;
     }
 
-    public AgentService setup(String propsFilePath,int numOfAgents, List<Rep> agents) {
+    public void setup(String propsFilePath,int numOfAgents, List<Rep> agents) {
         this.numOfAgents = numOfAgents;
         this.agents = agents;
         AgentInitializer.initTest(chatRequest, propsFilePath + propsFileName, numOfAgents, agents, siteEntity);
-        if (propsFilePath == null) {
-            RequestHelper = new TestHelper(siteEntity);
-        }
-        return this;
     }
 
     public void logInAndSetState(List<Rep> agents, List<AgentState> agentsState){
         int index = 0;
         if(agents.size() != agentsState.size()){
-            // log
+            logger.warn(
+                    "State array must be equal in size. agent : " + agents.size() + " states : " + agentsState.size()
+            );
             return;
         }
         for(AgentState state : agentsState) {
-            AgentAndVisitorUtils.agentLogInAndSetState(agents.get(index), agentsState.get(index));
+            AgentAndVisitorUtils.agentLogInAndSetState(agents.get(index), state);
+            index++;
         }
     }
 
     public boolean isRingingCountAsExpected(Rep agent, int expectedCount){
-        if(agent.getRingingCount() == expectedCount){
-            return true;
+        if(agent != null) {
+            int count = 0;
+            try {
+                count = agent.getRingingCount();
+            } catch (Throwable t) {
+                GeneralUtils.handleError("Failed to get ringing count for rep", t);
+                return false;
+            }
+            if (count == expectedCount) {
+                logger.info("There are exactly " + expectedCount + " chats");
+                return true;
+            }
+            logger.warn(
+                    "Number of chats must be equal to expected. expected : " + expectedCount + " actual : " + agent.getRingingCount()
+            );
+            return false;
+        } else {
+            logger.error("Agent is null");
+            return false;
         }
-        return false;
+
     }
 
     protected boolean startChat(Rep agent) {
         AgentAndVisitorUtils.agentTakeChat(agent);
-        log.info("Agent taking chat (should be 200), result- " + agent.getLatestResponseCode());
+        logger.info("Agent taking chat (should be 200), result- " + agent.getLatestResponseCode());
         if ((agent.getLatestResponseCode()) != 200) {
             return false;
         }
@@ -82,21 +97,43 @@ public class AgentService {
     }
 
     public boolean verifyLatestChatLines(Rep agent, String visitorMsg){
-        if(agent.getLatestChatLine().equalsIgnoreCase(visitorMsg)){
+        String latestMsg = null;
+        try{
+            latestMsg = agent.getLatestChatLine();
+        } catch(Throwable t){
+            GeneralUtils.handleError("Failed to get latest msg for rep", t);
+            return false;
+        }
+        if(latestMsg.equalsIgnoreCase(visitorMsg)){
+            logger.info("Latest chat line is as expected : " + visitorMsg);
             return true;
         }else {
+            logger.info("Latest chat line is not as expected, expected : " + visitorMsg + " actual : " + latestMsg);
             return false;
         }
     }
 
     public boolean endChat(Rep rep) {
         rep.endChat();
-        log.info("Agent closing chat (should be 201), result- " + rep.getLatestResponseCode());
+        logger.info("Agent closing chat (should be 201), result- " + rep.getLatestResponseCode());
         if ((rep.getLatestResponseCode()) != 201) {
             return false;
         }
-
         return true;
+    }
+
+    public void tearDown(List<Rep> reps) {
+        logger.info("Rep logout");
+        for ( Rep r : reps ) {
+            if (r != null)  {
+                try {
+                    r.logout();
+                } catch (Exception e) {
+                    System.out.println("Rep Logout");
+                }
+            }
+        }
+        TestHelper.wait(1);
     }
 
 //
@@ -156,7 +193,7 @@ public class AgentService {
 
     /**
      * this func clear the que for incoming chat requests and end current chat of the given agent (if exist)
-     * @param rep
+     //     * @param rep
      */
 //    private static void clearQue(Rep rep){
 //        int takeChatResponseCode = -1;
@@ -215,22 +252,7 @@ public class AgentService {
 //    }
 
 
-    public void tearDown(List<Rep> reps) {
 
-//        propsFileFullName = "ACD" + File.separator;     //  zero the definition of this var to
-
-        log.info("Rep logout");
-        for ( Rep r : reps ) {
-            if (r != null)  {
-                try {
-                    r.logout();
-                } catch (Exception e) {
-                    System.out.println("Rep Logout");
-                }
-            }
-        }
-        TestHelper.wait(1);
-    }
 
 
 //    public void closeAllPreviousChatRequests() {
