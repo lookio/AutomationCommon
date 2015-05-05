@@ -5,6 +5,7 @@ import com.liveperson.AgentState;
 import com.liveperson.Rep;
 import com.liveperson.impl.ChatAPIClientObject;
 import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
+import com.ui.service.AppiumService;
 import com.util.genutil.GeneralUtils;
 import humanclick.logging.ContextLogger;
 import org.apache.log4j.Logger;
@@ -26,9 +27,9 @@ public class AgentService {
     public final static AgentService INSTANCE = new AgentService();
 
     public String chatRequest;
-    private int numOfAgents ; // will be redundant after
     private PreConfiguredSite siteEntity;
     private List<Rep> agents = new ArrayList<Rep>();
+    private final long waitForPageSourceInterval = 500;
 
     private static final Logger logger = Logger.getLogger(AgentService.class);
 
@@ -38,8 +39,7 @@ public class AgentService {
         return INSTANCE;
     }
 
-    public void setup(String testPath,int numOfAgents, List<Rep> agents) {
-        this.numOfAgents = numOfAgents;
+    public void setup(String testPath, List<Rep> agents) {
         this.agents = agents;
         AgentInitializer.initTest(testPath, agents, siteEntity);
     }
@@ -58,31 +58,43 @@ public class AgentService {
         }
     }
 
-    public boolean isRingingCountAsExpected(Rep agent, int expectedCount){
+    public boolean isRingingCountAsExpected(Rep agent, int expectedCount, long timeOutInMilisec) {
         if(agent != null) {
-            int count = 0;
             try {
-                count = agent.getRingingCount();
-            } catch (Throwable t) {
+                return waitForRingingCount(expectedCount, agent.getRingingCount(), timeOutInMilisec);
+            }
+            catch (Throwable t) {
                 GeneralUtils.handleError("Failed to get ringing count for rep", t);
                 return false;
             }
-            if (count == expectedCount) {
-                logger.info("There are exactly " + expectedCount + " chats");
-                return true;
-            }
-            logger.warn(
-                    "Number of chats must be equal to expected. expected : " + expectedCount + " actual : " + agent.getRingingCount()
-            );
-            return false;
         } else {
             logger.error("Agent is null");
             return false;
         }
-
     }
 
-    protected boolean startChat(Rep agent) {
+    private boolean waitForRingingCount(int expCount, int actualCount, long timeOutInMilisec){
+        AppiumService.getInstance().implicitWait(1500);
+        while(expCount != actualCount) {
+            try {
+                Thread.sleep(waitForPageSourceInterval);
+                timeOutInMilisec -= waitForPageSourceInterval;
+                if (timeOutInMilisec <= 0) {
+                    logger.warn(
+                            "Number of chats must be equal to expected. expected : " + expCount + " actual : " + actualCount
+                    );
+                    return false;
+                }
+            }
+            catch (InterruptedException e) {
+                GeneralUtils.handleError("Error in wait for time out", e);
+            }
+        }
+        logger.info("There are exactly " + expCount + " chats");
+        return true;
+    }
+
+    public boolean startChat(Rep agent) {
         AgentAndVisitorUtils.agentTakeChat(agent);
         logger.info("Agent taking chat (should be 200), result- " + agent.getLatestResponseCode());
         if ((agent.getLatestResponseCode()) != 200) {
@@ -128,7 +140,8 @@ public class AgentService {
             if (r != null)  {
                 try {
                     r.logout();
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     System.out.println("Rep Logout");
                 }
             }

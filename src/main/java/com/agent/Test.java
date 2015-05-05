@@ -16,7 +16,7 @@ import static com.liveperson.AgentState.*;
 public class Test {
 
     protected static String propsFilePath = "./src/main/resources/agent/"; // get from test the test path
-    private static int numOfAgents ;
+
     private static List<Rep> agents = new ArrayList<Rep>();
     private static List<Rep> repsState = new ArrayList<Rep>();
     private static List<AgentState> agentStates = new ArrayList<AgentState>();
@@ -25,7 +25,7 @@ public class Test {
     public static void main(String[] args){
         init();
         service.logInAndSetState(repsState, agentStates);
-        if(service.isRingingCountAsExpected(agents.get(0), 1)){
+        if(service.isRingingCountAsExpected(agents.get(0), 1, 5000)){
             service.startChat(agents.get(0));
             if(service.verifyLatestChatLines(agents.get(0), "aaaa")) {
                 service.addChatLines(agents.get(0), "bbbb");
@@ -36,7 +36,7 @@ public class Test {
     }
 
     private static void init(){
-        service.setup(propsFilePath, numOfAgents, agents);
+        service.setup(propsFilePath, agents);
         initLoginState();
     }
 

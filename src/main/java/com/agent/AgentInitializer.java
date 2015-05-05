@@ -7,6 +7,7 @@ import com.liveperson.AgentState;
 import com.liveperson.Rep;
 import com.liveperson.impl.ChatAPIClientObject;;
 import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
+import com.util.genutil.GeneralUtils;
 import com.util.properties.PropertiesHandlerImpl;
 import humanclick.logging.ContextLogger;
 import org.apache.log4j.Logger;
@@ -32,16 +33,21 @@ public class AgentInitializer {
 
     private static Properties prop;
     private static final Logger logger = Logger.getLogger(AgentInitializer.class);
-    private String propsFileName = "agent.properties";
-    private static String confFileName = "Legacy_config_data.xml";
+    private static String propsFileName = "agent.properties";
+    private static String confFileName = "LE_config_data.xml";
     private static List<LeConfigData.Site.UsersData> usersData;
 
-    public static void initTest(String propsFilePath, List<Rep> agents, PreConfiguredSite siteEntity) {
-        prop = PropertiesHandlerImpl.getInstance().parse(propsFilePath);
-        usersData = ConfigItemsRouter.getInstance().initService(confFileName, LeConfigData.class).getSite().getUsersData();
+    public static void initTest(String testPath, List<Rep> agents, PreConfiguredSite siteEntity) {
         try {
+            try {
+                initFiles(testPath);
+            }
+            catch (IOException ioe) {
+                GeneralUtils.handleError("Error pasing conf files", ioe);
+            }
             siteEntity = new PreConfiguredSite(prop, (InetAddress.getLocalHost().getHostName()));
-        } catch (UnknownHostException e) {
+        }
+        catch (UnknownHostException e) {
             logger.error("Unrecognized host");
         }
         initReps(agents, siteEntity);
@@ -59,7 +65,10 @@ public class AgentInitializer {
         }
     }
 
-
+    private static void initFiles(String testPath) throws IOException{
+        prop = PropertiesHandlerImpl.getInstance().parse(testPath + propsFileName);
+        usersData = ConfigItemsRouter.getInstance().initService(testPath + confFileName, LeConfigData.class).getSite().getUsersData();
+    }
 
 
 }
