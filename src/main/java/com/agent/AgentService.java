@@ -26,16 +26,16 @@ public class AgentService {
 
     public final static AgentService INSTANCE = new AgentService();
 
-    public String chatRequest;
     private PreConfiguredSite siteEntity;
     private List<Rep> agents = new ArrayList<Rep>();
-    private final long waitForPageSourceInterval = 500;
+    private final long waitInterval = 500;
 
     private static final Logger logger = Logger.getLogger(AgentService.class);
 
-    private AgentService(){}
+    private AgentService() {
+    }
 
-    public static AgentService getInstance(){
+    public static AgentService getInstance() {
         return INSTANCE;
     }
 
@@ -44,26 +44,25 @@ public class AgentService {
         AgentInitializer.initTest(testPath, agents, siteEntity);
     }
 
-    public void logInAndSetState(List<Rep> agents, List<AgentState> agentsState){
+    public void logInAndSetState(List<Rep> agents, List<AgentState> agentsState) {
         int index = 0;
-        if(agents.size() != agentsState.size()){
+        if (agents.size() != agentsState.size()) {
             logger.warn(
                     "State array must be equal in size. agent : " + agents.size() + " states : " + agentsState.size()
             );
             return;
         }
-        for(AgentState state : agentsState) {
+        for (AgentState state : agentsState) {
             AgentAndVisitorUtils.agentLogInAndSetState(agents.get(index), state);
             index++;
         }
     }
 
     public boolean isRingingCountAsExpected(Rep agent, int expectedCount, long timeOutInMilisec) {
-        if(agent != null) {
+        if (agent != null) {
             try {
                 return waitForRingingCount(expectedCount, agent.getRingingCount(), timeOutInMilisec);
-            }
-            catch (Throwable t) {
+            } catch (Throwable t) {
                 GeneralUtils.handleError("Failed to get ringing count for rep", t);
                 return false;
             }
@@ -73,20 +72,18 @@ public class AgentService {
         }
     }
 
-    private boolean waitForRingingCount(int expCount, int actualCount, long timeOutInMilisec){
-        AppiumService.getInstance().implicitWait(1500);
-        while(expCount != actualCount) {
+    private boolean waitForRingingCount(int expCount, int actualCount, long timeOutInMili) {
+        while (expCount != actualCount) {
             try {
-                Thread.sleep(waitForPageSourceInterval);
-                timeOutInMilisec -= waitForPageSourceInterval;
-                if (timeOutInMilisec <= 0) {
+                Thread.sleep(waitInterval);
+                timeOutInMili -= waitInterval;
+                if (timeOutInMili <= 0) {
                     logger.warn(
                             "Number of chats must be equal to expected. expected : " + expCount + " actual : " + actualCount
                     );
                     return false;
                 }
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 GeneralUtils.handleError("Error in wait for time out", e);
             }
         }
@@ -104,23 +101,23 @@ public class AgentService {
         return true;
     }
 
-    public void addChatLines(Rep agent, String msg){
+    public void addChatLines(Rep agent, String msg) {
         agent.addChatLines(msg);
     }
 
-    public boolean verifyLatestChatLines(Rep agent, String visitorMsg){
+    public boolean verifyLatestChatLines(Rep agent, String msg) {
         String latestMsg = null;
-        try{
+        try {
             latestMsg = agent.getLatestChatLine();
-        } catch(Throwable t){
+        } catch (Throwable t) {
             GeneralUtils.handleError("Failed to get latest msg for rep", t);
             return false;
         }
-        if(latestMsg.equalsIgnoreCase(visitorMsg)){
-            logger.info("Latest chat line is as expected : " + visitorMsg);
+        if (latestMsg.equalsIgnoreCase(msg)) {
+            logger.info("Latest chat line is as expected : " + msg);
             return true;
-        }else {
-            logger.info("Latest chat line is not as expected, expected : " + visitorMsg + " actual : " + latestMsg);
+        } else {
+            logger.info("Latest chat line is not as expected, expected : " + msg + " actual : " + latestMsg);
             return false;
         }
     }
@@ -136,8 +133,8 @@ public class AgentService {
 
     public void tearDown(List<Rep> reps) {
         logger.info("Rep logout");
-        for ( Rep r : reps ) {
-            if (r != null)  {
+        for (Rep r : reps) {
+            if (r != null) {
                 try {
                     r.logout();
                 }
@@ -148,6 +145,8 @@ public class AgentService {
         }
         TestHelper.wait(1);
     }
+
+}
 
 //
 //    protected boolean chatIfCallExists(Rep agent, String visitorMsg, String agentMsg){
@@ -293,4 +292,4 @@ public class AgentService {
 
 
 
-}
+//}

@@ -23,6 +23,7 @@ public class PreConfiguredSite {
     private String appSecret;
     private String tokenKey;
     private String tokenSecret;
+    private String host;
     private String server;
 
 
@@ -37,6 +38,7 @@ public class PreConfiguredSite {
         this.appSecret = props.getProperty("site.appSecret");
         this.tokenKey = props.getProperty("site.tokenKey");
         this.tokenSecret = props.getProperty("site.tokenSecret");
+        this.host = props.getProperty("host");
         this.server = serverName;
     }
 
@@ -82,6 +84,10 @@ public class PreConfiguredSite {
 
     public String getTokenSecret() {
         return tokenSecret;
+    }
+
+    public String getHost() {
+        return host;
     }
 
     public String getSiteId() {

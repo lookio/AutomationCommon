@@ -5,6 +5,7 @@ import com.config.data.le.LeConfigData;
 import com.liveperson.AgentAPIFactory;
 import com.liveperson.AgentState;
 import com.liveperson.Rep;
+import com.liveperson.http.requests.RequestHelper;
 import com.liveperson.impl.ChatAPIClientObject;;
 import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
 import com.util.genutil.GeneralUtils;
@@ -37,6 +38,10 @@ public class AgentInitializer {
     private static String confFileName = "LE_config_data.xml";
     private static List<LeConfigData.Site.UsersData> usersData;
 
+    private AgentInitializer(){
+
+    }
+
     public static void initTest(String testPath, List<Rep> agents, PreConfiguredSite siteEntity) {
         try {
             try {
@@ -56,16 +61,14 @@ public class AgentInitializer {
     private static void initReps(List<Rep> agents, PreConfiguredSite siteEntity){
         agents.clear();
         CreateUser create;
-        for(UsersData userData : usersData) { // take data from conf data file
+        RequestHelper helper = new RequestHelper(siteEntity.getAppKey());
+        for(UsersData userData : usersData) {
             create = userData.getCreateUser();
-            agents.add(AgentAPIFactory.createAgent(
-                    siteEntity.getSiteId(), siteEntity.getAppKey(), siteEntity.getAppSecret(), siteEntity.getTokenKey(), siteEntity.getTokenSecret(),
-                            create.getUser(), create.getPassword(), create.getSkill().get(0), siteEntity.getProtocol(), siteEntity.getDomain(), siteEntity.getSiteURL())
-            );
+            agents.add(new Rep(siteEntity.getSiteId(), create.getUser(), create.getPassword(), create.getSkill().get(0), siteEntity.getHost() , helper));
         }
     }
 
-    private static void initFiles(String testPath) throws IOException{
+    private static void initFiles(String testPath) throws IOException {
         prop = PropertiesHandlerImpl.getInstance().parse(testPath + propsFileName);
         usersData = ConfigItemsRouter.getInstance().initService(testPath + confFileName, LeConfigData.class).getSite().getUsersData();
     }
