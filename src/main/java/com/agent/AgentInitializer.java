@@ -2,24 +2,18 @@ package com.agent;
 
 import com.config.base.ConfigItemsRouter;
 import com.config.data.le.LeConfigData;
-import com.liveperson.AgentAPIFactory;
-import com.liveperson.AgentState;
 import com.liveperson.Rep;
 import com.liveperson.http.requests.RequestHelper;
-import com.liveperson.impl.ChatAPIClientObject;;
-import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
+;
 import com.util.genutil.GeneralUtils;
 import com.util.properties.PropertiesHandlerImpl;
-import humanclick.logging.ContextLogger;
 import org.apache.log4j.Logger;
 import com.config.data.le.LeConfigData.Site.UsersData;
 import com.config.data.le.LeConfigData.Site.UsersData.CreateUser;
-import org.junit.Assert;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -32,45 +26,57 @@ import java.util.Properties;
  */
 public class AgentInitializer {
 
-    private static Properties prop;
-    private static final Logger logger = Logger.getLogger(AgentInitializer.class);
-    private static String propsFileName = "agent.properties";
-    private static String confFileName = "LE_config_data.xml";
-    private static List<LeConfigData.Site.UsersData> usersData;
+    private Properties prop;
+    private final Logger logger = Logger.getLogger(AgentInitializer.class);
 
-    private AgentInitializer(){
+    private List<LeConfigData.Site.UsersData> usersData;
+    private RequestHelper helper;
+    private Constants constants = new Constants();
 
-    }
 
-    public static void initTest(String testPath, List<Rep> agents, PreConfiguredSite siteEntity) {
+    public void initAgentData(String testPath, List<Rep> agents) {
         try {
-            try {
-                initFiles(testPath);
-            }
-            catch (IOException ioe) {
-                GeneralUtils.handleError("Error pasing conf files", ioe);
-            }
-            siteEntity = new PreConfiguredSite(prop, (InetAddress.getLocalHost().getHostName()));
+            initFiles(testPath);
+            helper = new RequestHelper(prop.getProperty(constants.propsAppKeyKey));
+        } catch (IOException ioe) {
+            GeneralUtils.handleError("Error parsing conf files", ioe);
         }
-        catch (UnknownHostException e) {
-            logger.error("Unrecognized host");
-        }
-        initReps(agents, siteEntity);
+        initReps(agents);
     }
 
-    private static void initReps(List<Rep> agents, PreConfiguredSite siteEntity){
+    private void initReps(List<Rep> agents){
         agents.clear();
         CreateUser create;
-        RequestHelper helper = new RequestHelper(siteEntity.getAppKey());
         for(UsersData userData : usersData) {
             create = userData.getCreateUser();
-            agents.add(new Rep(siteEntity.getSiteId(), create.getUser(), create.getPassword(), create.getSkill().get(0), siteEntity.getHost() , helper));
+            agents.add(new Rep(
+                            prop.getProperty(constants.propsSiteIdKey),
+                            create.getUser(),
+                            create.getPassword(),
+                            create.getSkill().get(0),
+                            prop.getProperty(constants.propsHostKey) , helper)
+            );
         }
     }
 
-    private static void initFiles(String testPath) throws IOException {
-        prop = PropertiesHandlerImpl.getInstance().parse(testPath + propsFileName);
-        usersData = ConfigItemsRouter.getInstance().initService(testPath + confFileName, LeConfigData.class).getSite().getUsersData();
+    private void initFiles(String testPath) throws IOException {
+        prop = PropertiesHandlerImpl.getInstance().parse(testPath + constants.propsFileName);
+        usersData = ConfigItemsRouter.getInstance().initService(
+                testPath + constants.confFileName,
+                LeConfigData.class).
+                getSite().getUsersData(
+
+        );
+    }
+
+    private class Constants{
+
+        private final String propsFileName = "agent.properties";
+        private final String confFileName = "LE_config_data.xml";
+        private final String propsAppKeyKey = "site.appKey";
+        private final String propsSiteIdKey = "site.id";
+        private final String propsHostKey = "host";
+
     }
 
 
