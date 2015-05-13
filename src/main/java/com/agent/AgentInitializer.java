@@ -28,6 +28,10 @@ public class AgentInitializer {
     private Constants constants = new Constants();
 
 
+
+    private Rep mobileRep = null;
+
+
     public void initAgentData(String testPath, List<Rep> agents) {
         try {
             initFiles(testPath);
@@ -39,17 +43,23 @@ public class AgentInitializer {
     }
 
     private void initReps(List<Rep> agents){
-        agents.clear();
         CreateUser create;
+        String skill;
         for(UsersData userData : usersData) {
             create = userData.getCreateUser();
-            agents.add(new Rep(
-                     prop.getProperty(constants.propsSiteIdKey),
-                     create.getUser(),
-                     create.getPassword(),
-                     create.getSkill().get(0),
-                     prop.getProperty(constants.propsHostKey) , helper)
+            skill = create.getSkill().get(0);
+            Rep rep = new Rep(
+                    prop.getProperty(constants.propsSiteIdKey),
+                    create.getUser(),
+                    create.getPassword(),
+                    skill,
+                    prop.getProperty(constants.propsHostKey) ,
+                    helper
             );
+            agents.add(rep);
+            if(skill.equalsIgnoreCase(constants.mobileSkill)){
+                mobileRep = rep;
+            }
         }
     }
 
@@ -58,9 +68,11 @@ public class AgentInitializer {
         usersData = ConfigItemsRouter.getInstance().initService(
                 testPath + constants.confFileName,
                 LeConfigData.class).
-                getSite().getUsersData(
+                getSite().getUsersData();
+    }
 
-        );
+    public Rep getMobileRep() {
+        return mobileRep;
     }
 
     private class Constants{
@@ -70,6 +82,7 @@ public class AgentInitializer {
         private final String propsAppKeyKey = "site.appKey";
         private final String propsSiteIdKey = "site.id";
         private final String propsHostKey = "host";
+        private final String mobileSkill = "mobile";
 
     }
 

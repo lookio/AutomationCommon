@@ -9,14 +9,14 @@ import java.util.List;
 
 /**
  * Created by asih on 06/04/2015.
+ *
  */
 
-@SuppressWarnings("DefaultFileTemplate")
 public class AgentService {
 
-    public final static AgentService INSTANCE = new AgentService();
+    private final static AgentService INSTANCE = new AgentService();
     private static final Logger logger = Logger.getLogger(AgentService.class);
-
+    private AgentInitializer initializer = new AgentInitializer();
 
     private AgentService() {
     }
@@ -26,7 +26,11 @@ public class AgentService {
     }
 
     public final void setup(String testPath, List<Rep> agents) {
-        new AgentInitializer().initAgentData(testPath, agents);
+        initializer.initAgentData(testPath, agents);
+    }
+
+    public final Rep getFirstMobileAgent(){
+        return initializer.getMobileRep();
     }
 
     public final void logInAndSetState(List<Rep> agents, List<AgentState> agentsState) {
@@ -113,15 +117,19 @@ public class AgentService {
 
     public final void tearDown(List<Rep> reps) {
         logger.info("Rep logout");
-        for (Rep r : reps) {
-            if (r != null) {
-                try {
-                    r.logout();
-                }
-                catch (Exception e) {
-                    GeneralUtils.handleError("Rep Logout Error", e);
+        try {
+            for (Rep r : reps) {
+                if (r != null) {
+                    try {
+                        r.logout();
+                    } catch (Exception e) {
+                        GeneralUtils.handleError("Rep Logout Error", e);
+                    }
                 }
             }
+        }
+        finally{
+            reps.clear();
         }
     }
 
