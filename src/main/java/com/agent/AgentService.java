@@ -11,12 +11,12 @@ import java.util.List;
  * Created by asih on 06/04/2015.
  */
 
+@SuppressWarnings("DefaultFileTemplate")
 public class AgentService {
 
     public final static AgentService INSTANCE = new AgentService();
-    private final long waitInterval = 500;
-
     private static final Logger logger = Logger.getLogger(AgentService.class);
+
 
     private AgentService() {
     }
@@ -43,28 +43,30 @@ public class AgentService {
         }
     }
 
-    public final boolean isRingingCountAsExpected(Rep agent, int expectedCount, long timeOutInMilisec) {
+    public final boolean isRingingCountAsExpected(Rep agent, int expectedRingCount, long timeOutInMilisec) {
         if (agent != null) {
-            try {
-                return waitForRingingCount(expectedCount, agent.getRingingCount(), timeOutInMilisec);
-            } catch (Throwable t) {
-                GeneralUtils.handleError("Failed to get ringing count for rep", t);
-                return false;
-            }
+            return waitForRingingCount(
+                    expectedRingCount,
+                    agent.getRingingCount(),
+                    timeOutInMilisec
+            );
         } else {
             logger.error("Agent is null");
             return false;
         }
     }
 
-    private final boolean waitForRingingCount(int expCount, int actualCount, long timeOutInMili) {
-        while (expCount != actualCount) {
+    private boolean waitForRingingCount(int expectedRingCount, int actualCount, long timeOutInMil) {
+        while (expectedRingCount != actualCount) {
             try {
+                long waitInterval = 500;
                 Thread.sleep(waitInterval);
-                timeOutInMili -= waitInterval;
-                if (timeOutInMili <= 0) {
+                timeOutInMil -= waitInterval;
+                if (timeOutInMil <= 0) {
                     logger.warn(
-                            "Number of chats must be equal to expected. expected : " + expCount + " actual : " + actualCount
+                            "Time out finished, Number of chats must be equal to expected. expected : " +
+                                    expectedRingCount + " actual : " +
+                                    actualCount
                     );
                     return false;
                 }
@@ -72,17 +74,14 @@ public class AgentService {
                 GeneralUtils.handleError("Error in wait for time out", e);
             }
         }
-        logger.info("There are exactly " + expCount + " chats");
+        logger.info("There are exactly " + expectedRingCount + " chats");
         return true;
     }
 
     public final boolean startChat(Rep agent) {
         AgentAndVisitorUtils.agentTakeChat(agent);
         logger.info("Agent taking chat (should be 200), result- " + agent.getLatestResponseCode());
-        if ((agent.getLatestResponseCode()) != 200) {
-            return false;
-        }
-        return true;
+        return (agent.getLatestResponseCode()) == 200;
     }
 
     public final void addChatLines(Rep agent, String msg) {
@@ -90,7 +89,7 @@ public class AgentService {
     }
 
     public final boolean verifyLatestChatLines(Rep agent, String msg) {
-        String latestMsg = null;
+        String latestMsg;
         try {
             latestMsg = agent.getLatestChatLine();
         } catch (Throwable t) {
@@ -109,10 +108,7 @@ public class AgentService {
     public final boolean endChat(Rep rep) {
         rep.endChat();
         logger.info("Agent closing chat (should be 201), result- " + rep.getLatestResponseCode());
-        if ((rep.getLatestResponseCode()) != 201) {
-            return false;
-        }
-        return true;
+        return (rep.getLatestResponseCode()) == 201;
     }
 
     public final void tearDown(List<Rep> reps) {
@@ -123,14 +119,9 @@ public class AgentService {
                     r.logout();
                 }
                 catch (Exception e) {
-                    logger.error("Rep Logout");
+                    GeneralUtils.handleError("Rep Logout Error", e);
                 }
             }
-        }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            logger.error("Failed to wait 1 sec");
         }
     }
 

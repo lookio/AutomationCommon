@@ -4,10 +4,9 @@ import com.config.base.ConfigItemsRouter;
 import com.config.data.le.LeConfigData;
 import com.liveperson.Rep;
 import com.liveperson.http.requests.RequestHelper;
-;
+
 import com.util.genutil.GeneralUtils;
 import com.util.properties.PropertiesHandlerImpl;
-import org.apache.log4j.Logger;
 import com.config.data.le.LeConfigData.Site.UsersData;
 import com.config.data.le.LeConfigData.Site.UsersData.CreateUser;
 
@@ -23,7 +22,6 @@ import java.util.Properties;
 public class AgentInitializer {
 
     private Properties prop;
-    private final Logger logger = Logger.getLogger(AgentInitializer.class);
 
     private List<LeConfigData.Site.UsersData> usersData;
     private RequestHelper helper;
