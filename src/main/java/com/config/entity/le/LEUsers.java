@@ -5,6 +5,7 @@ import com.config.data.le.LeConfigData;
 import com.config.data.le.LeConfigData.Site.UsersData;
 import com.config.lpadk.ConfigInjector;
 import com.sun.istack.Nullable;
+import com.util.genutil.GeneralUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.junit.Assert;
@@ -66,8 +67,15 @@ public class LEUsers extends BaseLEConfigItems<LEUsers,UsersData> {
     private JSONArray getSkills(){
         JSONArray skills = new JSONArray();
         for(String skill : createUsers.getSkill()){
-            Assert.assertTrue("Failed to create skill ", confCreator.createSkill(skill));
-            skills.put(confCreator.getSkillId(skill));
+            Assert.assertTrue(
+                    "Failed to create skill ",
+                    confCreator.createSkill(skill)
+            );
+            try {
+                skills.put(confCreator.getSkillId(skill));
+            }catch (NullPointerException npe){
+                GeneralUtils.handleError("Skill id is null", npe);
+            }
         }
 
         return skills;

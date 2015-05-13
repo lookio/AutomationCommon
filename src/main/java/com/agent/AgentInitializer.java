@@ -12,18 +12,14 @@ import com.config.data.le.LeConfigData.Site.UsersData;
 import com.config.data.le.LeConfigData.Site.UsersData.CreateUser;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Properties;
 
 /**
- * Class Info:
- * <p/>
- * User: ilanm
- * Date: 6/23/14
- * Time: 2:39 PM
+ * Created by asih on 06/04/2015.
  */
+
+@SuppressWarnings("DefaultFileTemplate")
 public class AgentInitializer {
 
     private Properties prop;
@@ -50,11 +46,11 @@ public class AgentInitializer {
         for(UsersData userData : usersData) {
             create = userData.getCreateUser();
             agents.add(new Rep(
-                            prop.getProperty(constants.propsSiteIdKey),
-                            create.getUser(),
-                            create.getPassword(),
-                            create.getSkill().get(0),
-                            prop.getProperty(constants.propsHostKey) , helper)
+                     prop.getProperty(constants.propsSiteIdKey),
+                     create.getUser(),
+                     create.getPassword(),
+                     create.getSkill().get(0),
+                     prop.getProperty(constants.propsHostKey) , helper)
             );
         }
     }

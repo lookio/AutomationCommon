@@ -26,7 +26,6 @@ import java.io.*;
  * Date: 1/22/14
  * Time: 2:37 PM
  */
-@SuppressWarnings("FieldCanBeLocal")
 public class ConfigInjector {
 
     private static final Logger logger = Logger.getLogger(ConfigInjector.class);
@@ -74,7 +73,7 @@ public class ConfigInjector {
         return INSTANCE;
     }
 
-    public static class PropInitializer {
+    private static class PropInitializer {
 
         private static void initProps() {
             String fileName = ENV_PROPS_LOCATION + CONFIG_FILE;
@@ -135,9 +134,15 @@ public class ConfigInjector {
                     envProps,
                     testAccount,
                     crossInitializer.getAcFeatures(),
-                    crossInitializer.getAcPackages(), id);
+                    crossInitializer.getAcPackages(),
+                    id
+            );
             if (isExtentExpiration) {
-                E2EAccService.extendSiteExpiration(testAccount.getId(), AppKey, AppSecret);
+                E2EAccService.extendSiteExpiration(
+                        testAccount.getId(),
+                        AppKey,
+                        AppSecret
+                );
             }
         }
 
@@ -178,8 +183,16 @@ public class ConfigInjector {
             try {
                 initializer.initUserSkill(UserManagementServiceName.OPERATORS);
                 HttpResponse operatorResponse = commonEntityOperations.createEntity(
-                        jsonService.getAgentRequest(user, skills), Enums.BodyType.JSON);
-                jsonService.handleResponse(operatorResponse, "New operator created", "operator already exist");
+                        jsonService.getAgentRequest(
+                                user,
+                                skills),
+                        Enums.BodyType.JSON
+                );
+                jsonService.handleResponse(
+                        operatorResponse,
+                        "New operator created",
+                        "operator already exist"
+                );
                 updateConfigurationInSite();
                 return true;
             } catch (Exception e) {
@@ -192,10 +205,14 @@ public class ConfigInjector {
             try {
                 initializer.initUserSkill(UserManagementServiceName.SKILLS);
                 HttpResponse skillResponse = commonEntityOperations.createEntity(
-                        "{name:" + skillName + ", " +
-                                "description:automation, " +
-                                "maxWaitTime:120}", Enums.BodyType.JSON);
-                jsonService.handleResponse(skillResponse, "New skill created", "skill already exist");
+                        "{name:" + skillName + ", " + "description:automation, " + "maxWaitTime:120}",
+                        Enums.BodyType.JSON
+                );
+                jsonService.handleResponse(
+                        skillResponse,
+                        "New skill created",
+                        "skill already exist"
+                );
                 updateConfigurationInSite();
                 return true;
             } catch (Exception e) {
@@ -210,22 +227,18 @@ public class ConfigInjector {
         public String getSkillId(String skillName) {
             try {
                 initializer.initUserSkill(UserManagementServiceName.SKILLS);
-                return jsonService.getId(objKey, skillName, confType, commonEntityOperations);
+                return jsonService.getId(
+                        objKey,
+                        skillName,
+                        confType,
+                        commonEntityOperations
+                );
             } catch (Exception e) {
                 logger.error("error get  operator id");
                 return null;
             }
         }
 
-        public String getAgentId(String skillName) {
-            try {
-                initializer.initUserSkill(UserManagementServiceName.OPERATORS);
-                return jsonService.getId(objKey, skillName, confType, commonEntityOperations);
-            } catch (Exception e) {
-                logger.error("error get  operator id");
-                return null;
-            }
-        }
 
     }
 

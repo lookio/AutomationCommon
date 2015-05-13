@@ -5,17 +5,12 @@ import com.liveperson.Rep;
 import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
 import com.util.genutil.GeneralUtils;
 import org.apache.log4j.Logger;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class Info:
- * Check that the more available agent (according to active chats) get the call
- * User: ilanm
- * Date: 7/3/14
- * Time: 11:02 AM
+ * Created by asih on 06/04/2015.
  */
+
 public class AgentService {
 
     public final static AgentService INSTANCE = new AgentService();
@@ -87,7 +82,6 @@ public class AgentService {
         if ((agent.getLatestResponseCode()) != 200) {
             return false;
         }
-
         return true;
     }
 
