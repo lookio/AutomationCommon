@@ -62,7 +62,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     @Override
     @SuppressWarnings({"unchecked", "TypeParameterHidesVisibleType"})
     public <E> E findElement(By by) throws Exception {
-        driver.switchTo().window(driver.getWindowHandle());
+//        driver.switchTo().window(driver.getWindowHandle());
         WebElement element = driver.findElement(by);
         return (E) element;
     }

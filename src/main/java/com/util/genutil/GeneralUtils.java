@@ -125,5 +125,18 @@ public class GeneralUtils {
 		GeneralUtils.isTestFailed = isTestFailed;
 	}
 
+	public static void waitTimeOut(long waitInterval, long timeOutInMilisec) {
+		try {
+			Thread.sleep(waitInterval);
+			timeOutInMilisec -= waitInterval;
+			if(timeOutInMilisec <= 0){
+				GeneralUtils.handleError("Time out finished without finding results",
+						new Exception("Time out finished without finding results"));
+			}
+		}catch (InterruptedException e) {
+			GeneralUtils.handleError("Error in wait for time out", e);
+		}
+	}
+
 
 }

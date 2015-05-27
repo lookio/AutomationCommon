@@ -25,8 +25,8 @@ public class AgentService {
         return INSTANCE;
     }
 
-    public final void setup(String testPath, List<Rep> agents) {
-        initializer.initAgentData(testPath, agents);
+    public final List<Rep> setup(String testPath) {
+        return initializer.initAgentData(testPath);
     }
 
     public final Rep getFirstMobileAgent(){

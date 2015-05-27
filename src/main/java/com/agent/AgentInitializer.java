@@ -11,6 +11,7 @@ import com.config.data.le.LeConfigData.Site.UsersData;
 import com.config.data.le.LeConfigData.Site.UsersData.CreateUser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,22 +28,21 @@ public class AgentInitializer {
     private RequestHelper helper;
     private Constants constants = new Constants();
 
-
-
     private Rep mobileRep = null;
 
 
-    public void initAgentData(String testPath, List<Rep> agents) {
+    public List<Rep> initAgentData(String testPath) {
+        List<Rep> agents = new ArrayList<Rep>();
         try {
             initFiles(testPath);
             helper = new RequestHelper(prop.getProperty(constants.propsAppKeyKey));
         } catch (IOException ioe) {
             GeneralUtils.handleError("Error parsing conf files", ioe);
         }
-        initReps(agents);
+        return initReps(agents);
     }
 
-    private void initReps(List<Rep> agents){
+    private List<Rep> initReps(List<Rep> agents){
         CreateUser create;
         String skill;
         for(UsersData userData : usersData) {
@@ -61,6 +61,7 @@ public class AgentInitializer {
                 mobileRep = rep;
             }
         }
+        return agents;
     }
 
     private void initFiles(String testPath) throws IOException {
