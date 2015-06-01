@@ -3,8 +3,11 @@ package com.agent;
 import com.liveperson.AgentState;
 import com.liveperson.Rep;
 import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
+import com.ui.service.AppiumService;
 import com.util.genutil.GeneralUtils;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
+
 import java.util.List;
 
 /**
@@ -17,6 +20,7 @@ public class AgentService {
     private final static AgentService INSTANCE = new AgentService();
     private static final Logger logger = Logger.getLogger(AgentService.class);
     private AgentInitializer initializer = new AgentInitializer();
+//    private AgentService.Verifier verifier = new Verifier();
 
     private AgentService() {
     }
@@ -109,6 +113,14 @@ public class AgentService {
         }
     }
 
+    public Rep prepareAgentForChat(){
+        Rep mobileAgent = getFirstMobileAgent();
+        Assert.assertNotNull("There is no mobile agent", mobileAgent);
+        Assert.assertTrue("Ringing count is not as expected", isRingingCountAsExpected(mobileAgent, 1, 5000));
+        Assert.assertTrue("Start chat encountered a problem", startChat(mobileAgent));
+        return mobileAgent;
+    }
+
     public final boolean endChat(Rep rep) {
         rep.endChat();
         logger.info("Agent closing chat (should be 201), result- " + rep.getLatestResponseCode());
@@ -132,6 +144,7 @@ public class AgentService {
             reps.clear();
         }
     }
+
 
 }
 

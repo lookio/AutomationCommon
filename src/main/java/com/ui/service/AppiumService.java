@@ -116,7 +116,7 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
             GeneralUtils.handleError("Can't find message", e);
         }
         return null;
-    }        
+    }
 
     public final String getPageSource(long timeOutInMilisec){
         implicitWait(1500);
