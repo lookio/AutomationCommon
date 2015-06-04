@@ -3,7 +3,6 @@ package com.agent;
 import com.liveperson.AgentState;
 import com.liveperson.Rep;
 import com.liveperson.utils.RestAPI.AgentAndVisitorUtils;
-import com.ui.service.AppiumService;
 import com.util.genutil.GeneralUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -20,7 +19,7 @@ public class AgentService {
     private final static AgentService INSTANCE = new AgentService();
     private static final Logger logger = Logger.getLogger(AgentService.class);
     private AgentInitializer initializer = new AgentInitializer();
-//    private AgentService.Verifier verifier = new Verifier();
+    private AgentPole pole = new AgentPole();
 
     private AgentService() {
     }
@@ -52,38 +51,18 @@ public class AgentService {
     }
 
     public final boolean isRingingCountAsExpected(Rep agent, int expectedRingCount, long timeOutInMilisec) {
-        if (agent != null) {
-            return waitForRingingCount(
-                    expectedRingCount,
-                    agent.getRingingCount(),
-                    timeOutInMilisec
-            );
-        } else {
-            logger.error("Agent is null");
-            return false;
-        }
+        return pole.isRingingCountAsExpected(
+                agent,
+                expectedRingCount,
+                timeOutInMilisec
+        );
     }
 
-    private boolean waitForRingingCount(int expectedRingCount, int actualCount, long timeOutInMil) {
-        while (expectedRingCount != actualCount) {
-            try {
-                long waitInterval = 500;
-                Thread.sleep(waitInterval);
-                timeOutInMil -= waitInterval;
-                if (timeOutInMil <= 0) {
-                    logger.warn(
-                            "Time out finished, Number of chats must be equal to expected. expected : " +
-                                    expectedRingCount + " actual : " +
-                                    actualCount
-                    );
-                    return false;
-                }
-            } catch (InterruptedException e) {
-                GeneralUtils.handleError("Error in wait for time out", e);
-            }
-        }
-        logger.info("There are exactly " + expectedRingCount + " chats");
-        return true;
+    public final boolean isRingingCountPositive(Rep agent, long timeOutInMilisec) {
+        return pole.isRingingCountPositive(
+                agent,
+                timeOutInMilisec
+        );
     }
 
     public final boolean startChat(Rep agent) {
@@ -116,7 +95,7 @@ public class AgentService {
     public Rep prepareAgentForChat(){
         Rep mobileAgent = getFirstMobileAgent();
         Assert.assertNotNull("There is no mobile agent", mobileAgent);
-        Assert.assertTrue("Ringing count is not as expected", isRingingCountAsExpected(mobileAgent, 1, 5000));
+        Assert.assertTrue("Ringing count is not as expected", isRingingCountPositive(mobileAgent, 5000));
         Assert.assertTrue("Start chat encountered a problem", startChat(mobileAgent));
         return mobileAgent;
     }
