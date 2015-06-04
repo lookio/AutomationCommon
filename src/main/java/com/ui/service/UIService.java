@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class UIService<E,T> implements ElementService<E>, DriverService {
 
-    private volatile WebDriver driver = null;
+    private volatile static WebDriver driver = null;
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
     private static String elementClassName;
     private static String elementName;
@@ -38,7 +38,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     }
 
     @SuppressWarnings("unchecked")
-    protected <T extends WebDriver> void setDriver(WebDriver _driver) {
+    public <T extends WebDriver> void setDriver(WebDriver _driver) {
         try {
             driver = (T) _driver;
             logger.info("Setting driver to service finished successfully. \n\t");

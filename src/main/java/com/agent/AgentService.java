@@ -127,7 +127,7 @@ public class AgentService {
         return (rep.getLatestResponseCode()) == 201;
     }
 
-    public final void tearDown(List<Rep> reps) {
+    public static final void tearDown(List<Rep> reps) {
         logger.info("Rep logout");
         try {
             for (Rep r : reps) {

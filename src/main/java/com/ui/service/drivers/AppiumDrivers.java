@@ -88,11 +88,16 @@ public enum AppiumDrivers {
             if(driver != null) {
                 AppiumService.getInstance().closeBrowser();
                 AppiumService.getInstance().closeDriver();
+                setDriver(null);
 //                AppiumService.getInstance().closeApp();
             }
         }catch (Exception e){
             GeneralUtils.handleError("Error in close resources", e);
         }
+    }
+
+    private static void setDriver(AppiumDriver driver) {
+        AppiumDrivers.driver = driver;
     }
 
 }
