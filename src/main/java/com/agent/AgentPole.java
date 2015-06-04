@@ -59,6 +59,9 @@ public class AgentPole {
     }
 
     private boolean waitForRingingCountPositive(Rep agent, long timeOutInMil) {
+        if(agent.getRingingCount() > 0){
+            return true;
+        }
         while (agent.getRingingCount() <= 0) {
             try {
                 long waitInterval = 500;
