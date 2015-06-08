@@ -72,6 +72,11 @@ public class AgentService {
     }
 
     public final void addChatLines(Rep agent, String msg) {
+        try{
+            Thread.sleep(3000);
+        }catch (InterruptedException ie){
+            GeneralUtils.handleError("Failed to wait before sending chat line", ie);
+        }
         agent.addChatLines(msg);
     }
 

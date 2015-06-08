@@ -86,6 +86,7 @@ public enum AppiumDrivers {
         logger.info("Test on driver finished succssesfully");
         try {
             if(driver != null) {
+
                 AppiumService.getInstance().closeBrowser();
                 AppiumService.getInstance().closeDriver();
                 setDriver(null);
