@@ -28,8 +28,6 @@ public class AgentInitializer {
     private RequestHelper helper;
     private Constants constants = new Constants();
 
-    private Rep mobileRep = null;
-
 
     public List<Rep> initAgentData(String testPath) {
         List<Rep> agents = new ArrayList<Rep>();
@@ -57,9 +55,6 @@ public class AgentInitializer {
                     helper
             );
             agents.add(rep);
-            if(skill.equalsIgnoreCase(constants.mobileSkill)){
-                mobileRep = rep;
-            }
         }
         return agents;
     }
@@ -72,10 +67,6 @@ public class AgentInitializer {
                 getSite().getUsersData();
     }
 
-    public Rep getMobileRep() {
-        return mobileRep;
-    }
-
     private class Constants{
 
         private final String propsFileName = "agent.properties";
@@ -83,7 +74,6 @@ public class AgentInitializer {
         private final String propsAppKeyKey = "site.appKey";
         private final String propsSiteIdKey = "site.id";
         private final String propsHostKey = "host";
-        private final String mobileSkill = "mobile";
 
     }
 

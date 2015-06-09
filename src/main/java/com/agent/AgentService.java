@@ -32,10 +32,6 @@ public class AgentService {
         return initializer.initAgentData(testPath);
     }
 
-    public final Rep getFirstMobileAgent(){
-        return initializer.getMobileRep();
-    }
-
     public final void logInAndSetState(List<Rep> agents, List<AgentState> agentsState) {
         int index = 0;
         if (agents.size() != agentsState.size()) {
@@ -97,12 +93,10 @@ public class AgentService {
         }
     }
 
-    public Rep prepareAgentForChat(){
-        Rep mobileAgent = getFirstMobileAgent();
-        Assert.assertNotNull("There is no mobile agent", mobileAgent);
-        Assert.assertTrue("Ringing count is not as expected", isRingingCountPositive(mobileAgent, 5000));
-        Assert.assertTrue("Start chat encountered a problem", startChat(mobileAgent));
-        return mobileAgent;
+    public void prepareAgentForChat(Rep agent){
+        Assert.assertNotNull("There is no mobile agent", agent);
+        Assert.assertTrue("Ringing count is not as expected", isRingingCountPositive(agent, 5000));
+        Assert.assertTrue("Start chat encountered a problem", startChat(agent));
     }
 
     public final boolean endChat(Rep rep) {
