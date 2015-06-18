@@ -36,9 +36,6 @@ public class OutputGenerator {
 		out.append("New Test Class Started ").append("\n");
 		out.append("============================================================================").append("\n");
 		out.append("Test Class Name :  " + testClass.getName()).append("\n");
-		;
-		out.append(testClass.getName()).append("\n");
-		;
 		out.append("\n");
 		out.append("Theses are the tests included : ").append("\n");
 		out.append("\n");
