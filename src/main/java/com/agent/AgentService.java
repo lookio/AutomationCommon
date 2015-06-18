@@ -93,7 +93,8 @@ public class AgentService {
         }
     }
 
-    public void prepareAgentForChat(Rep agent){
+//        public void prepareAgentForChat(Rep agent) throws AssertionError{
+    public void prepareAgentForChat(Rep agent) {
         Assert.assertNotNull("There is no mobile agent", agent);
         Assert.assertTrue("Ringing count is not as expected", isRingingCountPositive(agent, 5000));
         Assert.assertTrue("Start chat encountered a problem", startChat(agent));
