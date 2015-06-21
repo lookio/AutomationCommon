@@ -106,7 +106,11 @@ public class OutputGenerator {
 					testSteps = (TestSteps) annotation;
 				}
 			}
-			return testSteps.steps();
+			if (testSteps != null) {
+				return testSteps.steps();
+			}else {
+				return null;
+			}
 		}else{
 			return null;
 		}
