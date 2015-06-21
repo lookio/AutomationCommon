@@ -1,12 +1,13 @@
 package com.util.log;
 
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 public interface OutputService {
 
-    public String testClassDesc();
+    String testClassDesc();
 
-//    public String AgentAvailabilityOnlineOfflineTestDesc(String testName);
+    String testMethodDesc(String testName);
 
 }
