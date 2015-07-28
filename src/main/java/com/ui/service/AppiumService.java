@@ -143,7 +143,11 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
     }
 
     public void tap(int xLoc, int yLoc){
-        new TouchAction(driver).tap(xLoc, yLoc).release().perform();
+        try {
+            new TouchAction(driver).tap(xLoc, yLoc).release().perform();
+        }catch (Exception e){
+            GeneralUtils.handleError("Tap failed", e);
+        }
     }
 
     public WebElement getElementByText(By listLocator, String text){
