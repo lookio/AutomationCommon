@@ -28,17 +28,19 @@ public class CapabilitiesBuilder {
 
     }
 
-    public DesiredCapabilities getCapabilities(String capFilePath){
-        return new DesiredCapabilities(getCapsMap(capFilePath));
+    public DesiredCapabilities getCapabilities(String capFilePath, AppiumDrivers driver){
+        return new DesiredCapabilities(getCapsMap(capFilePath, driver));
 
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, String> getCapsMap(String capFilePath){
+    private Map<String, String> getCapsMap(String capFilePath, AppiumDrivers driver){
         Map<String, String> caps = new HashMap<>((Map)
-                PropertiesHandlerImpl.getInstance().
-                        parse(capFilePath + Constants.CAPS_PROPERTY_FILE_PATH));
-        caps.put(Constants.DESIRED_CAP_APP_KEY, getAppAbsolutePath(capFilePath));
+                PropertiesHandlerImpl.getInstance().parse(
+                        capFilePath + Constants.CAPS_PROPERTY_FILE_PATH));
+        if(driver == AppiumDrivers.ANDROID) {
+            caps.put(Constants.DESIRED_CAP_APP_KEY, getAppAbsolutePath(capFilePath));
+        }
         return caps;
     }
 

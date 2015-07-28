@@ -68,10 +68,8 @@ public class JsonService {
         } else {
             try {
                 parseJsonResult(objKey, expKey, confType, skillResponse);
-            } catch (JSONException je) {
+            } catch (JSONException | NullPointerException je) {
                 GeneralUtils.handleError("Error in parsing JSON request", je);
-            } catch (NullPointerException npe) {
-                GeneralUtils.handleError("Error in parsing JSON request", npe);
             }
         }
         return null;

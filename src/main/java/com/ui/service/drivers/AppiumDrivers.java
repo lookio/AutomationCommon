@@ -36,15 +36,13 @@ public enum AppiumDrivers {
 
     public static AppiumDriver setDriver(AppiumDrivers driverType, String testDir) throws MalformedURLException, Exception {
         logger.info("Trying to set " + driverType.name() + " driver");
-        DesiredCapabilities caps = CapabilitiesBuilder.getInstance().getCapabilities(testDir); // how to get???
-        if(driver != null){
-            throw new NullPointerException("Driver allready exists");
-        }
+        DesiredCapabilities caps = CapabilitiesBuilder.
+                getInstance().getCapabilities(testDir, driverType);
+        if(driver != null){throw new NullPointerException("Driver allready exists");}
         switch (driverType) {
             case ANDROID:
                 driver = createAndroidDriver(caps);
                 printAndroidSuccessCreationMsg();
-
                 break;
             case IOS:
                 driver = createIOSDriver(caps);
@@ -52,13 +50,12 @@ public enum AppiumDrivers {
 
         }
 //        driver.(10, TimeUnit.SECONDS);
-        int wait = new Integer(CapabilitiesBuilder.getInstance().getAppDriverProps().getProperty(IMPLICIT_WAIT)).intValue();
+        int wait = new Integer(CapabilitiesBuilder.getInstance().getAppDriverProps().getProperty(IMPLICIT_WAIT));
         driver.manage().timeouts().implicitlyWait(wait, TimeUnit.SECONDS);
         return driver;
     }
 
     private synchronized static AppiumDriver createAndroidDriver(DesiredCapabilities caps) throws Exception {
-
         return new AndroidDriver(new URL(APPIUM_SERVER_URL), caps);
     }
 
@@ -97,8 +94,6 @@ public enum AppiumDrivers {
         }
     }
 
-    private static void setDriver(AppiumDriver driver) {
-        AppiumDrivers.driver = driver;
-    }
+    private static void setDriver(AppiumDriver driver) {AppiumDrivers.driver = driver;}
 
 }

@@ -25,6 +25,7 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
     private final long waitForPageSourceInterval = 500;
     private static String lastPageSource = "";
+    private UiMode requestedScreenMode;
 
 
     public static AppiumService getInstance() {
@@ -154,6 +155,61 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         }
         logger.warn("Element not found");
         return null;
+    }
+
+    private UiMode getRequestedScreenMode() {
+        return requestedScreenMode;
+    }
+
+    public void setRequestedScreenMode(UiMode requestedScreenMode) {
+        this.requestedScreenMode = requestedScreenMode;
+    }
+
+    public void activateSelectedActivity(WebElement elem, ModeActivity modeActivity, String input){
+        if((getRequestedScreenMode() == (UiMode.PORTRAIT))){
+            if(driver.getOrientation() != ScreenOrientation.PORTRAIT) {
+                rotate(ScreenOrientation.PORTRAIT);
+            }
+            activate(elem, modeActivity, input);
+        }
+        if(getRequestedScreenMode() == UiMode.LANDSCAPE) {
+            if (driver.getOrientation() != ScreenOrientation.LANDSCAPE) {
+                rotate(ScreenOrientation.LANDSCAPE);
+            }
+            activate(elem, modeActivity, input);
+        }
+        if(getRequestedScreenMode() == UiMode.TRANSITION) {
+            if (driver.getOrientation() == ScreenOrientation.LANDSCAPE) {
+                rotate(ScreenOrientation.PORTRAIT);
+                activate(elem, modeActivity, input);
+                rotate(ScreenOrientation.LANDSCAPE);
+            }else{
+                rotate(ScreenOrientation.LANDSCAPE);
+                activate(elem, modeActivity, input);
+                rotate(ScreenOrientation.PORTRAIT);
+            }
+        }
+    }
+
+    private  void activate(WebElement elem, ModeActivity modeActivity, String input){
+        if(modeActivity.name().equalsIgnoreCase(ModeActivity.SEND_KEYS.name())) {
+            elem.sendKeys(input);
+        }else if(modeActivity.name().equalsIgnoreCase(ModeActivity.CLICK.name())) {
+            elem.click();
+        }
+    }
+
+
+    public enum UiMode {
+
+        PORTRAIT, LANDSCAPE, TRANSITION;
+
+    }
+
+    public enum ModeActivity {
+
+        SEND_KEYS, CLICK;
+
     }
 
 

@@ -30,7 +30,7 @@ public class OutputGenerator {
 
 	}
 
-	public static <T> String createGenericClassDesc(Class<T> testClass, StringBuilder desc) {
+	public static <T> String createGenericClassDesc(final Class<T> testClass, StringBuilder desc) {
 		setTestClass(testClass);
 		StringBuilder out = new StringBuilder();
 		out.append("\n");
@@ -53,7 +53,7 @@ public class OutputGenerator {
 		return out.toString();
 	}
 
-	public static String createGenericMethodDesc(String testName) {
+	public static String createGenericMethodDesc(final String testName) {
 		StringBuilder out = new StringBuilder();
 		out.append("\n");
 		out.append("-------------------------------------------").append("\n");
