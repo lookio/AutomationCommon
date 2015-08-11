@@ -212,7 +212,6 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
     }
 
     private  void activate(WebElement elem, ModeActivity modeActivity, String input){
-        
         if(modeActivity.name().equalsIgnoreCase(ModeActivity.SEND_KEYS.name())) {
             elem.sendKeys(input);
         }else if(modeActivity.name().equalsIgnoreCase(ModeActivity.CLICK.name())) {
