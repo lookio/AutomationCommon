@@ -1,8 +1,8 @@
 package com.ui.page.base;
 
 import com.ui.page.AppiumBasePage;
-import com.ui.service.drivers.AppiumDrivers;
-import com.ui.service.drivers.SeleniumDrivers;
+import com.ui.service.drivers.Drivers;
+import com.ui.service.drivers.Drivers;
 import org.apache.log4j.Logger;
 
 
@@ -57,9 +57,9 @@ public abstract class BasePage implements  Pagable{
 
     private void close(){
         if(this instanceof AppiumBasePage){
-            AppiumDrivers.close();
+            Drivers.Appium.close();
         } else{
-            SeleniumDrivers.close();
+            Drivers.Selenium.close();
         }
     }
 

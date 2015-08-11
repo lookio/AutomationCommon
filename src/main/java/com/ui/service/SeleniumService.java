@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import com.ui.page.base.BasePage;
-import com.ui.service.drivers.SeleniumDrivers;
+import com.ui.service.drivers.Drivers;
 import com.util.genutil.GeneralUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -21,7 +21,7 @@ import org.openqa.selenium.WebElement;
 
 public class SeleniumService extends UIService<WebElement, WebDriver> {
 
-	private static volatile WebDriver driver = null;
+	private volatile WebDriver driver = null;
 	private static final SeleniumService SELENIUM_SERVICE_INSTANCE = new SeleniumService();
 	private static final Logger logger = Logger.getLogger(SeleniumService.class);
 	private static String originalHandle;
@@ -36,14 +36,10 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 
 	}
 
-	public void setDriver(){
-		super.setDriver(driver);
-	}
-
-	public final void setDriver(SeleniumDrivers browser) {
+	public final void setDriver(Drivers browser) {
 		try {
-			driver = SeleniumDrivers.setBrowserToDriver(browser);
-			super.setDriver(driver);
+			driver = Drivers.Selenium.setBrowserToDriver(browser);
+			this.setDriver(driver);
 			logger.info("Setting browser to driver finished successfully. \n\t");
 		} catch (Exception ex) {
 			logger.error("Problem in setting browser to driver ", ex);
@@ -51,58 +47,69 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 	}
 
 	public final void setDriver(WebDriver _driver) {
-		super.setDriver(_driver);
+		driver = _driver;
 	}
 
 	public final void closeDriver() {
+		super.setDriver(driver);
 		super.closeDriver();
 	}
 
 	@Override
 	public final WebElement findElement(By by, String elementName) {
+		super.setDriver(driver);
 		return super.findElement(by, elementName);
 	}
 
 	@Override
 	public final WebElement findElement(By by) throws Exception {
+		super.setDriver(driver);
 		return super.findElement(by);
 	}
 
 	@Override
 	public final synchronized void explicitWait(long explicitWait, By by) {
+		super.setDriver(driver);
 		super.explicitWait(explicitWait, by);
 	}
 
 	@Override
 	public final synchronized void implicitWait(long implicitWait, TimeUnit time) {
+		super.setDriver(driver);
 		super.implicitWait(implicitWait, time);
 	}
 
 	public boolean isElementVisible(WebElement element) {
+		super.setDriver(driver);
 		return super.isElementVisible(element);
 	}
 
 	public final synchronized void implicitWait(long implicitWait) {
+		super.setDriver(driver);
 		super.implicitWait(implicitWait);
 	}
 
 	@Override
 	public final boolean IsElementPresent(By by) {
+		super.setDriver(driver);
 		return super.IsElementPresent(by);
 	}
 
 	@Override
 	public <T extends BasePage> boolean initElement(T pageObject) {
+		super.setDriver(driver);
 		return super.initElement(pageObject);
 	}
 
 	@Override
 	public final void openBrowser(String url) {
+		super.setDriver(driver);
 		super.openBrowser(url);
 	}
 
 	@Override
 	public final void closeBrowser() throws Exception {
+		super.setDriver(driver);
 		super.closeBrowser();
 	}
 
@@ -176,19 +183,19 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		}
 	}
 
-	public static void blur(String elementId) {
+	public void blur(String elementId) {
 
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		jse.executeScript("$('#" + elementId + "').blur();");
 	}
 
-	public static void click(String elementId) {
+	public void click(String elementId) {
 
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		jse.executeScript("$('#" + elementId + "').click();");
 	}
 
-	public static void sendKeys(String elementId, String value) {
+	public void sendKeys(String elementId, String value) {
 
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		jse.executeScript("$('#" + elementId + "').val('" + value + "');");
@@ -279,5 +286,9 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 			endIndex = url.length();
 		}
 		return url.substring(keyIndex + 4, endIndex);
+	}
+
+	public WebDriver getDriver(){
+		return driver;
 	}
 }

@@ -1,7 +1,7 @@
 package com.ui.service;
 
 import com.ui.page.base.BasePage;
-import com.ui.service.drivers.AppiumDrivers;
+import com.ui.service.drivers.Drivers;
 import com.util.genutil.GeneralUtils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -36,65 +37,80 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
 
     }
 
-    public final void setDriver(AppiumDrivers deviceDriver, String capsFileFolder) {
+    public final void setDriver(Drivers deviceDriver, String capsFileFolder) {
         try {
-            driver = AppiumDrivers.setDriver(deviceDriver, capsFileFolder);
-            super.setDriver(driver);
+            driver = Drivers.Appium.setDriver(deviceDriver, capsFileFolder);
+            this.setDriver(driver);
             logger.info("Setting browser to driver finished successfully. \n\t");
         } catch (Exception ex) {
             logger.error("Problem in setting browser to driver ", ex);
         }
     }
 
+    public final void setDriver(AppiumDriver _driver) {
+        driver = _driver;
+    }
+
     public final void closeDriver() {
+        super.setDriver(driver);
         super.closeDriver();
     }
 
     @Override
     public final WebElement findElement(By by, String elementName) {
+        super.setDriver(driver);
         return super.findElement(by, elementName);
     }
 
     @Override
     public final WebElement findElement(By by) throws Exception {
+        super.setDriver(driver);
         return super.findElement(by);
     }
 
     @Override
     public final synchronized void explicitWait(long explicitWait, By by) {
+        super.setDriver(driver);
         super.explicitWait(explicitWait, by);
     }
 
     @Override
     public final synchronized void implicitWait(long implicitWait, TimeUnit time) {
+        super.setDriver(driver);
         super.implicitWait(implicitWait, time);
     }
 
     public final boolean isElementVisible(WebElement element) {
+        super.setDriver(driver);
         return super.isElementVisible(element);
     }
 
     public final synchronized void implicitWait(long implicitWait) {
+        super.setDriver(driver);
         super.implicitWait(implicitWait);
     }
 
     @Override
     public final boolean IsElementPresent(By by) {
+        super.setDriver(driver);
         return super.IsElementPresent(by);
     }
 
     @Override
     public <T extends BasePage> boolean initElement(T pageObject) {
+        super.setDriver(driver);
         return super.initElement(pageObject);
     }
 
     @Override
     public final void openBrowser(String url) {
+        super.setDriver(driver);
         super.openBrowser(url);
     }
 
     @Override
     public final void closeBrowser() throws Exception {
+        super.setDriver(driver);
         super.closeBrowser();
     }
 
@@ -203,6 +219,9 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         }
     }
 
+    public WebDriver getDriver(){
+        return driver;
+    }
 
     public enum UiMode {
 
