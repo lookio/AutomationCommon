@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.ui.service.SeleniumService;
 import com.util.genutil.GeneralUtils;
+import com.util.properties.PropertiesHandlerImpl;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -42,7 +43,8 @@ public enum SeleniumDrivers {
 
 	public static Properties props = null;
 
-	private static final String ENV_VARS_PROPERTY_FILE_PATH = "../../commons/src/test/resources/env.properties";
+	private static final String ENV_VARS_PROPERTY_FILE_PATH = "/environment/env.properties";
+
 
 	private static final String PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME = "Chrome_driver_property_name";
 	private static final String PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE = "Chrome_driver_path";
@@ -63,7 +65,7 @@ public enum SeleniumDrivers {
 	public static WebDriver setBrowserToDriver(SeleniumDrivers browser) throws MalformedURLException, Exception {
 		browserType = browser.name();
 		logger.info("Trying to set " + browserType + " browser to driver");
-//		props = PropertiesHandlerImpl.getInstance().parse(ENV_VARS_PROPERTY_FILE_PATH);
+		props = PropertiesHandlerImpl.getInstance().parseFromJar(ENV_VARS_PROPERTY_FILE_PATH);
 		switch (browser) {
 			case IE:
 				createIEDriver();
@@ -129,6 +131,7 @@ public enum SeleniumDrivers {
 	private synchronized static void createChromeDriver() throws Exception {
 		File file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE));
 		System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), file.getAbsolutePath());
+
 		driver = new ChromeDriver();
 		logger.info("=========================================================");
 		logger.info("============= Created New Chrome Driver =================");

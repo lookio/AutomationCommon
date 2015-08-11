@@ -158,10 +158,10 @@
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml:3.9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml-schemas:3.9" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-admin-console:21.5.0.7" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-common:21.5.0.7" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-common:18.2.0.1" level="project" />
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson.dot:dot-test-common:1.0.0.7" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson.dot:dot-test-common:1.0.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-agent:21.5.0.7" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-server-commands-api:21.5.0.7" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-server-commands:21.5.0.7" level="project" />
@@ -441,6 +441,7 @@
     <orderEntry type="library" name="Maven: com.liveperson.infra:common-rest:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey.contribs:jersey-apache-client:1.17.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jul-to-slf4j:1.7.2" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-agent:sources:18.2.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson.ams:tests:2.0.3.8-SNAPSHOT" level="project" />
   </component>
 </module>
-
