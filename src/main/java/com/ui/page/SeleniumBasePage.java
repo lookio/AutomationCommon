@@ -27,7 +27,7 @@ public abstract class SeleniumBasePage extends BasePage {
         try {
             String url = service.getDriver().getCurrentUrl();
             String dynamicIdentifier = this.getPageUniqueIdentifier();
-            if(url.equalsIgnoreCase(dynamicIdentifier)) {
+            if(url.contains(dynamicIdentifier)) {
                 logger.info("The page URL is as expected, you are in the correct location");
                 logger.info("You expected : " + dynamicIdentifier + " You are in : " + url);
                 return true;

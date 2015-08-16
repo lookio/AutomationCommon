@@ -21,7 +21,7 @@ import org.openqa.selenium.WebElement;
 
 public class SeleniumService extends UIService<WebElement, WebDriver> {
 
-	private volatile WebDriver driver = null;
+	private static volatile WebDriver driver = null;
 	private static final SeleniumService SELENIUM_SERVICE_INSTANCE = new SeleniumService();
 	private static final Logger logger = Logger.getLogger(SeleniumService.class);
 	private static String originalHandle;

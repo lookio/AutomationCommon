@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class AppiumService extends UIService<WebElement, AppiumDriver> {
 
-    private volatile AppiumDriver driver = null;
+    private static volatile AppiumDriver driver = null;
     private static final AppiumService APPIUM_SERVICE_INSTANCE = new AppiumService();
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
     private final long waitForPageSourceInterval = 500;
@@ -211,7 +211,7 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         }
     }
 
-    private  void activate(WebElement elem, ModeActivity modeActivity, String input){
+    private void activate(WebElement elem, ModeActivity modeActivity, String input){
         if(modeActivity.name().equalsIgnoreCase(ModeActivity.SEND_KEYS.name())) {
             elem.sendKeys(input);
         }else if(modeActivity.name().equalsIgnoreCase(ModeActivity.CLICK.name())) {
