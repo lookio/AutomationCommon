@@ -148,6 +148,11 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		return null;
 	}
 
+	public WebElement getElementByText(By listLocator, String text){
+		super.setDriver(driver);
+		return super.getElementByText(listLocator, text);
+	}
+
 
 	public boolean clickDisplaiedElement(List<WebElement> elems){
 		for(WebElement elem : elems){

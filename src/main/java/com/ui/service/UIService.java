@@ -15,6 +15,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -190,6 +191,17 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
             GeneralUtils.handleError("Can't find message " + msg +" in page " + page, e);
             return;
         }
+    }
+
+    public WebElement getElementByText(By listLocator, String text){
+        List<WebElement> elements = driver.findElements(listLocator);
+        for(WebElement element : elements) {
+            if (element.getText().equalsIgnoreCase(text)) {
+                return element;
+            }
+        }
+        logger.warn("Element not found");
+        return null;
     }
 
     private static String printErrorMessage(String fullElementName) {

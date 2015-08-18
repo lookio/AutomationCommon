@@ -167,14 +167,8 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
     }
 
     public WebElement getElementByText(By listLocator, String text){
-        List<WebElement> elements = driver.findElements(listLocator);
-        for(WebElement element : elements) {
-            if (element.getText().equalsIgnoreCase(text)) {
-                return element;
-            }
-        }
-        logger.warn("Element not found");
-        return null;
+        super.setDriver(driver);
+        return super.getElementByText(listLocator, text);
     }
 
     private UiMode getRequestedScreenMode() {
