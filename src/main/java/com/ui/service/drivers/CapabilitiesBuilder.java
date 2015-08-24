@@ -36,8 +36,9 @@ public class CapabilitiesBuilder {
     @SuppressWarnings("unchecked")
     private Map<String, String> getCapsMap(String capFilePath, Drivers driver){
         Map<String, String> caps = new HashMap<>((Map)
-                PropertiesHandlerImpl.getInstance().parse(
-                        capFilePath + Constants.CAPS_PROPERTY_FILE_PATH));
+                PropertiesHandlerImpl.getInstance().parseFromJar(
+//                        PropertiesHandlerImpl.getInstance().parse(
+                                capFilePath + Constants.CAPS_PROPERTY_FILE_PATH));
         if(driver == Drivers.ANDROID) {
             caps.put(Constants.DESIRED_CAP_APP_KEY, getAppAbsolutePath(capFilePath));
         }
@@ -52,7 +53,8 @@ public class CapabilitiesBuilder {
     }
 
     public Properties getAppDriverProps(String capFilePath){
-        return PropertiesHandlerImpl.getInstance().parse(capFilePath + Constants.APPIUM_DRIVER_PROPERTY_FILE_PATH);
+        return PropertiesHandlerImpl.getInstance().parseFromJar(capFilePath + Constants.APPIUM_DRIVER_PROPERTY_FILE_PATH);
+//        return PropertiesHandlerImpl.getInstance().parse(capFilePath + Constants.APPIUM_DRIVER_PROPERTY_FILE_PATH);
     }
 
     public Properties getAppDriverProps(){
