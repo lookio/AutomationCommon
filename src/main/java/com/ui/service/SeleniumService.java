@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.test_base.AppiumScriptHandler;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
 import com.util.genutil.GeneralUtils;
@@ -36,9 +37,9 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 
 	}
 
-	public final void setDriver(Drivers browser) {
+	public final void setDriver(Drivers browser, AppiumScriptHandler.Machine machine) {
 		try {
-			driver = Drivers.Selenium.setBrowserToDriver(browser);
+			driver = Drivers.Selenium.setBrowserToDriver(browser, machine);
 			this.setDriver(driver);
 			logger.info("Setting browser to driver finished successfully. \n\t");
 		} catch (Exception ex) {

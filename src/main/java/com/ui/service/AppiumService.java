@@ -1,5 +1,6 @@
 package com.ui.service;
 
+import com.test_base.AppiumScriptHandler;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
 import com.util.genutil.GeneralUtils;
@@ -37,9 +38,9 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
 
     }
 
-    public final void setDriver(Drivers deviceDriver, String capsFileFolder) {
+    public final void setDriver(Drivers deviceDriver, String capsFileFolder, AppiumScriptHandler.Machine machine) {
         try {
-            driver = Drivers.Appium.setDriver(deviceDriver, capsFileFolder);
+            driver = Drivers.Appium.setDriver(deviceDriver, capsFileFolder, machine);
             this.setDriver(driver);
             logger.info("Setting browser to driver finished successfully. \n\t");
         } catch (Exception ex) {
