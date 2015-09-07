@@ -2,7 +2,6 @@ package com.ui.page.base;
 
 import com.ui.page.AppiumBasePage;
 import com.ui.service.drivers.Drivers;
-import com.ui.service.drivers.Drivers;
 import org.apache.log4j.Logger;
 
 
