@@ -156,7 +156,7 @@ public enum Drivers {
 		 * @throws Exception
 		 */
 
-		private synchronized static void createChromeDriver(AppiumScriptHandler.Machine machine) throws Exception {
+		private synchronized static void createChromeDriver(AppiumScriptHandler.Machine machine)  {
 
 			File file = null;
 			if(machine == AppiumScriptHandler.Machine.WINDOWS) {
@@ -166,14 +166,17 @@ public enum Drivers {
 			}
 			System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), file.getAbsolutePath());
 
-			driver = new ChromeDriver();
+			try {
+				driver = new ChromeDriver();
+			}catch (Throwable e) {
+				logger.info("CDriver is " + driver);
+			}
 			logger.info("=========================================================");
 			logger.info("============= Created New Chrome Driver =================");
 			logger.info("=========================================================");
 			logger.info("========== Starting New Test In Chrome Driver ===========");
 			logger.info("=========================================================");
 			logger.debug("Chrome driver was created");
-			logger.info("CDriver is " + driver);
 		}
 
 		private synchronized static void createSafariDriver() throws Exception {
