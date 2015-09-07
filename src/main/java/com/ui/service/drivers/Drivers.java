@@ -35,12 +35,13 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-public class Drivers {
+public enum Drivers {
 
+	FIREFOX, IE, CHROME, SAFARI, ANDROID, IOS;
 
 	private static final String ENV_VARS_PROPERTY_FILE_PATH = "/environment/env.properties";
 
-	public static <T> WebDriver setDriver(Drivers.DriverName driver, DriverType type, String testDir, AppiumScriptHandler.Machine machine){
+	public static <T> WebDriver setDriver(Drivers driver, DriverType type, String testDir, AppiumScriptHandler.Machine machine){
 		try {
 			if(type == DriverType.SELENIUM) {
 				return Selenium.setBrowserToDriver(driver, machine);
@@ -80,7 +81,7 @@ public class Drivers {
 		static FirefoxProfile ffProfile = new FirefoxProfile();
 
 
-		public static WebDriver setBrowserToDriver(Drivers.DriverName browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
+		public static WebDriver setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
 			browserType = browser.name();
 			logger.info("Trying to set " + browserType + " browser to driver");
 			props = getProps();
@@ -189,35 +190,35 @@ public class Drivers {
 		}
 
 		public static void startChrome() throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.DriverName.CHROME, null);
+			SeleniumService.getInstance().setDriver(Drivers.CHROME, null);
 			SeleniumService.getInstance().openBrowser(START_URL);
 		}
 
 		public static void startFIREFOX() throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.DriverName.FIREFOX, null);
+			SeleniumService.getInstance().setDriver(Drivers.FIREFOX, null);
 			SeleniumService.getInstance().openBrowser(START_URL);
 		}
 
 		public static void startIE() throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.DriverName.IE, null);
+			SeleniumService.getInstance().setDriver(Drivers.IE, null);
 			SeleniumService.getInstance().openBrowser(START_URL);
 		}
 
 		public static void startChromeWithTimeOut(int timeOutInSeconds) throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.DriverName.CHROME, null);
+			SeleniumService.getInstance().setDriver(Drivers.CHROME, null);
 			SeleniumService.getInstance().openBrowser(START_URL);
 			driver.manage().timeouts().implicitlyWait(timeOutInSeconds, TimeUnit.SECONDS);
 		}
 
 		public static void startFIREFOXWithTimeOut(int timeOutInSeconds) throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.DriverName.FIREFOX, null);
+			SeleniumService.getInstance().setDriver(Drivers.FIREFOX, null);
 			SeleniumService.getInstance().openBrowser(START_URL);
 			driver.manage().timeouts().implicitlyWait(timeOutInSeconds, TimeUnit.SECONDS);
 
 		}
 
 		public static void startIEWithTimeOut(int timeOutInSeconds) throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.DriverName.IE, null);
+			SeleniumService.getInstance().setDriver(Drivers.IE, null);
 			SeleniumService.getInstance().openBrowser(START_URL);
 			driver.manage().timeouts().implicitlyWait(timeOutInSeconds, TimeUnit.SECONDS);
 
@@ -234,7 +235,7 @@ public class Drivers {
 		}
 
 
-		public static void startBrowserByType(Drivers.DriverName browser) throws Exception {
+		public static void startBrowserByType(Drivers browser) throws Exception {
 			switch (browser) {
 				case CHROME:
 					startChrome();
@@ -272,7 +273,7 @@ public class Drivers {
 		private static String browserType;
 
 
-		public static AppiumDriver setDriver(Drivers.DriverName driverType, String testDir, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
+		public static AppiumDriver setDriver(Drivers driverType, String testDir, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
 			logger.info("Trying to set " + driverType.name() + " driver");
 			DesiredCapabilities caps = CapabilitiesBuilder.
 					getInstance().getCapabilities(testDir, driverType, machine);
@@ -341,11 +342,6 @@ public class Drivers {
 	public enum DriverType{
 		SELENIUM, APPIUM;
 	}
-
-	public enum DriverName{
-		FIREFOX, IE, CHROME, SAFARI, ANDROID, IOS;
-	}
-
 
 
 }

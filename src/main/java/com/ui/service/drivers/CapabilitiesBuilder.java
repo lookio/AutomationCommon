@@ -22,7 +22,7 @@ public class CapabilitiesBuilder {
     private Properties appiumDriverProps;
 
     private String capFilePath;
-    private Drivers.DriverName driver;
+    private Drivers driver;
     private AppiumScriptHandler.Machine machine;
 
     public static CapabilitiesBuilder getInstance() {
@@ -33,7 +33,7 @@ public class CapabilitiesBuilder {
 
     }
 
-    public DesiredCapabilities getCapabilities(String capFilePath, Drivers.DriverName driver, AppiumScriptHandler.Machine machine){
+    public DesiredCapabilities getCapabilities(String capFilePath, Drivers driver, AppiumScriptHandler.Machine machine){
         this.capFilePath = capFilePath;
         this.driver = driver;
         this.machine = machine;
@@ -46,7 +46,7 @@ public class CapabilitiesBuilder {
                 PropertiesHandlerImpl.getInstance().parseFromJar(
 //                        PropertiesHandlerImpl.getInstance().parse(
                                 capFilePath + Constants.CAPS_PROPERTY_FILE_PATH));
-        if(driver == Drivers.DriverName.ANDROID) {
+        if(driver == Drivers.ANDROID) {
             caps.put(Constants.DESIRED_CAP_APP_KEY, getAppAbsolutePath());
         }
         return caps;

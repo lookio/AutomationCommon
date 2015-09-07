@@ -67,7 +67,7 @@ public class BaseTest {
 
         public static <T extends BaseTest> void before(
                 Map<DriverType,
-                Drivers.DriverName> drivers,
+                Drivers> drivers,
                 ConfigItemsRouter.ConfigType confType,
                 String testPath,
                 Class<T> testClass,
@@ -75,9 +75,9 @@ public class BaseTest {
                 AppiumScriptHandler.Machine machine)
                 throws Exception {
 
-            for (Map.Entry<DriverType, Drivers.DriverName> entry : drivers.entrySet()) {
+            for (Map.Entry<DriverType, Drivers> entry : drivers.entrySet()) {
                 DriverType driverType = entry.getKey();
-                Drivers.DriverName driver = entry.getValue();
+                Drivers driver = entry.getValue();
                 if (driverType == DriverType.SELENIUM) {
                     seleniumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.SELENIUM, "", machine));
                 } else if (driverType == DriverType.APPIUM) {
