@@ -171,6 +171,8 @@ public enum Drivers {
 			}catch (Throwable e) {
 				logger.info("CDriver is " + driver);
 			}
+			logger.info("CDriver is " + driver);
+
 			logger.info("=========================================================");
 			logger.info("============= Created New Chrome Driver =================");
 			logger.info("=========================================================");
