@@ -173,6 +173,7 @@ public enum Drivers {
 			logger.info("========== Starting New Test In Chrome Driver ===========");
 			logger.info("=========================================================");
 			logger.debug("Chrome driver was created");
+			logger.info("CDriver is " + driver);
 		}
 
 		private synchronized static void createSafariDriver() throws Exception {
