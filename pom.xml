@@ -11,7 +11,10 @@
         <version>3.2.88</version>
     </parent>
 
-    <properties>
+<!--</parent>-->
+
+
+<properties>
         <automation.data.model.version>1.7</automation.data.model.version>
         <e2ecommon.version>4.0.0.90</e2ecommon.version>
     </properties>
