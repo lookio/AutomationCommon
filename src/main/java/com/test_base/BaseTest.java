@@ -138,7 +138,7 @@ public class BaseTest {
                 }
             }
             try {
-                System.out.println("Going to execute start appium server: "+ command);
+                System.out.println("Going to execute start appium server: " + command);
                 getExecutor().execute(command, new DefaultExecuteResultHandler());
 //                super.waitUntil(timeOutInMilisec, 2500, "Appium server was not able to start after " + new Long(timeOutInMilisec).longValue() + " mili");
 //                for (int i=1; i<10; i++) {
@@ -147,6 +147,7 @@ public class BaseTest {
 //                        break;
 //                    Thread.sleep(5000);
 //                }
+//            }
             } catch (IOException e) {
                 GeneralUtils.handleError("Error in starting appium server", e);
                 Assert.assertTrue("Error in starting appium server", false);
