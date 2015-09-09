@@ -15,6 +15,7 @@ import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
 import com.util.genutil.GeneralUtils;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -44,6 +45,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 			logger.info("Setting browser to driver finished successfully. \n\t");
 		} catch (Exception ex) {
 			logger.error("Problem in setting browser to driver ", ex);
+			Assert.assertTrue(browser.name() + " driver was not created", false);
 		}
 	}
 

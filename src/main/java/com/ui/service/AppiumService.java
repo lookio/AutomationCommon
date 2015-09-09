@@ -45,6 +45,7 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
             logger.info("Setting browser to driver finished successfully. \n\t");
         } catch (Exception ex) {
             logger.error("Problem in setting browser to driver ", ex);
+            Assert.assertTrue(deviceDriver.name() + " driver was not created", false);
         }
     }
 
