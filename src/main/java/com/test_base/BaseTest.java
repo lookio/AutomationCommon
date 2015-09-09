@@ -18,6 +18,7 @@ import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
@@ -147,7 +148,9 @@ public class BaseTest {
 //                    Thread.sleep(5000);
 //                }
             } catch (IOException e) {
-                e.printStackTrace();
+                GeneralUtils.handleError("Error in starting appium server", e);
+                Assert.assertTrue("Error in starting appium server", false);
+
             }
         }
 
