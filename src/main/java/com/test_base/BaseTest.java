@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -67,8 +68,7 @@ public class BaseTest {
     protected static class StaticRouter extends PollService {
 
         public static <T extends BaseTest> void before(
-                Map<DriverType,
-                Drivers> drivers,
+                Map<DriverType, Drivers> drivers,
                 ConfigItemsRouter.ConfigType confType,
                 String testPath,
                 Class<T> testClass,
@@ -95,7 +95,7 @@ public class BaseTest {
 
             if(driver == DriverType.SELENIUM){
                 Drivers.Selenium.close();
-            }else if(driver == DriverType.APPIUM){
+            }else if(driver == DriverType.APPIUM) {
                 Drivers.Appium.close();
                 try {
                     uninstallApp();
