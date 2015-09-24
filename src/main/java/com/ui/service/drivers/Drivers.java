@@ -161,10 +161,12 @@ public enum Drivers {
 			File file = null;
 			if(machine == AppiumScriptHandler.Machine.WINDOWS) {
 				file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_WIN));
+				System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), file.getAbsolutePath());
 			}else{
-				file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_MAC));
+//				file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_MAC));
+				System.setProperty("webdriver.chrome.driver", PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_MAC);
 			}
-			System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), file.getAbsolutePath());
+
 
 			try {
 				driver = new ChromeDriver();
