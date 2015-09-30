@@ -57,6 +57,7 @@ public class CapabilitiesBuilder {
         appiumDriverProps = getAppDriverProps(capFilePath);
         appDir = new File(appiumDriverProps.getProperty(Constants.APPIUM_DRIVER_PROP_APP_DIR_WIN_KEY));
         File app = new File(appDir, appiumDriverProps.getProperty(Constants.APPIUM_DRIVER_PROP_APP_NAME_KEY));
+//        int c = 0;
         return app.getAbsolutePath();
     }
 
