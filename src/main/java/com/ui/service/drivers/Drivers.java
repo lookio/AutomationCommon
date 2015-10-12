@@ -297,8 +297,10 @@ public enum Drivers {
 
 			}
 //        driver.(10, TimeUnit.SECONDS);
-			int wait = new Integer(CapabilitiesBuilder.getInstance().getAppDriverProps().getProperty(IMPLICIT_WAIT));
-			driver.manage().timeouts().implicitlyWait(wait, TimeUnit.SECONDS);
+			if(machine.name().equalsIgnoreCase(AppiumScriptHandler.Machine.WINDOWS.name())) {
+				int wait = new Integer(CapabilitiesBuilder.getInstance().getAppDriverProps().getProperty(IMPLICIT_WAIT));
+				driver.manage().timeouts().implicitlyWait(wait, TimeUnit.SECONDS);
+			}
 			AppiumService.getInstance().setDriver(driver);
 			return driver;
 		}
