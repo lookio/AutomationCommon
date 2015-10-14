@@ -80,9 +80,9 @@ public class BaseTest {
                 DriverType driverType = entry.getKey();
                 Drivers driver = entry.getValue();
                 if (driverType == DriverType.SELENIUM) {
-                    seleniumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.SELENIUM, "", machine));
+                    seleniumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.SELENIUM, "", machine, ""));
                 } else if (driverType == DriverType.APPIUM) {
-                    appiumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.APPIUM, testPath, machine));
+                    appiumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.APPIUM, testPath, machine, "4723"));
                 }
             }
             if(confType != null) {
