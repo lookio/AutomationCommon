@@ -268,8 +268,6 @@ public enum Drivers {
 
 	public static class Appium {
 
-		static int counter = 0;
-
 //		ANDROID, IOS;
 
 		private static final Logger logger = Logger.getLogger(Appium.class);
@@ -296,12 +294,7 @@ public enum Drivers {
 //			}
 			switch (driverType) {
 				case ANDROID:
-					if(counter == 0) {
-						driver = createAndroidDriver(caps, port);
-					}else if(counter == 1) {
-						driver2 = createAndroidDriver(caps, port);
-					}
-					counter++;
+					driver = createAndroidDriver(caps, port);
 					printAndroidSuccessCreationMsg();
 					break;
 				case IOS:
