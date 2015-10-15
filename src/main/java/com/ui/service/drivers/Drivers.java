@@ -268,6 +268,8 @@ public enum Drivers {
 
 	public static class Appium {
 
+		static int counter = 0;
+
 //		ANDROID, IOS;
 
 		private static final Logger logger = Logger.getLogger(Appium.class);
@@ -277,6 +279,8 @@ public enum Drivers {
 
 
 		private volatile static AppiumDriver driver = null;
+		private volatile static AppiumDriver driver2 = null;
+
 
 		public static Properties props = null;
 
@@ -287,10 +291,17 @@ public enum Drivers {
 			logger.info("Trying to set " + driverType.name() + " driver");
 			DesiredCapabilities caps = CapabilitiesBuilder.
 					getInstance().getCapabilities(testDir, driverType, machine);
-			if(driver != null){throw new NullPointerException("Driver allready exists");}
+//			if(driver != null){
+//				throw new NullPointerException("Driver allready exists");
+//			}
 			switch (driverType) {
 				case ANDROID:
-					driver = createAndroidDriver(caps, port);
+					if(counter == 0) {
+						driver = createAndroidDriver(caps, port);
+					}else if(counter == 1) {
+						driver2 = createAndroidDriver(caps, port);
+					}
+					counter++;
 					printAndroidSuccessCreationMsg();
 					break;
 				case IOS:

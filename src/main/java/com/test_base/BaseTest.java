@@ -117,25 +117,30 @@ public class BaseTest {
             }
         }
 
-        public void startAppiumServer(String appiumHome, long timeOutInMilisec, AppiumScriptHandler.Machine machine) throws Exception {
+        public void startAppiumServer(String appiumHome, long timeOutInMilisec, AppiumScriptHandler.Machine machine, String port) throws Exception {
             CommandLine command = null;
             if(machine.name().equalsIgnoreCase("WINDOWS")) {
                 command = new CommandLine("cmd");
             }else{
                 command = new CommandLine("node");
             }
-            String nextArg = null;
-            while (machine.args.hasMoreTokens()) {
-                nextArg = machine.args.nextToken();
+            String[] tokens = machine.args.split(",");
+
+            for(String nextArg : tokens){
                 if(AppiumScriptHandler.argsWithFalseFlag.contains(nextArg)){
                     command.addArgument(nextArg, false);
                 }
                 else if(AppiumScriptHandler.argsWithAppiumHomePrefix.contains(nextArg)){
                     command.addArgument(appiumHome + nextArg);
                 }
+                else if(nextArg.contains("INPUT_PORT")){
+                    String appiumPort = nextArg.replace("INPUT_PORT", port);
+                    command.addArgument(appiumPort);
+                }
                 else{
                     command.addArgument(nextArg);
                 }
+                ;
             }
             try {
                 System.out.println("Going to execute start appium server: " + command);

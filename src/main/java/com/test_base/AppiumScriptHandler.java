@@ -9,10 +9,10 @@ import java.util.StringTokenizer;
  */
 public class AppiumScriptHandler {
 
-//    static StringTokenizer startAppiumServerArgs = new StringTokenizer("/c||node.exe||node_modules\\appium\\bin\\appium.js||--address||127.0.0.1||--port||4723||--bootstrap-port||4724||--no-reset||--local-timezone||--log||appiumServerLogs.txt", "||");
-    static StringTokenizer startAppiumServerOnWindowsArgs = new StringTokenizer("/c||node.exe||node_modules\\appium\\bin\\appium.js||--address||127.0.0.1||--port||4723", "||");
-    static StringTokenizer startAppiumServerOnMacArgs = new StringTokenizer("node_modules\\appium\\bin\\appium.js||--address||127.0.0.1||--port||4723", "||");
-    static StringTokenizer stopAppiumServerArgs = new StringTokenizer("/c||taskkill||/F||/IM||node.exe", "||");
+//    static StringTokenizer startAppiumServerArgs = new StringTokenizer("/c,node.exe,node_modules\\appium\\bin\\appium.js,--address,127.0.0.1,--port,4723,--bootstrap-port,4724,--no-reset,--local-timezone,--log,appiumServerLogs.txt", ",");
+    static String startAppiumServerOnWindowsArgs = "/c,node.exe,node_modules\\appium\\bin\\appium.js,--address,127.0.0.1,--port,INPUT_PORT";
+    static String startAppiumServerOnMacArgs = "node_modules\\appium\\bin\\appium.js,--address,127.0.0.1,--port,4723";
+    static StringTokenizer stopAppiumServerArgs = new StringTokenizer("/c,taskkill,/F,/IM,node.exe", ",");
     static List<String> argsWithFalseFlag = Arrays.asList("127.0.0.1", "--port", "4723", "--bootstrap-port" , "4724" , "--no-reset");
     static List<String> argsWithAppiumHomePrefix = Arrays.asList("node.exe", "node_modules\\appium\\bin\\appium.js", "appiumServerLogs.txt");
 
@@ -26,9 +26,9 @@ public class AppiumScriptHandler {
         WINDOWS(startAppiumServerOnWindowsArgs) ,
         MAC(startAppiumServerOnMacArgs);
 
-        public StringTokenizer args;
+        public String args;
 
-        Machine(StringTokenizer args){
+        Machine(String args){
             this.args = args;
         }
     }
