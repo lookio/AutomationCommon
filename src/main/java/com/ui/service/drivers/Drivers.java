@@ -41,12 +41,12 @@ public enum Drivers {
 
 	private static final String ENV_VARS_PROPERTY_FILE_PATH = "/environment/env.properties";
 
-	public static <T> WebDriver setDriver(Drivers driver, DriverType type, String testDir, AppiumScriptHandler.Machine machine, String port){
+	public static <T> WebDriver setDriver(Drivers driver, DriverType type, String testDir, AppiumScriptHandler.Machine machine, String port, String ip){
 		try {
 			if(type == DriverType.SELENIUM) {
 				return Selenium.setBrowserToDriver(driver, machine);
 			}else{
-				return Appium.setDriver(driver,testDir,machine,port);
+				return Appium.setDriver(driver, testDir, machine, port, ip);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -268,24 +268,23 @@ public enum Drivers {
 
 	public static class Appium {
 
+//		static int counter = 0;
+
 //		ANDROID, IOS;
 
 		private static final Logger logger = Logger.getLogger(Appium.class);
 
-		public static final String APPIUM_SERVER_URL = "http://127.0.0.1:port/wd/hub"; // 4723
+		public static final String APPIUM_SERVER_URL = "http://ip:port/wd/hub"; // 4723
 		private static final String IMPLICIT_WAIT = "implicitWait";
 
 
 		private volatile static AppiumDriver driver = null;
-		private volatile static AppiumDriver driver2 = null;
-
-
 		public static Properties props = null;
 
 		private static String browserType;
 
 
-		public static AppiumDriver setDriver(Drivers driverType, String testDir, AppiumScriptHandler.Machine machine, String port) throws MalformedURLException, Exception {
+		public static AppiumDriver setDriver(Drivers driverType, String testDir, AppiumScriptHandler.Machine machine, String port, String ip) throws MalformedURLException, Exception {
 			logger.info("Trying to set " + driverType.name() + " driver");
 			DesiredCapabilities caps = CapabilitiesBuilder.
 					getInstance().getCapabilities(testDir, driverType, machine);
@@ -294,7 +293,12 @@ public enum Drivers {
 //			}
 			switch (driverType) {
 				case ANDROID:
-					driver = createAndroidDriver(caps, port);
+//					if(counter == 0) {
+						driver = createAndroidDriver(caps, port, ip);
+//					}else if(counter == 1) {
+//						driver2 = createAndroidDriver(caps, port);
+//					}
+//					counter++;
 					printAndroidSuccessCreationMsg();
 					break;
 				case IOS:
@@ -311,9 +315,10 @@ public enum Drivers {
 			return driver;
 		}
 
-		private synchronized static AppiumDriver createAndroidDriver(DesiredCapabilities caps, String port) throws Exception {
-			String urlPort = APPIUM_SERVER_URL.replace("port", port);
-			return new AndroidDriver(new URL(urlPort), caps);
+		private synchronized static AppiumDriver createAndroidDriver(DesiredCapabilities caps, String port, String ip) throws Exception {
+			String urlPortWithPort = APPIUM_SERVER_URL.replace("port", port);
+			String urlPortWithIp = urlPortWithPort.replace("ip", ip);
+			return new AndroidDriver(new URL(urlPortWithIp), caps);
 		}
 
 		private static void printAndroidSuccessCreationMsg(){
