@@ -14,27 +14,21 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by asih on 22/02/2015.
  */
-public class AppiumService extends UIService<WebElement, AppiumDriver> {
+public class ConcurrentAppiumService extends UIService<WebElement, AppiumDriver> {
 
-    private static volatile AppiumDriver driver = null;
-    private static final AppiumService APPIUM_SERVICE_INSTANCE = new AppiumService();
+    private AppiumDriver driver = null;
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
     private final long waitForPageSourceInterval = 500;
     private static String lastPageSource = "";
     private UiMode requestedScreenMode;
 
 
-    public static AppiumService getInstance() {
-        return APPIUM_SERVICE_INSTANCE;
-    }
-
-    private AppiumService(){
+    public ConcurrentAppiumService(){
 
     }
 
@@ -51,6 +45,11 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
 
     public final void setDriver(AppiumDriver _driver) {
         driver = _driver;
+    }
+
+    public final void setDriver(AppiumDriver _driver, String msg) {
+        driver = _driver;
+        logger.info(msg);
     }
 
     public final void closeDriver() {

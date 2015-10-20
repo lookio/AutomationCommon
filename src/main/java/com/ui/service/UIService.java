@@ -42,7 +42,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     public <T extends WebDriver> void setDriver(WebDriver _driver) {
         try {
             driver = (T) _driver;
-            logger.info("Setting driver to service finished successfully. \n\t");
+//            logger.info("Setting driver to service finished successfully. \n\t");
         } catch (Exception ex) {
             logger.error("Problem in setting browser to driver ", ex);
         }
