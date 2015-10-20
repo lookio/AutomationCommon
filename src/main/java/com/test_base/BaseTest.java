@@ -73,16 +73,18 @@ public class BaseTest {
                 String testPath,
                 Class<T> testClass,
                 StringBuilder desc,
-                AppiumScriptHandler.Machine machine)
+                AppiumScriptHandler.Machine machine,
+                String port,
+                String ip)
                 throws Exception {
 
             for (Map.Entry<DriverType, Drivers> entry : drivers.entrySet()) {
                 DriverType driverType = entry.getKey();
                 Drivers driver = entry.getValue();
                 if (driverType == DriverType.SELENIUM) {
-                    seleniumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.SELENIUM, "", machine, ""));
+                    seleniumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.SELENIUM, "", machine, "", ""));
                 } else if (driverType == DriverType.APPIUM) {
-                    appiumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.APPIUM, testPath, machine, "4723"));
+                    appiumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.APPIUM, testPath, machine, port, ip));
                 }
             }
             if(confType != null) {
@@ -117,7 +119,7 @@ public class BaseTest {
             }
         }
 
-        public void startAppiumServer(String appiumHome, long timeOutInMilisec, AppiumScriptHandler.Machine machine, String port) throws Exception {
+        public void startAppiumServer(String appiumHome, long timeOutInMilisec, AppiumScriptHandler.Machine machine, String port, String ip) throws Exception {
             CommandLine command = null;
             if(machine.name().equalsIgnoreCase("WINDOWS")) {
                 command = new CommandLine("cmd");
@@ -136,6 +138,10 @@ public class BaseTest {
                 else if(nextArg.contains("INPUT_PORT")){
                     String appiumPort = nextArg.replace("INPUT_PORT", port);
                     command.addArgument(appiumPort);
+                }
+                else if(nextArg.contains("INPUT_IP")){
+                    String appiumIp = nextArg.replace("INPUT_IP", ip);
+                    command.addArgument(appiumIp);
                 }
                 else{
                     command.addArgument(nextArg);
