@@ -13,7 +13,7 @@ public abstract class ConcurrentAppiumBasePage extends BasePage {
     private static final Logger logger = Logger.getLogger(ConcurrentAppiumBasePage.class);
     // problem in wait for page
     private long waitForPageContextTimeOut = 15000;
-    protected static ConcurrentAppiumService service;
+    protected ConcurrentAppiumService service;
 
     protected ConcurrentAppiumBasePage(boolean shouldValidateOnPage, boolean shouldFailTestOnLocation, ConcurrentAppiumService service){
         super(shouldValidateOnPage, shouldFailTestOnLocation);

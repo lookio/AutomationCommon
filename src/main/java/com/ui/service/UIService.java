@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class UIService<E,T> implements ElementService<E>, DriverService {
 
-    private volatile static WebDriver driver = null;
+    private WebDriver driver = null;
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
     private static String elementClassName;
     private static String elementName;
