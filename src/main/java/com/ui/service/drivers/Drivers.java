@@ -29,11 +29,14 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public enum Drivers {
 
@@ -104,7 +107,7 @@ public enum Drivers {
 //		driver.manage().window().setSize(new Dimension(1800, 1150));
 //		driver.manage().window().setPosition(new Point(0, 0));
 			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 			driver.manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
 			driver.manage().window().setSize(new Dimension(driver.manage().window().getSize().getWidth(), driver.manage().window().getSize().getHeight()));
 
@@ -140,10 +143,12 @@ public enum Drivers {
 
 		private synchronized static void createFireFoxDriver() throws Exception {
 //			ffProfile.setPreference("webdriver.load.strategy", "unstable"); // As of 2.19. from 2.9 - 2.18 use 'fast'
-
-//			WebDriver driver = new FirefoxDriver(new FirefoxBinary(new File("path/to/your/firefox.exe")), ffProfile);
-
-			WebDriver driver = new FirefoxDriver();
+			driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")), ffProfile);
+//			ProfilesIni profile = new ProfilesIni();
+//
+//			FirefoxProfile myprofile = profile.getProfile("ProfileToolQA");
+//			driver = new FirefoxDriver(myprofile);
+			driver = new FirefoxDriver();
 			logger.info("=========================================================");
 			logger.info("============= Created New Fire Fox Driver ===============");
 			logger.info("=========================================================");
@@ -164,16 +169,31 @@ public enum Drivers {
 			if(machine == AppiumScriptHandler.Machine.WINDOWS) {
 				file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_WIN));
 				System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), file.getAbsolutePath());
-			}else{
+//				System.setProperty("webdriver.chrome.logfile", "C:\\temp\\chromedriver.log");
+
+//				System.setProperty("webdriver.chrome.logfile", "chromedriver.exe --verbose --log-C:\\temp\\=chromedriver.log");
+
+//				chromedriver.exe --verbose --log-path=chromedriver.log
+				}else{
 //				file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_MAC));
 				System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_MAC));
 			}
 
 
 			try {
-				driver = new ChromeDriver();
-			}catch (Throwable e) {
+				ChromeDriverService service;
+				service = new ChromeDriverService.Builder()
+						.usingDriverExecutable(new File("C://temp//chromedriver.exe"))
+						.usingAnyFreePort()
+						.build();
+				service.start();
+				WebDriver driver = new RemoteWebDriver(service.getUrl(),
+						DesiredCapabilities.chrome());
+//				driver = new ChromeDriver();
+
+			}catch (Throwable t) {
 				logger.info("CDriver is " + driver);
+				GeneralUtils.handleError("error chrome driver", t);
 			}
 			logger.info("CDriver is " + driver);
 
@@ -309,7 +329,7 @@ public enum Drivers {
 //        driver.(10, TimeUnit.SECONDS);
 			if(machine.name().equalsIgnoreCase(AppiumScriptHandler.Machine.WINDOWS.name())) {
 				int wait = new Integer(CapabilitiesBuilder.getInstance().getAppDriverProps().getProperty(IMPLICIT_WAIT));
-				driver.manage().timeouts().implicitlyWait(wait, TimeUnit.SECONDS);
+//				driver.manage().timeouts().implicitlyWait(wait, TimeUnit.SECONDS);
 			}
 			AppiumService.getInstance().setDriver(driver);
 			return driver;
