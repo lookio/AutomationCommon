@@ -23,7 +23,7 @@ public abstract class PollService implements Pollable{
             }
         }
     }
-
+//
     public boolean waitUntilWithNoReport (long timeOutInMilisec, long interval) {
 
         try {
