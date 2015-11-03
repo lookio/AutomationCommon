@@ -1,5 +1,5 @@
 package com.ui.service.drivers;
-import com.test_base.AppiumScriptHandler;
+import com.test.AppiumScriptHandler;
 import com.util.properties.PropertiesHandlerImpl;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -44,8 +44,18 @@ public class CapabilitiesBuilder {
     private Map<String, String> getCapsMap(){
         Map<String, String> caps = new HashMap<>((Map)
                 PropertiesHandlerImpl.getInstance().parseFromJar(
-//                        PropertiesHandlerImpl.getInstance().parse(
                                 capFilePath + Constants.CAPS_PROPERTY_FILE_PATH));
+        if(driver == Drivers.ANDROID) {
+            caps.put(Constants.DESIRED_CAP_APP_KEY, getAppAbsolutePath());
+        }
+        return caps;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, String> getCapsMapNotFromJar(){
+        Map<String, String> caps = new HashMap<>((Map)
+                        PropertiesHandlerImpl.getInstance().parse(
+                        capFilePath + Constants.CAPS_PROPERTY_FILE_PATH));
         if(driver == Drivers.ANDROID) {
             caps.put(Constants.DESIRED_CAP_APP_KEY, getAppAbsolutePath());
         }

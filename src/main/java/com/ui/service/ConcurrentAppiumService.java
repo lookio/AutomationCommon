@@ -1,6 +1,6 @@
 package com.ui.service;
 
-import com.test_base.AppiumScriptHandler;
+import com.test.AppiumScriptHandler;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
 import com.util.genutil.GeneralUtils;
