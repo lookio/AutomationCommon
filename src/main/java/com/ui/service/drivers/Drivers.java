@@ -373,6 +373,21 @@ public enum Drivers {
 			}
 		}
 
+		public static void close(WebDriver driver)  {
+			logger.info("Test on driver finished succssesfully");
+			try {
+				if(driver != null) {
+
+					driver.quit();
+					driver.close();
+					setDriver(null);
+//                AppiumService.getInstance().closeApp();
+				}
+			}catch (Exception e){
+				GeneralUtils.handleError("Error in close resources", e);
+			}
+		}
+
 		private static void setDriver(AppiumDriver driver) {
 			Appium.driver = driver;}
 
