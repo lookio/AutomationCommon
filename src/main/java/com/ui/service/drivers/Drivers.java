@@ -378,10 +378,8 @@ public enum Drivers {
 			try {
 				if(driver != null) {
 
-					driver.quit();
+//					driver.quit();
 					driver.close();
-					setDriver(null);
-//                AppiumService.getInstance().closeApp();
 				}
 			}catch (Exception e){
 				GeneralUtils.handleError("Error in close resources", e);
