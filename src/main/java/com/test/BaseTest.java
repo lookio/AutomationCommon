@@ -97,11 +97,11 @@ public class BaseTest {
                 Drivers.Selenium.close();
             }else if(driver == DriverType.APPIUM) {
                 Drivers.Appium.close();
-                try {
-                    uninstallApp();
-                } catch (IOException e) {
-                    logger.error("Error in uninstall app");
-                }
+//                try {
+////                    uninstallApp();
+//                } catch (IOException e) {
+//                    logger.error("Error in uninstall app");
+//                }
             }
         }
 
