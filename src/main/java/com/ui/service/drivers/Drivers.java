@@ -27,6 +27,7 @@ import io.appium.java_client.ios.IOSDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -139,8 +140,15 @@ public enum Drivers {
 		 */
 
 		private synchronized static void createFireFoxDriver() throws Exception {
-//			ffProfile.setPreference("webdriver.load.strategy", "unstable"); // As of 2.19. from 2.9 - 2.18 use 'fast'
-			driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")), ffProfile);
+
+//			File pathToFirefoxBinary = new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
+//			FirefoxBinary firefoxbin = new FirefoxBinary(pathToFirefoxBinary);
+//			WebDriver firefox = new FirefoxDriver();
+//			firefox.get("google.com");
+//			driver = firefox;
+
+//			ffProfile.setPreference("webdriver.load.strategy", "unstable"); // As of 2.19. from 2.9 - f
+			driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")),ffProfile);
 //			ProfilesIni profile = new ProfilesIni();
 //
 //			FirefoxProfile myprofile = profile.getProfile("ProfileToolQA");
@@ -178,15 +186,15 @@ public enum Drivers {
 
 
 			try {
-				ChromeDriverService service;
-				service = new ChromeDriverService.Builder()
-						.usingDriverExecutable(new File("C://temp//chromedriver.exe"))
-						.usingAnyFreePort()
-						.build();
-				service.start();
-				WebDriver driver = new RemoteWebDriver(service.getUrl(),
-						DesiredCapabilities.chrome());
-//				driver = new ChromeDriver();
+//				ChromeDriverService service;
+//				service = new ChromeDriverService.Builder()
+//						.usingDriverExecutable(new File("C://temp//chromedriver.exe"))
+//						.usingAnyFreePort()
+//						.build();
+//				service.start();
+//				WebDriver driver = new RemoteWebDriver(service.getUrl(),
+//						DesiredCapabilities.chrome());
+				driver = new ChromeDriver();
 
 			}catch (Throwable t) {
 				logger.info("CDriver is " + driver);
