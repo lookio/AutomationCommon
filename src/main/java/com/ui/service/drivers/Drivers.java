@@ -140,7 +140,7 @@ public enum Drivers {
 
 		private synchronized static void createFireFoxDriver() throws Exception {
 //			ffProfile.setPreference("webdriver.load.strategy", "unstable"); // As of 2.19. from 2.9 - 2.18 use 'fast'
-			driver = new FirefoxDriver(new FirefoxBinary(new File("D:\\MozillaFirefox\\firefox.exe")), ffProfile);
+			driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")), ffProfile);
 //			ProfilesIni profile = new ProfilesIni();
 //
 //			FirefoxProfile myprofile = profile.getProfile("ProfileToolQA");
