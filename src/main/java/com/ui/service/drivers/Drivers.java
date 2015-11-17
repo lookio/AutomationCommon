@@ -32,9 +32,11 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.firefox.internal.ProfilesIni;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 
 public enum Drivers {
 
@@ -81,7 +83,7 @@ public enum Drivers {
 		private static final String PROP_KEY_IE_DRIVER_NAME_PATH_VALUE = "IE_driver_path";
 
 		private static String browserType;
-		static FirefoxProfile ffProfile = new FirefoxProfile();
+//		static FirefoxProfile ffProfile = new FirefoxProfile("SanityTests");
 
 
 		public static WebDriver setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
@@ -148,12 +150,25 @@ public enum Drivers {
 //			driver = firefox;
 
 //			ffProfile.setPreference("webdriver.load.strategy", "unstable"); // As of 2.19. from 2.9 - f
-			driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")),ffProfile);
+
+
+
+//			driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")),ffProfile);
+			ProfilesIni allProfiles = new ProfilesIni();
+			FirefoxProfile profile = allProfiles.getProfile("SanityTests");
+			profile.setPreference("network.proxy.type", 1);
+			profile.setPreference("network.proxy.http","127.0.0.1");
+			profile.setPreference("network.proxy.http_port", 3128);
+			driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")),profile);
+
+
+
+
 //			ProfilesIni profile = new ProfilesIni();
 //
 //			FirefoxProfile myprofile = profile.getProfile("ProfileToolQA");
 //			driver = new FirefoxDriver(myprofile);
-			driver = new FirefoxDriver();
+//			driver = new FirefoxDriver();
 			logger.info("=========================================================");
 			logger.info("============= Created New Fire Fox Driver ===============");
 			logger.info("=========================================================");
@@ -173,7 +188,8 @@ public enum Drivers {
 			File file = null;
 			if(machine == AppiumScriptHandler.Machine.WINDOWS) {
 				file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_WIN));
-				System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), file.getAbsolutePath());
+//				System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), file.getAbsolutePath());
+				System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), "C:\\temp\\chromedriver.exe");
 //				System.setProperty("webdriver.chrome.logfile", "C:\\temp\\chromedriver.log");
 
 //				System.setProperty("webdriver.chrome.logfile", "chromedriver.exe --verbose --log-C:\\temp\\=chromedriver.log");
@@ -192,7 +208,7 @@ public enum Drivers {
 //						.usingAnyFreePort()
 //						.build();
 //				service.start();
-//				WebDriver driver = new RemoteWebDriver(service.getUrl(),
+//				driver = new RemoteWebDriver(service.getUrl(),
 //						DesiredCapabilities.chrome());
 				driver = new ChromeDriver();
 
@@ -211,7 +227,7 @@ public enum Drivers {
 		}
 
 		private synchronized static void createSafariDriver() throws Exception {
-			WebDriver driver = new FirefoxDriver();
+			WebDriver driver = new SafariDriver();
 			logger.info("=========================================================");
 			logger.info("============= Created New Safari Driver ===============");
 			logger.info("=========================================================");
