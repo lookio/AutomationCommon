@@ -118,9 +118,10 @@ public class BaseTest {
         }
 
         public void startAppiumServer(String appiumHome, long timeOutInMilisec, AppiumScriptHandler.Machine machine, String port, String ip) throws Exception {
-            CommandLine command = null;
+            CommandLine command;
+
             if(machine.name().equalsIgnoreCase("WINDOWS")) {
-                command = new CommandLine("cmd");
+                command = new CommandLine("psexec \\\\" + ip + " cmd");
             }else{
                 command = new CommandLine("node");
             }
@@ -145,7 +146,15 @@ public class BaseTest {
                     command.addArgument(nextArg);
                 }
                 ;
+                String a = command.toString();
+                logger.info("a" + a);
             }
+//            command.addArgument("--callback-address");
+//            command.addArgument("192.168.21.81",false);
+//            command.addArgument("--callback-port",false);k
+//            command.addArgument("4723",false);
+// psexec \\192.168.23.43
+
             try {
                 System.out.println("Going to execute start appium server: " + command);
                 getExecutor().execute(command, new DefaultExecuteResultHandler());
@@ -191,8 +200,8 @@ public class BaseTest {
             return isAppiumServerStarted();
         }
 
-        public void stopAppiumServer(){
-            CommandLine command = new CommandLine("cmd");
+        public void stopAppiumServer(String ip){
+            CommandLine command = new CommandLine("psexec \\\\" + ip + " cmd");
 
             while (AppiumScriptHandler.stopAppiumServerArgs.hasMoreTokens()) {
                 command.addArgument(AppiumScriptHandler.stopAppiumServerArgs.nextToken());
@@ -322,7 +331,7 @@ public class BaseTest {
         return router;
     }
 
-    protected static StaticRouter getStaticRouter() {
+    public static StaticRouter getStaticRouter() {
         return staticRouter;
     }
 
