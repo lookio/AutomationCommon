@@ -117,11 +117,15 @@ public class BaseTest {
             }
         }
 
-        public void startAppiumServer(String appiumHome, long timeOutInMilisec, AppiumScriptHandler.Machine machine, String port, String ip) throws Exception {
+        public void startAppiumServer(String appiumHome, long timeOutInMilisec, AppiumScriptHandler.Machine machine, String port, String ip, boolean isRemote) throws Exception {
             CommandLine command;
 
             if(machine.name().equalsIgnoreCase("WINDOWS")) {
-                command = new CommandLine("psexec \\\\" + ip + " cmd");
+                if(isRemote) {
+                    command = new CommandLine("psexec \\\\" + ip + " cmd");
+                } else {
+                    command = new CommandLine("cmd");
+                }
             }else{
                 command = new CommandLine("node");
             }
@@ -200,9 +204,14 @@ public class BaseTest {
             return isAppiumServerStarted();
         }
 
-        public void stopAppiumServer(String ip){
-            CommandLine command = new CommandLine("psexec \\\\" + ip + " cmd");
+        public void stopAppiumServer(String ip, boolean isRemote){
+            CommandLine command;
 
+            if(isRemote) {
+                command = new CommandLine("psexec \\\\" + ip + " cmd");
+            } else {
+                command = new CommandLine("cmd");
+            }
             while (AppiumScriptHandler.stopAppiumServerArgs.hasMoreTokens()) {
                 command.addArgument(AppiumScriptHandler.stopAppiumServerArgs.nextToken());
             }
