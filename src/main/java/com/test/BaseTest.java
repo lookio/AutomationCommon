@@ -150,18 +150,13 @@ public class BaseTest {
                     command.addArgument(nextArg);
                 }
                 ;
-                String a = command.toString();
-                logger.info("a" + a);
             }
-//            command.addArgument("--callback-address");
-//            command.addArgument("192.168.21.81",false);
-//            command.addArgument("--callback-port",false);k
-//            command.addArgument("4723",false);
-// psexec \\192.168.23.43
-
             try {
                 System.out.println("Going to execute start appium server: " + command);
-                getExecutor().execute(command, new DefaultExecuteResultHandler());
+//                getExecutor().execute(command, new DefaultExecuteResultHandler());
+                Runtime rt = Runtime.getRuntime();
+                Process pr = rt.exec(command.toString());
+
 //                super.waitUntil(timeOutInMilisec, 2500, "Appium server was not able to start after " + new Long(timeOutInMilisec).longValue() + " mili");
 //                for (int i=1; i<10; i++) {
 //                    int nRead = is.read();
