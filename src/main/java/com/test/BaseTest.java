@@ -151,25 +151,7 @@ public class BaseTest {
                 }
                 ;
             }
-            try {
-                System.out.println("Going to execute start appium server: " + command);
-//                getExecutor().execute(command, new DefaultExecuteResultHandler());
-                Runtime rt = Runtime.getRuntime();
-                Process pr = rt.exec(command.toString());
-
-//                super.waitUntil(timeOutInMilisec, 2500, "Appium server was not able to start after " + new Long(timeOutInMilisec).longValue() + " mili");
-//                for (int i=1; i<10; i++) {
-//                    int nRead = is.read();
-//                    if(nRead!=0)
-//                        break;
-//                    Thread.sleep(5000);
-//                }
-//            }
-            } catch (IOException e) {
-                GeneralUtils.handleError("Error in starting appium server", e);
-                Assert.assertTrue("Error in starting appium server", false);
-
-            }
+            execCommandByIsRemote(isRemote, command, "Going to execute start appium server: ");
         }
 
         private DefaultExecutor getExecutor() throws IOException {
@@ -210,16 +192,22 @@ public class BaseTest {
             while (AppiumScriptHandler.stopAppiumServerArgs.hasMoreTokens()) {
                 command.addArgument(AppiumScriptHandler.stopAppiumServerArgs.nextToken());
             }
+            execCommandByIsRemote(isRemote, command, "Going to execute kill appium server: ");
+        }
 
-            DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
-            DefaultExecutor executor = new DefaultExecutor();
-            executor.setExitValue(1);
-
+        private void execCommandByIsRemote(boolean isRemote, CommandLine command, String msg){
             try {
-                System.out.println("Going to execute kill appium server: " + command);
-                executor.execute(command, resultHandler);
+                logger.info(msg + command);
+                if(!isRemote) {
+                    DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
+                    DefaultExecutor executor = new DefaultExecutor();
+                    executor.setExitValue(1);
+                    executor.execute(command, resultHandler);
+                } else {
+                    Runtime.getRuntime().exec(command.toString());
+                }
             } catch (IOException e) {
-                e.printStackTrace();
+                GeneralUtils.handleError("Command fail", e);
             }
         }
 
