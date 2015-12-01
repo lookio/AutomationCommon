@@ -35,8 +35,7 @@ public abstract class PollService implements Pollable{
                         return false;
                     }
                 } catch (InterruptedException e) {
-                    GeneralUtils.handleError("Error in wait for time out", e);
-
+                    return false;
                 }
             }
             return true;
