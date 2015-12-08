@@ -318,14 +318,14 @@ public enum Drivers {
 		public static final String APPIUM_SERVER_URL = "http://ip:port/wd/hub"; // 4723
 		private static final String IMPLICIT_WAIT = "implicitWait";
 
-
 		private volatile static AppiumDriver driver = null;
+
 		public static Properties props = null;
 
 		private static String browserType;
 
 
-		public static AppiumDriver setDriver(Drivers driverType, String testDir, AppiumScriptHandler.Machine machine, String port, String ip) throws MalformedURLException, Exception {
+		public static <T extends RemoteWebDriver> T setDriver(Drivers driverType, String testDir, AppiumScriptHandler.Machine machine, String port, String ip) throws MalformedURLException, Exception {
 			logger.info("Trying to set " + driverType.name() + " driver");
 			DesiredCapabilities caps = CapabilitiesBuilder.
 					getInstance().getCapabilities(testDir, driverType, machine);
@@ -353,7 +353,7 @@ public enum Drivers {
 //				driver.manage().timeouts().implicitlyWait(wait, TimeUnit.SECONDS);
 			}
 			AppiumService.getInstance().setDriver(driver);
-			return driver;
+			return (T) driver;
 		}
 
 		private synchronized static AppiumDriver createAndroidDriver(DesiredCapabilities caps, String port, String ip) throws Exception {

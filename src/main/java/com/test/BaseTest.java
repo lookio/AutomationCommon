@@ -1,9 +1,9 @@
 
 package com.test;
 
-import com.config.base.ConfigItemsRouter;
-import com.liveperson.AgentState;
-import com.liveperson.Rep;
+//import com.config.base.ConfigItemsRouter;
+//import com.liveperson.AgentState;
+//import com.liveperson.Rep;
 //import com.service.validate.echo_test.ChatService;
 import com.ui.service.AppiumService;
 import com.ui.service.SeleniumService;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.liveperson.AgentState.Online;
+//import static com.liveperson.AgentState.Online;
 
 
 public class BaseTest {
@@ -40,7 +40,7 @@ public class BaseTest {
 
     protected static StaticRouter staticRouter = new StaticRouter();
     protected Router router = new Router();
-    protected static ChatActivity chatActivity = new ChatActivity();
+//    protected static ChatActivity chatActivity = new ChatActivity();
     protected static Logging logging = new Logging();
     protected static int uiModeOrdinal = 0;
     private static InputStream is;
@@ -67,7 +67,7 @@ public class BaseTest {
 
         public static <T extends BaseTest> void before(
                 Map<DriverType, Drivers> drivers,
-                ConfigItemsRouter.ConfigType confType,
+//                ConfigItemsRouter.ConfigType confType,
                 String testPath,
                 Class<T> testClass,
                 StringBuilder desc,
@@ -85,9 +85,9 @@ public class BaseTest {
                     appiumService.setDriver(Drivers.setDriver(driver, Drivers.DriverType.APPIUM, testPath, machine, port, ip));
                 }
             }
-            if(confType != null) {
-//            ConfigItemsRouter.getInstance().routeAction(confType, testPath);
-            }
+//            if(confType != null) {
+////            ConfigItemsRouter.getInstance().routeAction(confType, testPath);
+//            }
             Logging.generateTestClassOutput(testClass, desc);
         }
 
@@ -234,44 +234,44 @@ public class BaseTest {
 
     }
 
-    protected static class ChatActivity {
-
-        protected void changeAgentState(List<AgentState> agentStates, List<Rep> agents, int agentLocation, AgentState stateToChange) {
-            agentStates.set(agentLocation, stateToChange);
-            agents.get(agentLocation).setAvailability(AgentState.Offline.name());
-        }
-
-        protected void changeAgentStateWithRange(List<AgentState> agentStates, List<Rep> agents, int fromLocation, int toLocation, AgentState stateToChange) {
-            for(int i = fromLocation; i <= toLocation; i++){
-                agentStates.set(i, stateToChange);
-                agents.get(i).setAvailability("Away");
-            }
-        }
-
-//        protected void startChat(AgentService service, ChatService chatService, List<Rep> repsState, List<AgentState> agentStates, Rep agent) {
-//            try {
-//                chatService.startAndValidateChat(service, repsState, agentStates, agent);
-//            } catch (Exception e) {
-//                GeneralUtils.handleError("Error while starting chat", e);
+//    protected static class ChatActivity {
+//
+//        protected void changeAgentState(List<AgentState> agentStates, List<Rep> agents, int agentLocation, AgentState stateToChange) {
+//            agentStates.set(agentLocation, stateToChange);
+//            agents.get(agentLocation).setAvailability(AgentState.Offline.name());
+//        }
+//
+//        protected void changeAgentStateWithRange(List<AgentState> agentStates, List<Rep> agents, int fromLocation, int toLocation, AgentState stateToChange) {
+//            for(int i = fromLocation; i <= toLocation; i++){
+//                agentStates.set(i, stateToChange);
+//                agents.get(i).setAvailability("Away");
 //            }
 //        }
 //
-//        protected void closeChat(AgentService service, ChatService chatService, Rep agent) {
-//            try {
-//                chatService.closeChat(service, agent);
-//            } catch (Exception e) {
-//                GeneralUtils.handleError("Error while starting chat", e);
+////        protected void startChat(AgentService service, ChatService chatService, List<Rep> repsState, List<AgentState> agentStates, Rep agent) {
+////            try {
+////                chatService.startAndValidateChat(service, repsState, agentStates, agent);
+////            } catch (Exception e) {
+////                GeneralUtils.handleError("Error while starting chat", e);
+////            }
+////        }
+////
+////        protected void closeChat(AgentService service, ChatService chatService, Rep agent) {
+////            try {
+////                chatService.closeChat(service, agent);
+////            } catch (Exception e) {
+////                GeneralUtils.handleError("Error while starting chat", e);
+////            }
+////        }
+//
+//        public static void initAgentLoginState(int numberOfAgents, List<Rep> agents, List<Rep> repsState, List<AgentState> agentStates){
+//            for(int i = 0; i < numberOfAgents; i++){
+//                repsState.add(agents.get(i));
+//                agentStates.add(Online);
 //            }
 //        }
-
-        public static void initAgentLoginState(int numberOfAgents, List<Rep> agents, List<Rep> repsState, List<AgentState> agentStates){
-            for(int i = 0; i < numberOfAgents; i++){
-                repsState.add(agents.get(i));
-                agentStates.add(Online);
-            }
-        }
-
-    }
+//
+//    }
 
     protected static class Logging {
 
@@ -327,9 +327,9 @@ public class BaseTest {
         return staticRouter;
     }
 
-    protected static ChatActivity getChatActivity() {
-        return chatActivity;
-    }
+//    protected static ChatActivity getChatActivity() {
+//        return chatActivity;
+//    }
 
     protected static Logging getLogging() {
         return logging;

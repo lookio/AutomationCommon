@@ -130,7 +130,7 @@
     <orderEntry type="library" name="Maven: asm:asm:3.1" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey.contribs.jersey-oauth:oauth-signature:1.16" level="project" />
     <orderEntry type="library" name="Maven: com.sun.jersey.contribs.jersey-oauth:oauth-client:1.16" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson:RestApiCommon:2.0.0.7-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.liveperson:RestApiCommon:2.0.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.3rdparty.j2ee:j2ee:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.api-ads:ads-lib:1.10.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject:guice:3.0" level="project" />
@@ -442,6 +442,5 @@
     <orderEntry type="library" name="Maven: com.sun.jersey.contribs:jersey-apache-client:1.17.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jul-to-slf4j:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: com.liveperson.automation.lpadk:lpadk-agent:sources:18.2.0.1" level="project" />
-    <orderEntry type="library" name="Maven: com.liveperson.ams:tests:2.0.3.8-SNAPSHOT" level="project" />
   </component>
 </module>
