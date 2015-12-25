@@ -72,10 +72,10 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     public <E> E findElement(By by, String elementName) {
         try {
             parseMessage(elementName);
-            logger.debug("======================================================================");
-            logger.debug("TRYING TO FIND ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName);
+            logger.info("======================================================================");
+            logger.info("TRYING TO FIND ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName);
             WebElement element = driver.findElement(by);
-            logger.debug("ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName + " WAS FOUND");
+            logger.info("ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName + " WAS FOUND");
             return (E) element;
         } catch (NoSuchElementException e) {
             logger.error(printErrorMessage(elementName));
