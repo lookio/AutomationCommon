@@ -21,10 +21,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -203,7 +200,15 @@ public class BaseTest {
             }
         }
 
-        private void execCommandByIsRemote(boolean isRemote, CommandLine command, String msg) throws Throwable{
+        public static void closeOldSeleniumProcesses(){
+            try {
+
+            } catch (Throwable t){
+                logger.warn("No selenium instances to close");
+            }
+        }
+
+        private static void execCommandByIsRemote(boolean isRemote, CommandLine command, String msg) throws Throwable{
             logger.info(msg + command);
             if(!isRemote) {
                 DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
@@ -212,6 +217,15 @@ public class BaseTest {
                 executor.execute(command, resultHandler);
             } else {
                 Runtime.getRuntime().exec(command.toString());
+            }
+        }
+
+        public static void clearTempFolder() throws Exception {
+            File fin = new File("C:\\Users\\asih\\AppData\\Local\\Temp\\AndroidEmulator");
+            File[] finlist = fin.listFiles();
+            for (int n = 0; n < finlist.length; n++) {
+                finlist[n].delete();
+                System.out.println("Deleted file " + finlist[n].getName());
             }
         }
 
