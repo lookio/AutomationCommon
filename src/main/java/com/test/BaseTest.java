@@ -34,6 +34,7 @@ public class BaseTest {
     private static final String ENV_PROP_FILE_PATH = "/environment/env.properties";
     private static final String LOG4J_PROP_FILE_PATH_KEY_VALUE = "Log4jPropFilePath";
     protected static final String OUTPUT_METHOD_POSTFIX = "Desc";
+    private static final String EMULATORS_FILE_DIR = "C:\\Users\\asih\\AppData\\Local\\Temp\\AndroidEmulator";
 
     protected static StaticRouter staticRouter = new StaticRouter();
     protected Router router = new Router();
@@ -220,8 +221,8 @@ public class BaseTest {
             }
         }
 
-        public static void clearTempFolder(String filePath) throws Exception {
-            File fin = new File(filePath);
+        public static void clearTempFolder() throws Exception {
+            File fin = new File(EMULATORS_FILE_DIR);
             File[] finlist = fin.listFiles();
             for (int n = 0; n < finlist.length; n++) {
                 finlist[n].delete();
