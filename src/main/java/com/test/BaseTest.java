@@ -40,7 +40,7 @@ public class BaseTest {
 
     protected static StaticRouter staticRouter = new StaticRouter();
     protected Router router = new Router();
-//    protected static ChatActivity chatActivity = new ChatActivity();
+    //    protected static ChatActivity chatActivity = new ChatActivity();
     protected static Logging logging = new Logging();
     protected static int uiModeOrdinal = 0;
     private static InputStream is;
@@ -151,7 +151,11 @@ public class BaseTest {
                 }
                 ;
             }
-            execCommandByIsRemote(isRemote, command, "Going to execute start appium server: ");
+            try {
+                execCommandByIsRemote(isRemote, command, "Going to execute start appium server: ");
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
         }
 
         private DefaultExecutor getExecutor() throws IOException {
@@ -192,22 +196,22 @@ public class BaseTest {
             while (AppiumScriptHandler.stopAppiumServerArgs.hasMoreTokens()) {
                 command.addArgument(AppiumScriptHandler.stopAppiumServerArgs.nextToken());
             }
-            execCommandByIsRemote(isRemote, command, "Going to execute kill appium server: ");
+            try {
+                execCommandByIsRemote(isRemote, command, "Going to execute kill appium server: ");
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
         }
 
-        private void execCommandByIsRemote(boolean isRemote, CommandLine command, String msg){
-            try {
-                logger.info(msg + command);
-                if(!isRemote) {
-                    DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
-                    DefaultExecutor executor = new DefaultExecutor();
-                    executor.setExitValue(1);
-                    executor.execute(command, resultHandler);
-                } else {
-                    Runtime.getRuntime().exec(command.toString());
-                }
-            } catch (IOException e) {
-                GeneralUtils.handleError("Command fail", e);
+        private void execCommandByIsRemote(boolean isRemote, CommandLine command, String msg) throws Throwable{
+            logger.info(msg + command);
+            if(!isRemote) {
+                DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
+                DefaultExecutor executor = new DefaultExecutor();
+                executor.setExitValue(1);
+                executor.execute(command, resultHandler);
+            } else {
+                Runtime.getRuntime().exec(command.toString());
             }
         }
 
