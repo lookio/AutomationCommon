@@ -296,7 +296,7 @@ public class BaseTest {
 
     protected static class Logging {
 
-        protected static void configureLog4J() {
+        protected void configureLog4J() {
             java.net.URL url = getClass().getResource(
                     getProps().getProperty(
                             LOG4J_PROP_FILE_PATH_KEY_VALUE)
