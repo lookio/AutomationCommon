@@ -205,6 +205,7 @@ public class BaseTest {
         public static void closeOldSeleniumProcesses(){
             try {
                 execCommandByIsRemote(false, KILL_SELENIUM_PROCESSES_COMMAND, "");
+                logger.info("Selenium instances closed successfully");
             } catch (Throwable t){
                 logger.warn("No selenium instances to close");
             }
