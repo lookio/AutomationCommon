@@ -304,7 +304,7 @@ public class BaseTest {
             PropertyConfigurator.configure(url);
         }
 
-        protected static <T> void generateTestClassOutput(Class<T> testClass, StringBuilder desc) {
+        public static <T> void generateTestClassOutput(Class<T> testClass, StringBuilder desc) {
             try {
                 logger.info(OutputGenerator.createGenericClassDesc(testClass, desc));
             } catch (Throwable t) {
