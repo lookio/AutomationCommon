@@ -35,6 +35,7 @@ public class BaseTest {
     private static final String LOG4J_PROP_FILE_PATH_KEY_VALUE = "Log4jPropFilePath";
     protected static final String OUTPUT_METHOD_POSTFIX = "Desc";
     private static final String EMULATORS_FILE_DIR = "C:\\Users\\asih\\AppData\\Local\\Temp\\AndroidEmulator";
+    private static final CommandLine KILL_SELENIUM_PROCESSES_COMMAND = new CommandLine("Taskkill /IM chromedriver.exe /FTaskkill /IM emulator-x86.exe /F");
 
     protected static StaticRouter staticRouter = new StaticRouter();
     protected Router router = new Router();
@@ -203,7 +204,7 @@ public class BaseTest {
 
         public static void closeOldSeleniumProcesses(){
             try {
-
+                execCommandByIsRemote(false, KILL_SELENIUM_PROCESSES_COMMAND, "");
             } catch (Throwable t){
                 logger.warn("No selenium instances to close");
             }
