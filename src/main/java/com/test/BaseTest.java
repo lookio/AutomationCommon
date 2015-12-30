@@ -315,7 +315,7 @@ public class BaseTest {
             }
         }
 
-        protected void generateTestMethodOutput(String testName){
+        public void generateTestMethodOutput(String testName){
             try {
                 logger.info(OutputGenerator.createGenericMethodDesc(testName));
             } catch (Throwable t) {
