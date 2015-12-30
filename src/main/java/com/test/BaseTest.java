@@ -220,8 +220,8 @@ public class BaseTest {
             }
         }
 
-        public static void clearTempFolder() throws Exception {
-            File fin = new File("C:\\Users\\asih\\AppData\\Local\\Temp\\AndroidEmulator");
+        public static void clearTempFolder(String filePath) throws Exception {
+            File fin = new File(filePath);
             File[] finlist = fin.listFiles();
             for (int n = 0; n < finlist.length; n++) {
                 finlist[n].delete();
