@@ -16,10 +16,7 @@ import com.ui.service.drivers.Drivers;
 import com.util.genutil.GeneralUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 public class SeleniumService extends UIService<WebElement, WebDriver> {
 
@@ -249,6 +246,15 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		}
 
 	}
+
+	public void refreshPage(boolean isAlertPop){
+		SeleniumService.getInstance().getDriver().navigate().refresh();
+		if (isAlertPop) {
+			Alert alert = SeleniumService.getInstance().getDriver().switchTo().alert();
+			alert.accept();
+		}
+	}
+
 
 
 	public int getNumberOfTabs(){
