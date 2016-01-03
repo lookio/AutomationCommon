@@ -110,10 +110,12 @@ public class GeneralUtils {
 		}
 	}
 
-	public static void logWrappedMessage(String msg){
-		logger.info("================================================================================================================================");
-        logger.info(msg);
-		logger.info("================================================================================================================================");
+	public static String logWrappedMessage(String msg){
+		StringBuilder sb = new StringBuilder();
+		sb.append("================================================================================================================================").
+        append(msg).
+		append("================================================================================================================================");
+		return sb.toString();
 	}
 
 	public static boolean isStringNotNull(String value){
