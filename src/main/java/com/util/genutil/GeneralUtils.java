@@ -10,6 +10,7 @@
 
 package com.util.genutil;
 
+import com.ui.service.drivers.Drivers;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -148,5 +149,9 @@ public class GeneralUtils {
 		}
 	}
 
+	public static String prepareAppiumUrl(String port, String ip){
+		String urlPortWithPort = Drivers.Appium.APPIUM_SERVER_URL.replace("port", port);
+		return urlPortWithPort.replace("ip", ip);
+	}
 
 }
