@@ -66,7 +66,7 @@ public enum Drivers {
 
 	public static class Selenium {
 
-//		FIREFOX, IE, CHROME;
+//    FIREFOX, IE, CHROME;
 
 		private static final Logger logger = Logger.getLogger(Selenium.class);
 
@@ -83,7 +83,7 @@ public enum Drivers {
 		private static final String PROP_KEY_IE_DRIVER_NAME_PATH_VALUE = "IE_driver_path";
 
 		private static String browserType;
-//		static FirefoxProfile ffProfile = new FirefoxProfile("SanityTests");
+//    static FirefoxProfile ffProfile = new FirefoxProfile("SanityTests");
 
 
 		public static WebDriver setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
@@ -104,8 +104,8 @@ public enum Drivers {
 					createSafariDriver();
 					break;
 			}
-//		driver.manage().window().setSize(new Dimension(1800, 1150));
-//		driver.manage().window().setPosition(new Point(0, 0));
+//    driver.manage().window().setSize(new Dimension(1800, 1150));
+//    driver.manage().window().setPosition(new Point(0, 0));
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
 			driver.manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
@@ -143,17 +143,17 @@ public enum Drivers {
 
 		private synchronized static void createFireFoxDriver() throws Exception {
 
-//			File pathToFirefoxBinary = new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
-//			FirefoxBinary firefoxbin = new FirefoxBinary(pathToFirefoxBinary);
-//			WebDriver firefox = new FirefoxDriver();
-//			firefox.get("google.com");
-//			driver = firefox;
+//       File pathToFirefoxBinary = new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe");
+//       FirefoxBinary firefoxbin = new FirefoxBinary(pathToFirefoxBinary);
+//       WebDriver firefox = new FirefoxDriver();
+//       firefox.get("google.com");
+//       driver = firefox;
 
-//			ffProfile.setPreference("webdriver.load.strategy", "unstable"); // As of 2.19. from 2.9 - f
+//       ffProfile.setPreference("webdriver.load.strategy", "unstable"); // As of 2.19. from 2.9 - f
 
 
 
-//			driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")),ffProfile);
+//       driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")),ffProfile);
 			ProfilesIni allProfiles = new ProfilesIni();
 			FirefoxProfile profile = allProfiles.getProfile("SanityTests");
 			profile.setPreference("network.proxy.type", 1);
@@ -164,11 +164,11 @@ public enum Drivers {
 
 
 
-//			ProfilesIni profile = new ProfilesIni();
+//       ProfilesIni profile = new ProfilesIni();
 //
-//			FirefoxProfile myprofile = profile.getProfile("ProfileToolQA");
-//			driver = new FirefoxDriver(myprofile);
-//			driver = new FirefoxDriver();
+//       FirefoxProfile myprofile = profile.getProfile("ProfileToolQA");
+//       driver = new FirefoxDriver(myprofile);
+//       driver = new FirefoxDriver();
 			logger.info("=========================================================");
 			logger.info("============= Created New Fire Fox Driver ===============");
 			logger.info("=========================================================");
@@ -188,28 +188,28 @@ public enum Drivers {
 			File file = null;
 			if(machine == AppiumScriptHandler.Machine.WINDOWS) {
 				file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_WIN));
-//				System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), file.getAbsolutePath());
+//          System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), file.getAbsolutePath());
 				System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), "C:\\temp\\chromedriver.exe");
-//				System.setProperty("webdriver.chrome.logfile", "C:\\temp\\chromedriver.log");
+//          System.setProperty("webdriver.chrome.logfile", "C:\\temp\\chromedriver.log");
 
-//				System.setProperty("webdriver.chrome.logfile", "chromedriver.exe --verbose --log-C:\\temp\\=chromedriver.log");
+//          System.setProperty("webdriver.chrome.logfile", "chromedriver.exe --verbose --log-C:\\temp\\=chromedriver.log");
 
-//				chromedriver.exe --verbose --log-path=chromedriver.log
-				}else{
-//				file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_MAC));
+//          chromedriver.exe --verbose --log-path=chromedriver.log
+			}else{
+//          file = new File(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_MAC));
 				System.setProperty(props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_NAME), props.getProperty(PROP_KEY_CHROME_DRIVER_NAME_PATH_VALUE_MAC));
 			}
 
 
 			try {
-//				ChromeDriverService service;
-//				service = new ChromeDriverService.Builder()
-//						.usingDriverExecutable(new File("C://temp//chromedriver.exe"))
-//						.usingAnyFreePort()
-//						.build();
-//				service.start();
-//				driver = new RemoteWebDriver(service.getUrl(),
-//						DesiredCapabilities.chrome());
+//          ChromeDriverService service;
+//          service = new ChromeDriverService.Builder()
+//                .usingDriverExecutable(new File("C://temp//chromedriver.exe"))
+//                .usingAnyFreePort()
+//                .build();
+//          service.start();
+//          driver = new RemoteWebDriver(service.getUrl(),
+//                DesiredCapabilities.chrome());
 				driver = new ChromeDriver();
 
 			}catch (Throwable t) {
@@ -309,9 +309,9 @@ public enum Drivers {
 
 	public static class Appium {
 
-//		static int counter = 0;
+//    static int counter = 0;
 
-//		ANDROID, IOS;
+//    ANDROID, IOS;
 
 		private static final Logger logger = Logger.getLogger(Appium.class);
 
@@ -329,21 +329,21 @@ public enum Drivers {
 			logger.info("Trying to set " + driverType.name() + " driver");
 			DesiredCapabilities caps = CapabilitiesBuilder.
 					getInstance().getCapabilities(testDir, driverType, machine);
-//			if(driver != null){
-//				throw new NullPointerException("Driver allready exists");
-//			}
+//       if(driver != null){
+//          throw new NullPointerException("Driver allready exists");
+//       }
 			switch (driverType) {
 				case ANDROID:
-//					if(counter == 0) {
-						driver = createAndroidDriver(caps, port, ip);
-//					}else if(counter == 1) {
-//						driver2 = createAndroidDriver(caps, port);
-//					}
-//					counter++;
+//             if(counter == 0) {
+					driver = createAndroidDriver(caps, port, ip);
+//             }else if(counter == 1) {
+//                driver2 = createAndroidDriver(caps, port);
+//             }
+//             counter++;
 					printAndroidSuccessCreationMsg();
 					break;
 				case IOS:
-					driver = createIOSDriver(caps);
+					driver = createIOSDriver(caps, port, ip);
 					printIOSSuccessCreationMsg();
 
 			}
@@ -357,9 +357,7 @@ public enum Drivers {
 		}
 
 		private synchronized static AppiumDriver createAndroidDriver(DesiredCapabilities caps, String port, String ip) throws Exception {
-			String urlPortWithPort = APPIUM_SERVER_URL.replace("port", port);
-			String urlPortWithIp = urlPortWithPort.replace("ip", ip);
-			return new AndroidDriver(new URL(urlPortWithIp), caps);
+			return new AndroidDriver(new URL(GeneralUtils.prepareAppiumUrl(port, ip)), caps);
 		}
 
 		private static void printAndroidSuccessCreationMsg(){
@@ -370,8 +368,8 @@ public enum Drivers {
 			logger.info("====================================================================");
 		}
 
-		synchronized static AppiumDriver createIOSDriver(DesiredCapabilities caps) throws Exception {
-			return new IOSDriver(new URL(APPIUM_SERVER_URL), caps);
+		synchronized static AppiumDriver createIOSDriver(DesiredCapabilities caps, String port, String ip) throws Exception {
+			return new IOSDriver(new URL(GeneralUtils.prepareAppiumUrl(port, ip)), caps);
 		}
 
 		private static void printIOSSuccessCreationMsg(){
@@ -402,7 +400,7 @@ public enum Drivers {
 			try {
 				if(driver != null) {
 
-//					driver.quit();
+//             driver.quit();
 					driver.close();
 				}
 			}catch (Exception e){
