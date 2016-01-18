@@ -14,6 +14,7 @@ import com.ui.service.drivers.Drivers;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -153,5 +154,16 @@ public class GeneralUtils {
 		String urlPortWithPort = Drivers.Appium.APPIUM_SERVER_URL.replace("port", port);
 		return urlPortWithPort.replace("ip", ip);
 	}
+
+	public static void runWindowsSideBySide(){
+		Runtime rt = Runtime.getRuntime();
+		try {
+			Process pr = rt.exec("cscript //logo c:\\users\\asih\\Desktop\\SideBySide.vbs");
+		} catch (IOException e) {
+			handleError("Failed in run Windows Side By Side", e);
+		}
+	}
+
+
 
 }
