@@ -290,7 +290,17 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		}
 		logger.info("Switching back to main window, handle value : " + originalHandle);
 		SeleniumService.getInstance().getDriver().switchTo().window(originalHandle);
+	}
 
+	public void adjustDriverWindowForMovie(TestType testType){
+		WebDriver driver = SeleniumService.getInstance().getDriver();
+		if(testType.equals(TestType.SERIAL)) {
+			driver.manage().window().setSize(new Dimension((driver.manage().window().getSize().getWidth() / 3) * 2, driver.manage().window().getSize().getHeight()));
+		} else if(testType.equals(TestType.CONCURRENT)){
+			driver.manage().window().setSize(new Dimension((driver.manage().window().getSize().getWidth() / 3), driver.manage().window().getSize().getHeight()));
+		}
+
+			SeleniumService.getInstance().setDriver(driver);
 	}
 
 	public static String parseRandomKeyFromUrl(String url) {
@@ -304,5 +314,13 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 
 	public WebDriver getDriver(){
 		return driver;
+	}
+
+
+	public enum TestType{
+
+		SERIAL,
+		CONCURRENT;
+
 	}
 }
