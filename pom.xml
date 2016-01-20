@@ -77,6 +77,26 @@
             <version>2.2.7</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.liveperson.automation</groupId>
+            <artifactId>adk</artifactId>
+            <version>1.0.54</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>MonteScreenRecorder</groupId>
+            <artifactId>MonteScreenRecorder</artifactId>
+            <version>0.7.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-exec</artifactId>
+            <version>1.3</version>
+        </dependency>
+
+
 
         <!--<dependency>-->
             <!--<groupId>org.apache.httpcomponents</groupId>-->
