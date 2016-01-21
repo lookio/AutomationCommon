@@ -166,7 +166,7 @@ public class GeneralUtils {
 		deviceLogCapture = new StringBuilder();
 		try {
 			Process process = Runtime.getRuntime().exec("adb logcat -d");
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()), 50000);
 			String line;
 			logger.info("======================================================================================");
 			logger.info("============================ START OF ANDROID LOG CAT ================================");
