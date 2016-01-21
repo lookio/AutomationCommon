@@ -14,9 +14,7 @@ import com.ui.service.drivers.Drivers;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -162,6 +160,35 @@ public class GeneralUtils {
 		} catch (IOException e) {
 			handleError("Failed in run Windows Side By Side", e);
 		}
+	}
+
+	public static StringBuilder catchLogDevice(StringBuilder deviceLogCapture) {
+		deviceLogCapture = new StringBuilder();
+		try {
+			Process process = Runtime.getRuntime().exec("adb logcat -d");
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			String line;
+			logger.info("======================================================================================");
+			logger.info("============================ START OF ANDROID LOG CAT ================================");
+			logger.info("======================================================================================");
+			while ((line = bufferedReader.readLine()) != null) {
+
+				if (line.contains("Liveperson")) {
+					logger.info(line);
+//                        LPMobileLog.i(TAG, "line " + line);
+					line = line.substring(line.indexOf("Liveperson") + "Liveperson".length());
+					deviceLogCapture.append(line);
+					deviceLogCapture.append("\n");
+				}
+			}
+			logger.info("======================================================================================");
+			logger.info("============================== END OF ANDROID LOG CAT ================================");
+			logger.info("======================================================================================");
+
+		} catch (IOException e) {
+			e.getMessage();
+		}
+		return deviceLogCapture;
 	}
 
 
