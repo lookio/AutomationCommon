@@ -127,10 +127,7 @@ public class RecordingManager {
     public void deleteFileIfBuildPassed(){
         try {
             logger.info("Test succeeded, deleting file : " + currentVideoFileNewName);
-//            File videoFile = new File(currentVideoFileNewNameNew);
-//            videoFile.delete();
-
-            Path path = Paths.get(currentVideoFileNewNameNew);
+            Path path = Paths.get(outBaseFolder + currentVideoFileNewNameNew);
             Files.delete(path);
 
 
