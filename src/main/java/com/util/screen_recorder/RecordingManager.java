@@ -26,6 +26,7 @@ public class RecordingManager {
 
     private ScreenRecorder screenRecorder;
     private static String outBaseFolder = "C:\\Users\\asih\\Desktop\\moviesFolder\\";
+    private static String outBaseFolderUrl = "file:///C:/users/asih/Desktop/moviesFolder/";
     private String folder;
     private String currentVideoFileNewName;
 
@@ -127,6 +128,7 @@ public class RecordingManager {
     }
 
     public void printLinkToLogIfTestFailed(){
+        logger.info(outBaseFolderUrl);
         logger.info(currentVideoFileNewName);
     }
 
