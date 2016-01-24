@@ -110,7 +110,6 @@ public class RecordingManager {
                     return;
                 }
             }
-
             // Rename video file
             if (!videoFile.renameTo(videoFileNew)) {
                 // File was not successfully renamed

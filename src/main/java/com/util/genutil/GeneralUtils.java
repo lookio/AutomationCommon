@@ -162,17 +162,21 @@ public class GeneralUtils {
 		}
 	}
 
-	public static StringBuilder catchLogDevice(StringBuilder deviceLogCapture) {
-		deviceLogCapture = new StringBuilder();
+	public static StringBuilder catchLogDevice(LogCatType logCatType) {
+		StringBuilder deviceLogCapture = new StringBuilder();
 		try {
-			Process process = Runtime.getRuntime().exec("adb logcat -d");
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()), 50000);
+			Process process = Runtime.getRuntime().exec(logCatType.command);
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//			Character[] bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()), 50000);
+
 			String line;
 			logger.info("======================================================================================");
 			logger.info("============================ START OF ANDROID LOG CAT ================================");
 			logger.info("======================================================================================");
+			logger.info("======================================================================================");
+			logger.info("============================= " + logCatType.msg + "==================================");
+			logger.info("======================================================================================");
 			while ((line = bufferedReader.readLine()) != null) {
-
 				if (line.contains("Liveperson")) {
 					logger.info(line);
 //                        LPMobileLog.i(TAG, "line " + line);
@@ -189,6 +193,25 @@ public class GeneralUtils {
 			e.getMessage();
 		}
 		return deviceLogCapture;
+	}
+
+	public enum LogCatType {
+
+		SERIAL_TEST_LOGCAT ("adb logcat -d", "VISITOR IN SERIAL TEST"),
+//		CONCURRENCY_SANITY_VISITOR("adb logcat -s emulator-5556", "CONCURRENCY_SANITY_VISITOR"),
+//		CONCURRENCY_AGENT_RESOLVE_VISITOR("adb logcat -s emulator-5554", "CONCURRENCY_AGENT_RESOLVE_VISITOR");
+		CONCURRENCY_SANITY_VISITOR("adb -s 192.168.56.100:5555 shell logcat", "CONCURRENCY_SANITY_VISITOR"),
+		CONCURRENCY_AGENT_RESOLVE_VISITOR("adb -s 192.168.56.102:5555 shell logcat", "CONCURRENCY_AGENT_RESOLVE_VISITOR");
+
+		String command;
+		String msg;
+
+		LogCatType(String command, String msg){
+			this.command = command;
+			this.msg = msg;
+		}
+
+
 	}
 
 

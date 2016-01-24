@@ -9,10 +9,11 @@ import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.remote.SessionNotFoundException;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,11 +34,11 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         return APPIUM_SERVICE_INSTANCE;
     }
 
-    private AppiumService(){
+    protected AppiumService(){
 
     }
 
-    public final void setDriver(Drivers deviceDriver, String capsFileFolder, AppiumScriptHandler.Machine machine, String port, String ip) {
+    public void setDriver(Drivers deviceDriver, String capsFileFolder, AppiumScriptHandler.Machine machine, String port, String ip) {
         try {
             driver = Drivers.Appium.setDriver(deviceDriver, capsFileFolder, machine, port, ip);
             this.setDriver(driver);
@@ -48,71 +49,125 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         }
     }
 
-    public final void setDriver(AppiumDriver _driver) {
+    public void setDriver(AppiumDriver _driver) {
         driver = _driver;
     }
 
-    public final void closeDriver() {
-        super.setDriver(driver);
-        super.closeDriver();
+    public void closeDriver() {
+        // super.setDriver(driver);
+        try {
+            driver.close();
+        } catch (SessionNotFoundException e) {
+            logger.error("No session found");
+        } catch (Throwable t) {
+            GeneralUtils.handleError("Problem in closing the driver", t);
+        }
+        logger.info("Close Driver finished successfully");
     }
 
     @Override
-    public final WebElement findElement(By by, String elementName) {
-        super.setDriver(driver);
-        return super.findElement(by, elementName);
+    public WebElement findElement(By by, String elementName) {
+//        super.setDriver(driver);
+        try {
+            super.parseMessage(elementName);
+            logger.info("**********************************************************************");
+            logger.info("TRYING TO FIND ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName);
+            WebElement element = driver.findElement(by);
+            logger.info("ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName + " WAS FOUND");
+            logger.info("**********************************************************************");
+            return element;
+        } catch (NoSuchElementException e) {
+            logger.error(printErrorMessage(elementName));
+            GeneralUtils.handleError(GeneralUtils.stacktraceToString(e), e);
+            return null;
+        }
     }
 
     @Override
-    public final WebElement findElement(By by) throws Exception {
-        super.setDriver(driver);
-        return super.findElement(by);
+    public WebElement findElement(By by) throws Exception {
+        return driver.findElement(by);
     }
 
     @Override
-    public final synchronized void explicitWait(long explicitWait, By by) {
-        super.setDriver(driver);
-        super.explicitWait(explicitWait, by);
+    public synchronized void explicitWait(long explicitWait, By by) {
+        driver.switchTo().window(driver.getWindowHandle());
+        WebDriverWait wait = new WebDriverWait(driver, explicitWait);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        logger.debug("Excplicit wait finished");
     }
 
     @Override
-    public final synchronized void implicitWait(long implicitWait, TimeUnit time) {
-        super.setDriver(driver);
-        super.implicitWait(implicitWait, time);
+    public synchronized void implicitWait(long implicitWait, TimeUnit time) {
+        driver.switchTo().window(driver.getWindowHandle());
+        driver.manage().timeouts().implicitlyWait(implicitWait, time);
+        logger.debug("Implicit wait finished");
     }
 
-    public final boolean isElementVisible(WebElement element) {
-        super.setDriver(driver);
-        return super.isElementVisible(element);
-    }
-
-    public final synchronized void implicitWait(long implicitWait) {
-        super.setDriver(driver);
-        super.implicitWait(implicitWait);
+    public synchronized void implicitWait(long implicitWait) {
+        try {
+            logger.debug("Sleeping for " + implicitWait + " mili");
+            Thread.sleep(implicitWait);
+            logger.debug("Implicit wait finished");
+        } catch (InterruptedException e) {
+            GeneralUtils.handleError("Problem while sleeping", e);
+        }
     }
 
     @Override
-    public final boolean IsElementPresent(By by) {
-        super.setDriver(driver);
-        return super.IsElementPresent(by);
+    public boolean IsElementPresent(By by) {
+        try {
+            driver.findElements(by);
+            logger.info("Element is present");
+            return true;
+        } catch (Exception e) {
+            GeneralUtils.handleError("Problem in is element presented " + GeneralUtils.stacktraceToString(e), e);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isElementVisible(WebElement element) {
+        try {
+            if (element.isDisplayed()) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            logger.info("Element not found");
+            return false;
+        }
     }
 
     @Override
     public <T extends BasePage> boolean initElement(T pageObject) {
-        super.setDriver(driver);
-        return super.initElement(pageObject);
+        try {
+            PageFactory.initElements(driver, pageObject);
+            logger.info("Init elements finished successfully");
+            return true;
+        } catch (Exception e) {
+            GeneralUtils.handleError("Problem in init the UI elements " + GeneralUtils.stacktraceToString(e), e);
+            return false;
+        }
     }
 
     @Override
-    public final void openBrowser(String url) {
-        super.setDriver(driver);
-        super.openBrowser(url);
+    public void openBrowser(String url) {
+        try {
+            driver.get(url);
+            logger.info("Open browser finished successfully");
+        } catch (Throwable t) {
+            GeneralUtils.handleError("Problem While trying to open the browser " + GeneralUtils.stacktraceToString(t), t);
+        }
     }
 
     @Override
-    public final void closeBrowser() throws Exception {
-        super.setDriver(driver);
-        super.closeBrowser();
+    public void closeBrowser() throws Exception {
+        try {
+            driver.quit();
+            logger.info("Close browser finished successfully");
+        } catch (Throwable t) {
+            GeneralUtils.handleError("Problem While trying to close the browser " + GeneralUtils.stacktraceToString(t), t);
+        }
     }
 
     public void isMsgInLocator(By by, String msg, String page){
@@ -122,11 +177,11 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         logger.info("MESSAGE VALIDATION : \"" + msg + "\" WAS FOUND in page \"" + page + "\"");
     }
 
-    public final void closeApp() throws Exception {
+    public void closeApp() throws Exception {
         driver.closeApp();
     }
 
-    public final MobileElement scroll(String val) {
+    public MobileElement scroll(String val) {
         try{
             return driver.scrollTo(val);
         }
@@ -136,7 +191,7 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         return null;
     }
 
-    public final String getPageSource(long timeOutInMilisec){
+    public String getPageSource(long timeOutInMilisec){
         implicitWait(1500);
         while ((driver.getPageSource() == null) ||
                 (driver.getPageSource().equalsIgnoreCase(lastPageSource))){
@@ -155,7 +210,7 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
         return lastPageSource = driver.getPageSource();
     }
 
-    public final void rotate(ScreenOrientation orientation){
+    public void rotate(ScreenOrientation orientation){
         driver.rotate(orientation);
     }
 
@@ -168,8 +223,7 @@ public class AppiumService extends UIService<WebElement, AppiumDriver> {
     }
 
     public WebElement getElementByText(By listLocator, String text){
-        super.setDriver(driver);
-        return super.getElementByText(listLocator, text);
+        return getElementByText(listLocator, text);
     }
 
     private UiMode getRequestedScreenMode() {

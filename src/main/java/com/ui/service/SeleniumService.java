@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import com.liveperson.automation.webdriver.session.WebDriverSession;
+import com.liveperson.automation.webdriver.session.WebDriverSessionManager;
 import com.test.AppiumScriptHandler;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
@@ -20,7 +22,7 @@ import org.openqa.selenium.*;
 
 public class SeleniumService extends UIService<WebElement, WebDriver> {
 
-	private static volatile WebDriver driver = null;
+	private static volatile WebDriverSession driver = null;
 	private static final SeleniumService SELENIUM_SERVICE_INSTANCE = new SeleniumService();
 	private static final Logger logger = Logger.getLogger(SeleniumService.class);
 	private static String originalHandle;
@@ -35,7 +37,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 
 	}
 
-	public final void setDriver(Drivers browser, AppiumScriptHandler.Machine machine) {
+	public final void WebDriverSession(Drivers browser, AppiumScriptHandler.Machine machine) {
 		try {
 			driver = Drivers.Selenium.setBrowserToDriver(browser, machine);
 			this.setDriver(driver);
@@ -46,7 +48,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		}
 	}
 
-	public final void setDriver(WebDriver _driver) {
+	public final void setDriver(WebDriverSession _driver) {
 		driver = _driver;
 	}
 
@@ -293,7 +295,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 	}
 
 	public void adjustDriverWindowForMovie(TestType testType){
-		WebDriver driver = SeleniumService.getInstance().getDriver();
+		WebDriverSession driver = SeleniumService.getInstance().getDriver();
 		if(testType.equals(TestType.SERIAL)) {
 			driver.manage().window().setSize(new Dimension((driver.manage().window().getSize().getWidth() / 3) * 2, driver.manage().window().getSize().getHeight()));
 		} else if(testType.equals(TestType.CONCURRENT)){
@@ -312,7 +314,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		return url.substring(keyIndex + 4, endIndex);
 	}
 
-	public WebDriver getDriver(){
+	public WebDriverSession getDriver(){
 		return driver;
 	}
 

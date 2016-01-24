@@ -16,6 +16,8 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+//import com.liveperson.automation.webdriver.session.*;
+import com.liveperson.automation.webdriver.session.*;
 import com.test.AppiumScriptHandler;
 import com.ui.service.AppiumService;
 import com.ui.service.SeleniumService;
@@ -44,20 +46,24 @@ public enum Drivers {
 
 	private static final String ENV_VARS_PROPERTY_FILE_PATH = "/environment/env.properties";
 
-	public static <T> WebDriver setDriver(Drivers driver, DriverType type, String testDir, AppiumScriptHandler.Machine machine, String port, String ip){
+
+	public static WebDriverSession setSeleniumDriver(Drivers driver, AppiumScriptHandler.Machine machine){
 		try {
-			if(type == DriverType.SELENIUM) {
-				return Selenium.setBrowserToDriver(driver, machine);
-			}else{
-				return Appium.setDriver(driver, testDir, machine, port, ip);
-			}
+			return Selenium.setBrowserToDriver(driver, machine);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-
+	public static AndroidDriver setAppiumDriver(Drivers driver, String testDir, AppiumScriptHandler.Machine machine, String port, String ip){
+		try {
+			return Appium.setDriver(driver, testDir, machine, port, ip);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public static Properties getProps(){
 		return PropertiesHandlerImpl.getInstance().parseFromJar(ENV_VARS_PROPERTY_FILE_PATH);
@@ -72,7 +78,9 @@ public enum Drivers {
 
 		public static final String START_URL = "https://staging.feex.co.il/";
 
-		private volatile static WebDriver driver = null;
+		//		private volatile static WebDriver driver = null;
+		private static WebDriverSessionManager webDriverSessionManager;
+
 
 		public static Properties props = null;
 
@@ -86,33 +94,43 @@ public enum Drivers {
 //    static FirefoxProfile ffProfile = new FirefoxProfile("SanityTests");
 
 
-		public static WebDriver setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
+		//		public static WebDriver setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
+		public static WebDriverSession setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
 			browserType = browser.name();
 			logger.info("Trying to set " + browserType + " browser to driver");
 			props = getProps();
-			switch (browser) {
-				case IE:
-					createIEDriver();
-					break;
-				case CHROME:
-					createChromeDriver(machine);
-					break;
-				case FIREFOX:
-					createFireFoxDriver();
-					break;
-				case SAFARI:
-					createSafariDriver();
-					break;
-			}
+//			switch (browser) {
+//				case IE:
+//					createIEDriver();
+//					break;
+//				case CHROME:
+//					createChromeDriver(machine);
+//					break;
+//				case FIREFOX:
+//					createFireFoxDriver();
+//					break;
+//				case SAFARI:
+//					createSafariDriver();
+//					break;
+//			}
+			webDriverSessionManager = new WebDriverSessionManagerDefaultImpl();
+			WebDriverSessionConfiguration sessionConfig = new WebDriverSessionDefaultConfiguration();
+			sessionConfig.setProxy("browsermob");
+			webDriverSessionManager.createSession("my_session_id",sessionConfig);
+			WebDriverSession webDriverSession = webDriverSessionManager.getCurrentSession();
 //    driver.manage().window().setSize(new Dimension(1800, 1150));
 //    driver.manage().window().setPosition(new Point(0, 0));
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
-			driver.manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
-			driver.manage().window().setSize(new Dimension(driver.manage().window().getSize().getWidth(), driver.manage().window().getSize().getHeight()));
+//			driver.getCurrentSession().manage().window().maximize();
+//			driver.getCurrentSession().manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+//			driver.getCurrentSession().manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
+//			driver.getCurrentSession().manage().window().setSize(new Dimension(driver.getCurrentSession().manage().window().getSize().getWidth(),
+//					driver.getCurrentSession().manage().window().getSize().getHeight()));
+//
+//			SeleniumService.getInstance().setDriver(driver.getCurrentSession());
+//			return driver.getCurrentSession();
 
-			SeleniumService.getInstance().setDriver(driver);
-			return driver;
+//			return driver;
+			return webDriverSession;
 		}
 
 		/**
@@ -126,7 +144,7 @@ public enum Drivers {
 			DesiredCapabilities capab = DesiredCapabilities.internetExplorer();
 			capab.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			System.setProperty(props.getProperty(PROP_KEY_IE_DRIVER_NAME_PATH_NAME), props.getProperty(PROP_KEY_IE_DRIVER_NAME_PATH_VALUE));
-			driver = new InternetExplorerDriver(capab);
+//			driver = new InternetExplorerDriver(capab);
 			logger.info("====================================================================");
 			logger.info("============== Created New Internet Explorer Driver ================");
 			logger.info("====================================================================");
@@ -159,7 +177,7 @@ public enum Drivers {
 			profile.setPreference("network.proxy.type", 1);
 			profile.setPreference("network.proxy.http","127.0.0.1");
 			profile.setPreference("network.proxy.http_port", 3128);
-			driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")),profile);
+//			driver = new FirefoxDriver();
 
 
 
@@ -201,7 +219,7 @@ public enum Drivers {
 			}
 
 
-			try {
+//			try {
 //          ChromeDriverService service;
 //          service = new ChromeDriverService.Builder()
 //                .usingDriverExecutable(new File("C://temp//chromedriver.exe"))
@@ -210,13 +228,18 @@ public enum Drivers {
 //          service.start();
 //          driver = new RemoteWebDriver(service.getUrl(),
 //                DesiredCapabilities.chrome());
-				driver = new ChromeDriver();
 
-			}catch (Throwable t) {
-				logger.info("CDriver is " + driver);
-				GeneralUtils.handleError("error chrome driver", t);
-			}
-			logger.info("CDriver is " + driver);
+
+
+
+
+//				driver = new ChromeDriver();
+//
+//			}catch (Throwable t) {
+//				logger.info("CDriver is " + driver);
+//				GeneralUtils.handleError("error chrome driver", t);
+//			}
+//			logger.info("CDriver is " + driver);
 
 			logger.info("=========================================================");
 			logger.info("============= Created New Chrome Driver =================");
@@ -240,40 +263,40 @@ public enum Drivers {
 			return browserType;
 		}
 
-		public static void startChrome() throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.CHROME, null);
-			SeleniumService.getInstance().openBrowser(START_URL);
-		}
-
-		public static void startFIREFOX() throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.FIREFOX, null);
-			SeleniumService.getInstance().openBrowser(START_URL);
-		}
-
-		public static void startIE() throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.IE, null);
-			SeleniumService.getInstance().openBrowser(START_URL);
-		}
-
-		public static void startChromeWithTimeOut(int timeOutInSeconds) throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.CHROME, null);
-			SeleniumService.getInstance().openBrowser(START_URL);
-			driver.manage().timeouts().implicitlyWait(timeOutInSeconds, TimeUnit.SECONDS);
-		}
-
-		public static void startFIREFOXWithTimeOut(int timeOutInSeconds) throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.FIREFOX, null);
-			SeleniumService.getInstance().openBrowser(START_URL);
-			driver.manage().timeouts().implicitlyWait(timeOutInSeconds, TimeUnit.SECONDS);
-
-		}
-
-		public static void startIEWithTimeOut(int timeOutInSeconds) throws Exception {
-			SeleniumService.getInstance().setDriver(Drivers.IE, null);
-			SeleniumService.getInstance().openBrowser(START_URL);
-			driver.manage().timeouts().implicitlyWait(timeOutInSeconds, TimeUnit.SECONDS);
-
-		}
+//		public static void startChrome() throws Exception {
+//			SeleniumService.getInstance().setDriver(Drivers.CHROME, null);
+//			SeleniumService.getInstance().openBrowser(START_URL);
+//		}
+//
+//		public static void startFIREFOX() throws Exception {
+//			SeleniumService.getInstance().setDriver(Drivers.FIREFOX, null);
+//			SeleniumService.getInstance().openBrowser(START_URL);
+//		}
+//
+//		public static void startIE() throws Exception {
+//			SeleniumService.getInstance().setDriver(Drivers.IE, null);
+//			SeleniumService.getInstance().openBrowser(START_URL);
+//		}
+//
+//		public static void startChromeWithTimeOut(int timeOutInSeconds) throws Exception {
+//			SeleniumService.getInstance().setDriver(Drivers.CHROME, null);
+//			SeleniumService.getInstance().openBrowser(START_URL);
+////			driver.manage().timeouts().implicitlyWait(timeOutInSeconds, TimeUnit.SECONDS);
+//		}
+//
+//		public static void startFIREFOXWithTimeOut(int timeOutInSeconds) throws Exception {
+//			SeleniumService.getInstance().setDriver(Drivers.FIREFOX, null);
+//			SeleniumService.getInstance().openBrowser(START_URL);
+////			driver.manage().timeouts().implicitlyWait(timeOutInSeconds, TimeUnit.SECONDS);
+//
+//		}
+//
+//		public static void startIEWithTimeOut(int timeOutInSeconds) throws Exception {
+//			SeleniumService.getInstance().setDriver(Drivers.IE, null);
+//			SeleniumService.getInstance().openBrowser(START_URL);
+////			driver.manage().timeouts().implicitlyWait(timeOutInSeconds, TimeUnit.SECONDS);
+//
+//		}
 
 		public static void close() {
 			logger.info("Test on browser " + Selenium.getBrowserType() + " finished succssesfully");
@@ -286,23 +309,23 @@ public enum Drivers {
 		}
 
 
-		public static void startBrowserByType(Drivers browser) throws Exception {
-			switch (browser) {
-				case CHROME:
-					startChrome();
-					break;
-				case FIREFOX:
-					startFIREFOX();
-					break;
-				case IE:
-					startIE();
-					break;
-				default:
-					startFIREFOX();
-
-			}
-
-		}
+//		public static void startBrowserByType(Drivers browser) throws Exception {
+//			switch (browser) {
+//				case CHROME:
+//					startChrome();
+//					break;
+//				case FIREFOX:
+//					startFIREFOX();
+//					break;
+//				case IE:
+//					startIE();
+//					break;
+//				default:
+//					startFIREFOX();
+//
+//			}
+//
+//		}
 
 	}
 

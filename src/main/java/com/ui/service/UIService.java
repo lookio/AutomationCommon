@@ -1,5 +1,7 @@
 package com.ui.service;
 
+import com.liveperson.automation.webdriver.session.WebDriverSession;
+import com.liveperson.automation.webdriver.session.WebDriverSessionManager;
 import com.ui.page.base.BasePage;
 import com.ui.service.base.DriverService;
 import com.ui.service.base.ElementService;
@@ -23,10 +25,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class UIService<E,T> implements ElementService<E>, DriverService {
 
-    private WebDriver driver = null;
+    private WebDriverSession driver = null;
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
-    private static String elementClassName;
-    private static String elementName;
+    public static String elementClassName;
+    public static String elementName;
 
 
     public UIService(){
@@ -39,7 +41,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends WebDriver> void setDriver(WebDriver _driver) {
+    public <T extends WebDriverSession> void setDriver(WebDriverSession _driver) {
         try {
             driver = (T) _driver;
 //            logger.info("Setting driver to service finished successfully. \n\t");
@@ -167,7 +169,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
         }
     }
 
-    private static void parseMessage(String fullElementName) {
+    public static void parseMessage(String fullElementName) {
         String[] values = fullElementName.split("\\=");
         elementClassName = values[0];
         elementName = values[1];
@@ -205,7 +207,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
         return null;
     }
 
-    private static String printErrorMessage(String fullElementName) {
+    public static String printErrorMessage(String fullElementName) {
         StringBuilder retValue = new StringBuilder();
         parseMessage(fullElementName);
         retValue.append("Cant find element name : " + elementName + " located in class : " + elementClassName + " ");

@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by asih on 22/02/2015.
  */
-public class ConcurrentAppiumService extends UIService<WebElement, AppiumDriver> {
+public class ConcurrentAppiumService extends AppiumService {
 
     private AppiumDriver driver = null;
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
@@ -27,10 +27,14 @@ public class ConcurrentAppiumService extends UIService<WebElement, AppiumDriver>
     private static String lastPageSource = "";
     private UiMode requestedScreenMode;
 
-
-    public ConcurrentAppiumService(){
-
+    public ConcurrentAppiumService() {
     }
+
+
+//    public ConcurrentAppiumService(){
+//        super();
+//
+//    }
 
     public final void setDriver(Drivers deviceDriver, String capsFileFolder, AppiumScriptHandler.Machine machine, String port, String ip) {
         try {
