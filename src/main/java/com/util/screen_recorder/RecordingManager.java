@@ -92,7 +92,7 @@ public class RecordingManager {
             // Build video file name
             Date date = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yy_HH-mm-ss");
-            currentVideoFileNewName = folder +  "video_" + "" + "_" + testName /*testClazz.getSimpleName()*/ + "_" + "buildNum" + "_" + "Israel" + "_" + simpleDateFormat.format(date.getTime()) +"_" + "videoStatusString" + ".avi";
+            currentVideoFileNewName = folder +  testName + "_" + "buildNum" + "_" + "Israel" + "_" + simpleDateFormat.format(date.getTime()) + ".avi";
             File videoFileNew = new File(currentVideoFileNewName);
             logger.info("Renaming video file from " + videoFile.getAbsolutePath() + " to " + videoFileNew.getAbsolutePath());
             if (videoFileNew.exists()) {
