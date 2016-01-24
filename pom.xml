@@ -80,18 +80,18 @@
 
 
 
-        <dependency>
-            <groupId>com.liveperson.automation</groupId>
-            <artifactId>adk</artifactId>
-            <version>1.0.54</version>
-            <type>pom</type>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.liveperson.automation</groupId>-->
+            <!--<artifactId>adk</artifactId>-->
+            <!--<version>1.0.54</version>-->
+            <!--<type>pom</type>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.liveperson.automation</groupId>
             <artifactId>adk-webdriver</artifactId>
             <version>1.0.54</version>
-            <type>pom</type>
+            <!--<type>jar</type>-->
         </dependency>
 
         <dependency>
