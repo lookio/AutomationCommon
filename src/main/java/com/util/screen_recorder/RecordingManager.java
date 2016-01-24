@@ -29,6 +29,8 @@ public class RecordingManager {
     private static String outBaseFolderUrl = "file:///C:/users/asih/Desktop/moviesFolder/";
     private String folder;
     private String currentVideoFileNewName;
+    private String currentVideoFileNewNameNew;
+
 
     private static final Logger logger = Logger.getLogger(RecordingManager.class);
 
@@ -113,6 +115,7 @@ public class RecordingManager {
             } else {
                 logger.info("Video file: " + /*outBaseLink +*/ videoFileNew.getName());
             }
+            currentVideoFileNewNameNew = videoFileNew.getName();
         } catch (Exception e) {
             logger.warn("Can't stop video recording.", e);
         }
@@ -120,16 +123,16 @@ public class RecordingManager {
 
     public void deleteFileIfBuildPassed(){
         try {
-            File videoFile = new File(currentVideoFileNewName);
+            File videoFile = new File(currentVideoFileNewNameNew);
             videoFile.delete();
         } catch (Exception ioe){
-            logger.error("File : " + currentVideoFileNewName + " could not be deleted");
+            logger.error("File : " + currentVideoFileNewNameNew + " could not be deleted");
         }
     }
 
     public void printLinkToLogIfTestFailed(){
         logger.info(outBaseFolderUrl);
-        logger.info(currentVideoFileNewName);
+        logger.info(currentVideoFileNewNameNew);
     }
 
     private GraphicsConfiguration getGraphicsConfiguration(){
