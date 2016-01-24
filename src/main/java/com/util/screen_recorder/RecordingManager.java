@@ -7,6 +7,9 @@ import org.monte.screenrecorder.ScreenRecorder;
 
 import java.awt.*;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -124,8 +127,13 @@ public class RecordingManager {
     public void deleteFileIfBuildPassed(){
         try {
             logger.info("Test succeeded, deleting file : " + currentVideoFileNewName);
-            File videoFile = new File(currentVideoFileNewNameNew);
-            videoFile.delete();
+//            File videoFile = new File(currentVideoFileNewNameNew);
+//            videoFile.delete();
+
+            Path path = Paths.get(currentVideoFileNewNameNew);
+            Files.delete(path);
+
+
         } catch (Exception ioe){
             logger.error("File : " + currentVideoFileNewNameNew + " could not be deleted");
         }
