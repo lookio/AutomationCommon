@@ -5,6 +5,6 @@ package com.util.poller;
  */
 public interface Pollable {
 
-    public abstract boolean until () throws Exception;
+    boolean until () throws Exception;
 
 }
