@@ -17,6 +17,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 //import com.liveperson.automation.webdriver.session.*;
+import com.liveperson.automation.webdriver.decorator.Waitable;
 import com.liveperson.automation.webdriver.session.*;
 import com.test.AppiumScriptHandler;
 import com.ui.service.AppiumService;
@@ -120,18 +121,21 @@ public enum Drivers {
 			webDriverSessionManager.createSession("my_session_id",sessionConfig);
 			WebDriverSession webDriverSession = webDriverSessionManager.getCurrentSession();
 
-			webDriverSession.manage().window().setSize(new Dimension(1800, 1150));
-			webDriverSession.manage().window().setPosition(new Point(0, 0));
-			webDriverSession.manage().window().maximize();
-			webDriverSession.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
-			webDriverSession.manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
-			webDriverSession.manage().window().setSize(new Dimension(webDriverSession.manage().window().getSize().getWidth(),
-					webDriverSession.manage().window().getSize().getHeight()));
+//			webDriverSession.manage().window().setSize(new Dimension(1800, 1150));
+//			webDriverSession.manage().window().setPosition(new Point(0, 0));
+//			webDriverSession.manage().window().maximize();
+//			webDriverSession.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+//			webDriverSession.manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
+//			webDriverSession.manage().window().setSize(new Dimension(webDriverSession.manage().window().getSize().getWidth(),
+//					webDriverSession.manage().window().getSize().getHeight()));
 //
 //			SeleniumService.getInstance().setDriver(driver.getCurrentSession());
 //			return driver.getCurrentSession();
 
 //			return driver;
+			if(webDriverSession instanceof Waitable) {
+				((Waitable) webDriverSession).timeout(30*1000);
+			}
 			return webDriverSession;
 		}
 
