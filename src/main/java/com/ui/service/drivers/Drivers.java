@@ -28,6 +28,7 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -118,13 +119,14 @@ public enum Drivers {
 			sessionConfig.setProxy("");
 			webDriverSessionManager.createSession("my_session_id",sessionConfig);
 			WebDriverSession webDriverSession = webDriverSessionManager.getCurrentSession();
-//    driver.manage().window().setSize(new Dimension(1800, 1150));
-//    driver.manage().window().setPosition(new Point(0, 0));
-//			driver.getCurrentSession().manage().window().maximize();
-//			driver.getCurrentSession().manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
-//			driver.getCurrentSession().manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
-//			driver.getCurrentSession().manage().window().setSize(new Dimension(driver.getCurrentSession().manage().window().getSize().getWidth(),
-//					driver.getCurrentSession().manage().window().getSize().getHeight()));
+
+			webDriverSession.manage().window().setSize(new Dimension(1800, 1150));
+			webDriverSession.manage().window().setPosition(new Point(0, 0));
+			webDriverSession.manage().window().maximize();
+			webDriverSession.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+			webDriverSession.manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
+			webDriverSession.manage().window().setSize(new Dimension(webDriverSession.manage().window().getSize().getWidth(),
+					webDriverSession.manage().window().getSize().getHeight()));
 //
 //			SeleniumService.getInstance().setDriver(driver.getCurrentSession());
 //			return driver.getCurrentSession();
