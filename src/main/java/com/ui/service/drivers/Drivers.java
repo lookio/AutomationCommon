@@ -115,7 +115,7 @@ public enum Drivers {
 //			}
 			webDriverSessionManager = new WebDriverSessionManagerDefaultImpl();
 			WebDriverSessionConfiguration sessionConfig = new WebDriverSessionDefaultConfiguration();
-			sessionConfig.setProxy("browsermob");
+			sessionConfig.setProxy("");
 			webDriverSessionManager.createSession("my_session_id",sessionConfig);
 			WebDriverSession webDriverSession = webDriverSessionManager.getCurrentSession();
 //    driver.manage().window().setSize(new Dimension(1800, 1150));
@@ -172,11 +172,11 @@ public enum Drivers {
 
 
 //       driver = new FirefoxDriver(new FirefoxBinary(new File("C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")),ffProfile);
-			ProfilesIni allProfiles = new ProfilesIni();
-			FirefoxProfile profile = allProfiles.getProfile("SanityTests");
-			profile.setPreference("network.proxy.type", 1);
-			profile.setPreference("network.proxy.http","127.0.0.1");
-			profile.setPreference("network.proxy.http_port", 3128);
+//			ProfilesIni allProfiles = new ProfilesIni();
+//			FirefoxProfile profile = allProfiles.getProfile("SanityTests");
+//			profile.setPreference("network.proxy.type", 1);
+//			profile.setPreference("network.proxy.http","127.0.0.1");
+//			profile.setPreference("network.proxy.http_port", 3128);
 //			driver = new FirefoxDriver();
 
 
