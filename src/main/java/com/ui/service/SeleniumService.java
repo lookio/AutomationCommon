@@ -22,7 +22,9 @@ import org.openqa.selenium.*;
 
 public class SeleniumService extends UIService<WebElement, WebDriver> {
 
-	private static volatile WebDriverSession driver = null;
+	private static volatile WebDriver driver = null;
+//private static volatile WebDriverSession driver = null;
+
 	private static final SeleniumService SELENIUM_SERVICE_INSTANCE = new SeleniumService();
 	private static final Logger logger = Logger.getLogger(SeleniumService.class);
 	private static String originalHandle;
@@ -48,7 +50,8 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		}
 	}
 
-	public final void setDriver(WebDriverSession _driver) {
+//	public final void setDriver(WebDriverSession _driver) {
+	public final void setDriver(WebDriver _driver) {
 		driver = _driver;
 	}
 
@@ -295,7 +298,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 	}
 
 	public void adjustDriverWindowForMovie(TestType testType){
-		WebDriverSession driver = SeleniumService.getInstance().getDriver();
+		WebDriver driver = SeleniumService.getInstance().getDriver();
 		if(testType.equals(TestType.SERIAL)) {
 			driver.manage().window().setSize(new Dimension((driver.manage().window().getSize().getWidth() / 3) * 2, driver.manage().window().getSize().getHeight()));
 		} else if(testType.equals(TestType.CONCURRENT)){
@@ -314,7 +317,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		return url.substring(keyIndex + 4, endIndex);
 	}
 
-	public WebDriverSession getDriver(){
+	public WebDriver getDriver(){
 		return driver;
 	}
 

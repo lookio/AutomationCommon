@@ -48,24 +48,36 @@ public enum Drivers {
 
 	private static final String ENV_VARS_PROPERTY_FILE_PATH = "/environment/env.properties";
 
-
-	public static WebDriverSession setSeleniumDriver(Drivers driver, AppiumScriptHandler.Machine machine){
+	public static <T> WebDriver setDriver(Drivers driver, DriverType type, String testDir, AppiumScriptHandler.Machine machine, String port, String ip){
 		try {
-			return Selenium.setBrowserToDriver(driver, machine);
+			if(type == DriverType.SELENIUM) {
+				return Selenium.setBrowserToDriver(driver, machine);
+			}else{
+				return Appium.setDriver(driver, testDir, machine, port, ip);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public static AndroidDriver setAppiumDriver(Drivers driver, String testDir, AppiumScriptHandler.Machine machine, String port, String ip){
-		try {
-			return Appium.setDriver(driver, testDir, machine, port, ip);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+//	public static WebDriverSession setSeleniumDriver(Drivers driver, AppiumScriptHandler.Machine machine){
+//		try {
+//			return Selenium.setBrowserToDriver(driver, machine);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
+//
+//	public static AndroidDriver setAppiumDriver(Drivers driver, String testDir, AppiumScriptHandler.Machine machine, String port, String ip){
+//		try {
+//			return Appium.setDriver(driver, testDir, machine, port, ip);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
 
 	public static Properties getProps(){
 		return PropertiesHandlerImpl.getInstance().parseFromJar(ENV_VARS_PROPERTY_FILE_PATH);
@@ -80,8 +92,8 @@ public enum Drivers {
 
 		public static final String START_URL = "https://staging.feex.co.il/";
 
-		//		private volatile static WebDriver driver = null;
-		private static WebDriverSessionManager webDriverSessionManager;
+		private volatile static WebDriver driver = null;
+//		private static WebDriverSessionManager webDriverSessionManager;
 
 
 		public static Properties props = null;
@@ -96,30 +108,31 @@ public enum Drivers {
 //    static FirefoxProfile ffProfile = new FirefoxProfile("SanityTests");
 
 
-		//		public static WebDriver setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
-		public static WebDriverSession setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
+		public static WebDriver setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
+//		public static WebDriverSession setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
 			browserType = browser.name();
 			logger.info("Trying to set " + browserType + " browser to driver");
 			props = getProps();
-//			switch (browser) {
-//				case IE:
-//					createIEDriver();
-//					break;
-//				case CHROME:
-//					createChromeDriver(machine);
-//					break;
-//				case FIREFOX:
-//					createFireFoxDriver();
-//					break;
-//				case SAFARI:
-//					createSafariDriver();
-//					break;
-//			}
-			webDriverSessionManager = new WebDriverSessionManagerDefaultImpl();
-			WebDriverSessionConfiguration sessionConfig = new WebDriverSessionDefaultConfiguration();
-			sessionConfig.setProxy("");
-			webDriverSessionManager.createSession("my_session_id",sessionConfig);
-			WebDriverSession webDriverSession = webDriverSessionManager.getCurrentSession();
+			switch (browser) {
+				case IE:
+					createIEDriver();
+					break;
+				case CHROME:
+					createChromeDriver(machine);
+					break;
+				case FIREFOX:
+					createFireFoxDriver();
+					break;
+				case SAFARI:
+					createSafariDriver();
+					break;
+			}
+
+//			webDriverSessionManager = new WebDriverSessionManagerDefaultImpl();
+//			WebDriverSessionConfiguration sessionConfig = new WebDriverSessionDefaultConfiguration();
+//			sessionConfig.setProxy("");
+//			webDriverSessionManager.createSession("my_session_id",sessionConfig);
+//			WebDriverSession webDriverSession = webDriverSessionManager.getCurrentSession();
 
 //			webDriverSession.manage().window().setSize(new Dimension(1800, 1150));
 //			webDriverSession.manage().window().setPosition(new Point(0, 0));
@@ -132,11 +145,22 @@ public enum Drivers {
 //			SeleniumService.getInstance().setDriver(driver.getCurrentSession());
 //			return driver.getCurrentSession();
 
-//			return driver;
-			if(webDriverSession instanceof Waitable) {
-				((Waitable) webDriverSession).timeout(30*1000);
-			}
-			return webDriverSession;
+
+			driver.manage().window().setSize(new Dimension(1800, 1150));
+			driver.manage().window().setPosition(new Point(0, 0));
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+			driver.manage().timeouts().pageLoadTimeout(180, TimeUnit.SECONDS);
+			driver.manage().window().setSize(new Dimension(driver.manage().window().getSize().getWidth(),
+					driver.manage().window().getSize().getHeight()));
+
+			SeleniumService.getInstance().setDriver(driver);
+
+			return driver;
+//			if(webDriverSession instanceof Waitable) {
+//				((Waitable) webDriverSession).timeout(30*1000);
+//			}
+//			return webDriverSession;
 		}
 
 		/**
@@ -192,7 +216,7 @@ public enum Drivers {
 //
 //       FirefoxProfile myprofile = profile.getProfile("ProfileToolQA");
 //       driver = new FirefoxDriver(myprofile);
-//       driver = new FirefoxDriver();
+       driver = new FirefoxDriver();
 			logger.info("=========================================================");
 			logger.info("============= Created New Fire Fox Driver ===============");
 			logger.info("=========================================================");

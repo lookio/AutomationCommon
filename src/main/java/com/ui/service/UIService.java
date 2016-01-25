@@ -1,5 +1,6 @@
 package com.ui.service;
 
+import com.liveperson.automation.webdriver.decorator.Waitable;
 import com.liveperson.automation.webdriver.session.WebDriverSession;
 import com.liveperson.automation.webdriver.session.WebDriverSessionManager;
 import com.ui.page.base.BasePage;
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class UIService<E,T> implements ElementService<E>, DriverService {
 
-    private WebDriverSession driver = null;
+    private WebDriver driver = null;
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
     public static String elementClassName;
     public static String elementName;
@@ -41,7 +42,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends WebDriverSession> void setDriver(WebDriverSession _driver) {
+    public <T extends WebDriver> void setDriver(WebDriver _driver) {
         try {
             driver = (T) _driver;
 //            logger.info("Setting driver to service finished successfully. \n\t");
@@ -197,6 +198,9 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     }
 
     public WebElement getElementByText(By listLocator, String text){
+//        if(SeleniumService.getInstance().getDriver() instanceof Waitable) {
+//            ((Waitable) SeleniumService.getInstance().getDriver()).timeout(30*1000);
+//        }
         List<WebElement> elements = driver.findElements(listLocator);
         for(WebElement element : elements) {
             if (element.getText().equalsIgnoreCase(text)) {

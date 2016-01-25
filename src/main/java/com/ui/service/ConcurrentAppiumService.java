@@ -19,7 +19,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by asih on 22/02/2015.
  */
-public class ConcurrentAppiumService extends AppiumService {
+//public class ConcurrentAppiumService extends AppiumService {
+public class ConcurrentAppiumService extends UIService<WebElement, AppiumDriver> {
 
     private AppiumDriver driver = null;
     private static final Logger logger = Logger.getLogger(SeleniumService.class);
