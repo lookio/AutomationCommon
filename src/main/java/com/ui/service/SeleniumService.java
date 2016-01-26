@@ -39,7 +39,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 
 	}
 
-	public final void WebDriverSession(Drivers browser, AppiumScriptHandler.Machine machine) {
+	public final void WebDriver(Drivers browser, AppiumScriptHandler.Machine machine) {
 		try {
 			driver = Drivers.Selenium.setBrowserToDriver(browser, machine);
 			this.setDriver(driver);

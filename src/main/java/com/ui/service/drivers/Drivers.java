@@ -263,7 +263,7 @@ public enum Drivers {
 
 
 
-//				driver = new ChromeDriver();
+				driver = new ChromeDriver();
 //
 //			}catch (Throwable t) {
 //				logger.info("CDriver is " + driver);
