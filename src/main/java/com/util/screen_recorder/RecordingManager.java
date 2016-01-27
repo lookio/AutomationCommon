@@ -75,7 +75,7 @@ public class RecordingManager {
         }
     }
 
-    public void stopRecording(String testName) {
+    public void stopRecording(String testName, Environment env) {
 
         try {
             logger.info("Stop recording...");
@@ -95,7 +95,7 @@ public class RecordingManager {
             // Build video file name
             Date date = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yy_HH-mm-ss");
-            currentVideoFileNewName = folder +  testName + "_" + "buildNum" + "_" + "Israel" + "_" + simpleDateFormat.format(date.getTime()) + ".avi";
+            currentVideoFileNewName = folder +  testName + "_" + "buildNum" + "_" + env.name() + "_" + simpleDateFormat.format(date.getTime()) + ".avi";
             File videoFileNew = new File(currentVideoFileNewName);
             logger.info("Renaming video file from " + videoFile.getAbsolutePath() + " to " + videoFileNew.getAbsolutePath());
             if (videoFileNew.exists()) {
@@ -145,5 +145,10 @@ public class RecordingManager {
                 .getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice()
                 .getDefaultConfiguration();
+    }
+
+    public enum Environment {
+
+        ALPHA, QA, GA;
     }
 }
