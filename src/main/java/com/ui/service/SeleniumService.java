@@ -153,9 +153,9 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		return null;
 	}
 
-	public WebElement getElementByText(By listLocator, String text){
+	public WebElement getElementByText(By listLocator, WebElement rootElement, String text){
 		super.setDriver(driver);
-		return super.getElementByText(listLocator, text);
+		return super.getElementByText(listLocator, rootElement, text);
 	}
 
 
