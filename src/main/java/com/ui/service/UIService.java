@@ -197,7 +197,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
         }
     }
 
-    public WebElement getElementByText(By listLocator, WebElement rootElement, String text){
+    public WebElement getElementByText(By listLocator, String text){
 //        if(SeleniumService.getInstance().getDriver() instanceof Waitable) {
 //            ((Waitable) SeleniumService.getInstance().getDriver()).timeout(30*1000);
 //        }

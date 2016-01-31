@@ -172,9 +172,9 @@ public class ConcurrentAppiumService extends UIService<WebElement, AppiumDriver>
         }
     }
 
-    public WebElement getElementByText(By listLocator, WebElement rootElement, String text){
+    public WebElement getElementByText(By listLocator, String text){
         super.setDriver(driver);
-        return super.getElementByText(listLocator, rootElement, text);
+        return super.getElementByText(listLocator, text);
     }
 
     private UiMode getRequestedScreenMode() {
