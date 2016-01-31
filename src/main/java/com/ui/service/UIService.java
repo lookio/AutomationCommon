@@ -201,10 +201,12 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
 //        if(SeleniumService.getInstance().getDriver() instanceof Waitable) {
 //            ((Waitable) SeleniumService.getInstance().getDriver()).timeout(30*1000);
 //        }
+//        driver.manage().window().maximize();
         List<WebElement> elements = driver.findElements(listLocator);
         logger.info("Number of item titles is " + elements.size());
         for(WebElement element : elements) {
-            if ((element.getText().equalsIgnoreCase(text) && (element.isDisplayed()))) {
+//            if ((element.getText().equalsIgnoreCase(text) && (element.isDisplayed()))) {
+            if (element.getText().equalsIgnoreCase(text)) {
                 logger.info("Match for item title : " + element.getText() + " is dispayed");
                 return element;
             }
