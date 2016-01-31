@@ -203,7 +203,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
 //        }
         List<WebElement> elements = driver.findElements(listLocator);
         for(WebElement element : elements) {
-            if (element.getText().equalsIgnoreCase(text)) {
+            if ((element.getText().equalsIgnoreCase(text) && (element.isDisplayed()))) {
                 return element;
             }
         }
