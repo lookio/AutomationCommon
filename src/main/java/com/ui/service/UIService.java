@@ -197,16 +197,19 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
         }
     }
 
-    public WebElement getElementByText(By listLocator, String text){
+    public WebElement getElementByText(By listLocator, WebElement rootElement, String text){
 //        if(SeleniumService.getInstance().getDriver() instanceof Waitable) {
 //            ((Waitable) SeleniumService.getInstance().getDriver()).timeout(30*1000);
 //        }
         List<WebElement> elements = driver.findElements(listLocator);
+        logger.info("Number of item titles is " + elements.size());
         for(WebElement element : elements) {
             if ((element.getText().equalsIgnoreCase(text) && (element.isDisplayed()))) {
+                logger.info("Match for item title : " + element.getText() + " is dispayed");
                 return element;
             }
         }
+        logger.info("No match for item title : " + text);
         logger.warn("Element not found");
         return null;
     }
