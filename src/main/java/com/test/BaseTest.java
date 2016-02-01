@@ -96,17 +96,17 @@ public class BaseTest {
                 Drivers.Selenium.close();
             }else if(driver == DriverType.APPIUM) {
                 Drivers.Appium.close();
-//                try {
-//                    uninstallApp();
-//                } catch (IOException e) {
-//                    logger.error("Error in uninstall app");
-//                }
+                try {
+                    uninstallApp();
+                } catch (IOException e) {
+                    logger.error("Error in uninstall app");
+                }
             }
         }
 
         public static void uninstallApp() throws IOException {
             Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec("adb uninstall com.messaging.sample.app");
+            Process pr = rt.exec("adb uninstall com.liveperson.messagingtest");
             BufferedReader r = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             String line;
             while (true) {
