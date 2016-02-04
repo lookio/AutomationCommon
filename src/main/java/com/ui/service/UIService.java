@@ -7,6 +7,7 @@ import com.ui.page.base.BasePage;
 import com.ui.service.base.DriverService;
 import com.ui.service.base.ElementService;
 import com.util.genutil.GeneralUtils;
+import com.util.log.ColoredLogMessages;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -75,11 +76,11 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     public <E> E findElement(By by, String elementName) {
         try {
             parseMessage(elementName);
-            logger.info("**********************************************************************");
+            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "**********************************************************************");
             logger.info("TRYING TO FIND ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName);
             WebElement element = driver.findElement(by);
-            logger.info("ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName + " WAS FOUND");
-            logger.info("**********************************************************************");
+            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName + " WAS FOUND");
+            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "**********************************************************************");
             return (E) element;
         } catch (NoSuchElementException e) {
             logger.error(printErrorMessage(elementName));
