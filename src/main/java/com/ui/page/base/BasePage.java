@@ -2,7 +2,7 @@ package com.ui.page.base;
 
 import com.ui.page.AppiumBasePage;
 import com.ui.service.drivers.Drivers;
-import com.util.log.ColoredLogMessages;
+import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 
 
@@ -29,10 +29,10 @@ public abstract class BasePage implements  Pagable{
         try {
             if (shouldValidateOnPage) { // to validate???
                 if (this.validateInPage()) {
-                    ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "--------------------------------------------");
-                    ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "---------- Now opening page with class : " + className + " ---------------------");
-                    ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "--------------------------------------------");
-                    ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "New instanse of class " + this.getClass().getName() + " was created successfully");
+                    ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "--------------------------------------------");
+                    ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "---------- Now opening page with class : " + className + " ---------------------");
+                    ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "--------------------------------------------");
+                    ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "New instanse of class " + this.getClass().getName() + " was created successfully");
                 }
             }
         }catch(NotInPageException t) {
