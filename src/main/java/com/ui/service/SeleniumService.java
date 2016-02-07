@@ -1,4 +1,3 @@
-
 package com.ui.service;
 
 import java.awt.AWTException;
@@ -15,7 +14,7 @@ import com.liveperson.automation.webdriver.session.WebDriverSessionManager;
 import com.test.AppiumScriptHandler;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
-import com.util.genutil.GeneralUtils;
+import com.util.jenutil.GeneralUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.*;
@@ -50,7 +49,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		}
 	}
 
-//	public final void setDriver(WebDriverSession _driver) {
+	//	public final void setDriver(WebDriverSession _driver) {
 	public final void setDriver(WebDriver _driver) {
 		driver = _driver;
 	}
@@ -305,7 +304,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 			driver.manage().window().setSize(new Dimension((driver.manage().window().getSize().getWidth() / 3), driver.manage().window().getSize().getHeight()));
 		}
 
-			SeleniumService.getInstance().setDriver(driver);
+		SeleniumService.getInstance().setDriver(driver);
 	}
 
 	public static String parseRandomKeyFromUrl(String url) {

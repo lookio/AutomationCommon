@@ -1,6 +1,7 @@
 package com.config.lpadk;
 
-import com.util.genutil.GeneralUtils;
+
+import com.util.jenutil.GeneralUtils;
 
 import java.util.HashSet;
 import java.util.Set;

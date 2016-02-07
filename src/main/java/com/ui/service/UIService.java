@@ -1,13 +1,10 @@
 package com.ui.service;
 
-import com.liveperson.automation.webdriver.decorator.Waitable;
-import com.liveperson.automation.webdriver.session.WebDriverSession;
-import com.liveperson.automation.webdriver.session.WebDriverSessionManager;
 import com.ui.page.base.BasePage;
 import com.ui.service.base.DriverService;
 import com.ui.service.base.ElementService;
-import com.util.genutil.GeneralUtils;
-import com.util.log.ColoredLogMessages;
+import com.util.jenutil.GeneralUtils;
+import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -46,7 +43,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     public <T extends WebDriver> void setDriver(WebDriver _driver) {
         try {
             driver = (T) _driver;
-//            logger.info("Setting driver to service finished successfully. \n\t");
+//            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "Setting driver to service finished successfully. \n\t");
         } catch (Exception ex) {
             logger.error("Problem in setting browser to driver ", ex);
         }
@@ -61,7 +58,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
         } catch (Throwable t) {
             GeneralUtils.handleError("Problem in closing the driver", t);
         }
-        logger.info("Close Driver finished successfully");
+        ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Close Driver finished successfully");
     }
 
     @Override
@@ -76,11 +73,11 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     public <E> E findElement(By by, String elementName) {
         try {
             parseMessage(elementName);
-            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "**********************************************************************");
-            logger.info("TRYING TO FIND ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName);
+            ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "**********************************************************************");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "TRYING TO FIND ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName);
             WebElement element = driver.findElement(by);
-            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName + " WAS FOUND");
-            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.DEBUG, "**********************************************************************");
+            ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "ELEMENT NAME  :  \"" + UIService.elementName + "\" IN CLASS  :  " + elementClassName + " WAS FOUND");
+            ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "**********************************************************************");
             return (E) element;
         } catch (NoSuchElementException e) {
             logger.error(printErrorMessage(elementName));
@@ -118,7 +115,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     public boolean IsElementPresent(By by) {
         try {
             driver.findElements(by);
-            logger.info("Element is present");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Element is present");
             return true;
         } catch (Exception e) {
             GeneralUtils.handleError("Problem in is element presented " + GeneralUtils.stacktraceToString(e), e);
@@ -134,7 +131,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
             }
             return false;
         } catch (Exception e) {
-            logger.info("Element not found");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Element not found");
             return false;
         }
     }
@@ -143,7 +140,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     public <T extends BasePage> boolean initElement(T pageObject) {
         try {
             PageFactory.initElements(driver, pageObject);
-            logger.info("Init elements finished successfully");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Init elements finished successfully");
             return true;
         } catch (Exception e) {
             GeneralUtils.handleError("Problem in init the UI elements " + GeneralUtils.stacktraceToString(e), e);
@@ -155,7 +152,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     public void openBrowser(String url) {
         try {
             driver.get(url);
-            logger.info("Open browser finished successfully");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Open browser finished successfully");
         } catch (Throwable t) {
             GeneralUtils.handleError("Problem While trying to open the browser " + GeneralUtils.stacktraceToString(t), t);
         }
@@ -165,7 +162,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
     public void closeBrowser() throws Exception {
         try {
             driver.quit();
-            logger.info("Close browser finished successfully");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Close browser finished successfully");
         } catch (Throwable t) {
             GeneralUtils.handleError("Problem While trying to close the browser " + GeneralUtils.stacktraceToString(t), t);
         }
@@ -183,11 +180,11 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
             implicitWait(1500);
             WebElement elem = findElement(msgBy);
             Assert.assertEquals(elem.isDisplayed() == true, "Msg : " + msg + " was found in page " + page);
-            logger.info("Msg : " + msg + " was found in page " + page);
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Msg : " + msg + " was found in page " + page);
 
-//            logger.info("Message " + msgBy + " was found");
+//            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "Message " + msgBy + " was found");
 //            if(elem.isDisplayed()){
-//                logger.info("Msg : " + msg +" was found in page " + page);
+//                ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "Msg : " + msg +" was found in page " + page);
 //                logger.error("Msg : " + msg + " was found in page " + page);
 //                return;
 //            }
@@ -204,15 +201,15 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
 //        }
 //        driver.manage().window().maximize();
         List<WebElement> elements = driver.findElements(listLocator);
-        logger.info("Number of item titles is " + elements.size());
+        ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Number of item titles is " + elements.size());
         for(WebElement element : elements) {
 //            if ((element.getText().equalsIgnoreCase(text) && (element.isDisplayed()))) {
             if (element.getText().equalsIgnoreCase(text)) {
-                logger.info("Match for item title : " + element.getText() + " is dispayed");
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Match for item title : " + element.getText() + " is dispayed");
                 return element;
             }
         }
-        logger.info("No match for item title : " + text);
+        ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "No match for item title : " + text);
         logger.warn("Element not found");
         return null;
     }

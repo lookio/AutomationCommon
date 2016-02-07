@@ -3,6 +3,7 @@ package com.ui.page;
 import com.ui.page.base.BasePage;
 import com.ui.page.base.NotInPageException;
 import com.ui.service.ConcurrentAppiumService;
+import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 
 /**
@@ -29,13 +30,13 @@ public abstract class ConcurrentAppiumBasePage extends BasePage {
             String driverPageSource = service.getPageSource(waitForPageContextTimeOut);
             String dynamicIdentifier = this.getPageUniqueIdentifier();
             if(driverPageSource.contains(dynamicIdentifier)) {
-                logger.info("The expected message is contained in page source of page " + className +
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "The expected message is contained in page source of page " + className +
                         ", you are in the correct location");
                 logger.info("You expected message msg : \"" + dynamicIdentifier + "\" You contained in : \"" + driverPageSource + "\"");
                 return true;
             } else {
-                logger.warn("The page is not as expected, you are not in the correct location");
-                logger.error("You expected to find the MSG \"" + dynamicIdentifier + "\" in page " + className + " and failed");
+                ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "The page is not as expected, you are not in the correct location");
+                ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, "You expected to find the MSG \"" + dynamicIdentifier + "\" in page " + className + " and failed");
                 report(dynamicIdentifier, driverPageSource);
                 throw new NotInPageException("Page " + className + "not in the right location");
             }

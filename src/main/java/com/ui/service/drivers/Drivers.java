@@ -22,7 +22,8 @@ import com.liveperson.automation.webdriver.session.*;
 import com.test.AppiumScriptHandler;
 import com.ui.service.AppiumService;
 import com.ui.service.SeleniumService;
-import com.util.genutil.GeneralUtils;
+import com.util.jenutil.GeneralUtils;
+import com.util.log.ColoredLog;
 import com.util.properties.PropertiesHandlerImpl;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -111,7 +112,7 @@ public enum Drivers {
 		public static WebDriver setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
 //		public static WebDriverSession setBrowserToDriver(Drivers browser, AppiumScriptHandler.Machine machine) throws MalformedURLException, Exception {
 			browserType = browser.name();
-			logger.info("Trying to set " + browserType + " browser to driver");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Trying to set " + browserType + " browser to driver");
 			props = getProps();
 			switch (browser) {
 				case IE:
@@ -175,11 +176,11 @@ public enum Drivers {
 			capab.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			System.setProperty(props.getProperty(PROP_KEY_IE_DRIVER_NAME_PATH_NAME), props.getProperty(PROP_KEY_IE_DRIVER_NAME_PATH_VALUE));
 //			driver = new InternetExplorerDriver(capab);
-			logger.info("====================================================================");
-			logger.info("============== Created New Internet Explorer Driver ================");
-			logger.info("====================================================================");
-			logger.info("========== Starting New Test In Internet Explorer Driver ===========");
-			logger.info("====================================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "============== Created New Internet Explorer Driver ================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "========== Starting New Test In Internet Explorer Driver ===========");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
 			logger.debug("Internet explorer driver was created");
 		}
 
@@ -216,13 +217,13 @@ public enum Drivers {
 //
 //       FirefoxProfile myprofile = profile.getProfile("ProfileToolQA");
 //       driver = new FirefoxDriver(myprofile);
-       driver = new FirefoxDriver();
-			logger.info("=========================================================");
-			logger.info("============= Created New Fire Fox Driver ===============");
-			logger.info("=========================================================");
-			logger.info("========== Starting New Test In Fire Fox Driver =========");
-			logger.info("=========================================================");
-			logger.debug("Fire fox driver was created");
+			driver = new FirefoxDriver();
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "=========================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "============= Created New Fire Fox Driver ===============");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "=========================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "========== Starting New Test In Fire Fox Driver =========");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "=========================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Fire fox driver was created");
 		}
 
 		/**
@@ -263,30 +264,30 @@ public enum Drivers {
 
 
 
-				driver = new ChromeDriver();
+			driver = new ChromeDriver();
 //
 //			}catch (Throwable t) {
-//				logger.info("CDriver is " + driver);
+//				ColoredLog.printMessage(ColoredLog.LogLevel.INFO, ("CDriver is " + driver);
 //				GeneralUtils.handleError("error chrome driver", t);
 //			}
-//			logger.info("CDriver is " + driver);
+//			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, ("CDriver is " + driver);
 
-			logger.info("=========================================================");
-			logger.info("============= Created New Chrome Driver =================");
-			logger.info("=========================================================");
-			logger.info("========== Starting New Test In Chrome Driver ===========");
-			logger.info("=========================================================");
-			logger.debug("Chrome driver was created");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "=========================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "============= Created New Chrome Driver =================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "=========================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "========== Starting New Test In Chrome Driver ===========");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "=========================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Chrome driver was created");
 		}
 
 		private synchronized static void createSafariDriver() throws Exception {
 			WebDriver driver = new SafariDriver();
-			logger.info("=========================================================");
-			logger.info("============= Created New Safari Driver ===============");
-			logger.info("=========================================================");
-			logger.info("========== Starting New Test In Safari Driver =========");
-			logger.info("=========================================================");
-			logger.debug("Fire fox driver was created");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "=========================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "============= Created New Safari Driver ===============");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "=========================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "========== Starting New Test In Safari Driver =========");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "=========================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Fire fox driver was created");
 		}
 
 		public static String getBrowserType() {
@@ -329,7 +330,7 @@ public enum Drivers {
 //		}
 
 		public static void close() {
-			logger.info("Test on browser " + Selenium.getBrowserType() + " finished succssesfully");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Test on browser " + Selenium.getBrowserType() + " finished succssesfully");
 			try {
 				SeleniumService.getInstance().closeBrowser();
 				SeleniumService.getInstance().closeDriver();
@@ -379,7 +380,7 @@ public enum Drivers {
 
 
 		public static <T extends RemoteWebDriver> T setDriver(Drivers driverType, String testDir, AppiumScriptHandler.Machine machine, String port, String ip) throws MalformedURLException, Exception {
-			logger.info("Trying to set " + driverType.name() + " driver");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Trying to set " + driverType.name() + " driver");
 			DesiredCapabilities caps = CapabilitiesBuilder.
 					getInstance().getCapabilities(testDir, driverType, machine);
 //       if(driver != null){
@@ -414,11 +415,11 @@ public enum Drivers {
 		}
 
 		private static void printAndroidSuccessCreationMsg(){
-			logger.info("====================================================================");
-			logger.info("============== Created New Android Driver ================");
-			logger.info("====================================================================");
-			logger.info("========== Starting New Test In Android Driver ===========");
-			logger.info("====================================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "============== Created New Android Driver ================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "========== Starting New Test In Android Driver ===========");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
 		}
 
 		synchronized static AppiumDriver createIOSDriver(DesiredCapabilities caps, String port, String ip) throws Exception {
@@ -426,15 +427,15 @@ public enum Drivers {
 		}
 
 		private static void printIOSSuccessCreationMsg(){
-			logger.info("====================================================================");
-			logger.info("============== Created New IOS Driver ================");
-			logger.info("====================================================================");
-			logger.info("========== Starting New Test In IOS Driver ===========");
-			logger.info("====================================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "============== Created New IOS Driver ================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "========== Starting New Test In IOS Driver ===========");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
 		}
 
 		public static void close()  {
-			logger.info("Test on driver finished succssesfully");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Test on driver finished succssesfully");
 			try {
 				if(driver != null) {
 
@@ -449,7 +450,7 @@ public enum Drivers {
 		}
 
 		public static void close(WebDriver driver)  {
-			logger.info("Test on driver finished succssesfully");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Test on driver finished succssesfully");
 			try {
 				if(driver != null) {
 

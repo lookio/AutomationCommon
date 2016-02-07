@@ -8,13 +8,15 @@ package com.test;
 import com.ui.service.AppiumService;
 import com.ui.service.SeleniumService;
 import com.ui.service.drivers.Drivers;
-import com.util.genutil.GeneralUtils;
+import com.util.jenutil.GeneralUtils;
+import com.util.log.ColoredLog;
 import com.util.log.OutputGenerator;
 import com.util.poller.PollService;
 import com.util.properties.PropertiesHandlerImpl;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Assert;
@@ -112,7 +114,7 @@ public class BaseTest {
             while (true) {
                 line = r.readLine();
                 if (line == null) { break; }
-                logger.info(line);
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, line);
             }
         }
 
@@ -205,14 +207,14 @@ public class BaseTest {
         public static void closeOldSeleniumProcesses(){
             try {
                 execCommandByIsRemote(false, KILL_SELENIUM_PROCESSES_COMMAND, "");
-                logger.info("Selenium instances closed successfully");
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Selenium instances closed successfully");
             } catch (Throwable t){
                 logger.warn("No selenium instances to close");
             }
         }
 
         private static void execCommandByIsRemote(boolean isRemote, CommandLine command, String msg) throws Throwable{
-            logger.info(msg + command);
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, msg + command);
             if(!isRemote) {
                 DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
                 DefaultExecutor executor = new DefaultExecutor();
@@ -302,11 +304,12 @@ public class BaseTest {
                             LOG4J_PROP_FILE_PATH_KEY_VALUE)
             );
             PropertyConfigurator.configure(url);
+            BasicConfigurator.configure();
         }
 
         public static <T> void generateTestClassOutput(Class<T> testClass, StringBuilder desc) {
             try {
-                logger.info(OutputGenerator.createGenericClassDesc(testClass, desc));
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, OutputGenerator.createGenericClassDesc(testClass, desc));
             } catch (Throwable t) {
                 GeneralUtils.handleError(
                         "activate method in class output for " +
@@ -317,7 +320,7 @@ public class BaseTest {
 
         public void generateTestMethodOutput(String testName){
             try {
-                logger.info(OutputGenerator.createGenericMethodDesc(testName));
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, OutputGenerator.createGenericMethodDesc(testName));
             } catch (Throwable t) {
                 GeneralUtils.handleError(
                         "Invoke method in class output for " +

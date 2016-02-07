@@ -1,5 +1,6 @@
 package com.util.screen_recorder;
 
+import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 import org.monte.media.Format;
 import org.monte.media.math.Rational;
@@ -53,7 +54,7 @@ public class RecordingManager {
     public void startRecording() {
 
         try {
-            logger.info("Video recording is ON, start screen recording. Video folder: " + outBaseFolder);
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Video recording is ON, start screen recording. Video folder: " + outBaseFolder);
             folder = outBaseFolder;
             //folder = outBaseFolder + testClazz.getSimpleName() + "_" + server;
             File movieFolder = new File(folder);
@@ -78,7 +79,7 @@ public class RecordingManager {
     public void stopRecording(String testName, Environment env) {
 
         try {
-            logger.info("Stop recording...");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Stop recording...");
             this.screenRecorder.stop();
 
             File videoFile = this.screenRecorder.getCreatedMovieFiles().get(0);
@@ -88,7 +89,7 @@ public class RecordingManager {
 //            String videoStatusString = (isPass ? "Pass" : "Fail");
             File fFolder = new File(folder);
             if (!fFolder.exists()) {
-                logger.info("Creating video folder: " + folder);
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Creating video folder: " + folder);
                 fFolder.mkdirs();
             }
 
@@ -97,7 +98,7 @@ public class RecordingManager {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd-yy_HH-mm-ss");
             currentVideoFileNewName = folder +  testName + "_" + "buildNum" + "_" + env.name() + "_" + simpleDateFormat.format(date.getTime()) + ".avi";
             File videoFileNew = new File(currentVideoFileNewName);
-            logger.info("Renaming video file from " + videoFile.getAbsolutePath() + " to " + videoFileNew.getAbsolutePath());
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Renaming video file from " + videoFile.getAbsolutePath() + " to " + videoFileNew.getAbsolutePath());
             if (videoFileNew.exists()) {
                 // In case the file exists (shouldn't occur !) - try second file name (*_1)
                 logger.warn("Target video file name already exists: " + videoFileNew.getAbsolutePath());
@@ -113,9 +114,9 @@ public class RecordingManager {
             // Rename video file
             if (!videoFile.renameTo(videoFileNew)) {
                 // File was not successfully renamed
-                logger.info("Error renaming video file " + videoFile.getAbsolutePath() + " to " + videoFileNew.getAbsolutePath());
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Error renaming video file " + videoFile.getAbsolutePath() + " to " + videoFileNew.getAbsolutePath());
             } else {
-                logger.info("Video file: " + /*outBaseLink +*/ videoFileNew.getName());
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Video file: " + /*outBaseLink +*/ videoFileNew.getName());
             }
             currentVideoFileNewNameNew = videoFileNew.getName();
         } catch (Exception e) {
@@ -125,7 +126,7 @@ public class RecordingManager {
 
     public void deleteFileIfBuildPassed(){
         try {
-            logger.info("Test succeeded, deleting file : " + currentVideoFileNewName);
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Test succeeded, deleting file : " + currentVideoFileNewName);
             Path path = Paths.get(outBaseFolder + currentVideoFileNewNameNew);
             Files.delete(path);
 
@@ -136,8 +137,8 @@ public class RecordingManager {
     }
 
     public void printLinkToLogIfTestFailed(){
-        logger.info(outBaseFolderUrl);
-        logger.info(currentVideoFileNewNameNew);
+        ColoredLog.printMessage(ColoredLog.LogLevel.INFO, outBaseFolderUrl);
+        ColoredLog.printMessage(ColoredLog.LogLevel.INFO, currentVideoFileNewNameNew);
     }
 
     private GraphicsConfiguration getGraphicsConfiguration(){

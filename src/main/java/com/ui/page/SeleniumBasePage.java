@@ -3,6 +3,7 @@ package com.ui.page;
 import com.ui.page.base.BasePage;
 import com.ui.page.base.NotInPageException;
 import com.ui.service.SeleniumService;
+import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.NoSuchWindowException;
 
@@ -28,13 +29,13 @@ public abstract class SeleniumBasePage extends BasePage {
             String url = service.getDriver().getCurrentUrl();
             String dynamicIdentifier = this.getPageUniqueIdentifier();
             if(url.contains(dynamicIdentifier)) {
-                logger.info("The page URL is as expected, you are in the correct location");
-                logger.info("You expected : " + dynamicIdentifier + " You are in : " + url);
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "The page URL is as expecteColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, n the correct location");
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "You expected : " + dynamicIdentifier + " You are in : " + url);
                 return true;
             }
             else{
-                logger.warn("The page URL is not as expected, you are not in the correct location");
-                logger.info("You expected : " + dynamicIdentifier + " You are in : " + url);
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "The page URL is not as expected, you are not in the correct location");
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "You expected : " + dynamicIdentifier + " You are in : " + url);
                 report(dynamicIdentifier, url);
                 return false;
             }

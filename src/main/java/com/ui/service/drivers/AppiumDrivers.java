@@ -35,7 +35,7 @@
 //
 //
 //    public static AppiumDriver setDriver(AppiumDrivers driverType, String testDir) throws MalformedURLException, Exception {
-//        logger.info("Trying to set " + driverType.name() + " driver");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "Trying to set " + driverType.name() + " driver");
 //        DesiredCapabilities caps = CapabilitiesBuilder.
 //                getInstance().getCapabilities(testDir, driverType);
 //        if(driver != null){throw new NullPointerException("Driver allready exists");}
@@ -60,11 +60,11 @@
 //    }
 //
 //    private static void printAndroidSuccessCreationMsg(){
-//        logger.info("====================================================================");
-//        logger.info("============== Created New Android Driver ================");
-//        logger.info("====================================================================");
-//        logger.info("========== Starting New Test In Android Driver ===========");
-//        logger.info("====================================================================");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "====================================================================");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "============== Created New Android Driver ================");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "====================================================================");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "========== Starting New Test In Android Driver ===========");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "====================================================================");
 //    }
 //
 //    synchronized static AppiumDriver createIOSDriver(DesiredCapabilities caps) throws Exception {
@@ -72,15 +72,15 @@
 //    }
 //
 //    private static void printIOSSuccessCreationMsg(){
-//        logger.info("====================================================================");
-//        logger.info("============== Created New IOS Driver ================");
-//        logger.info("====================================================================");
-//        logger.info("========== Starting New Test In IOS Driver ===========");
-//        logger.info("====================================================================");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "====================================================================");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "============== Created New IOS Driver ================");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "====================================================================");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "========== Starting New Test In IOS Driver ===========");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "====================================================================");
 //    }
 //
 //    public static void close()  {
-//        logger.info("Test on driver finished succssesfully");
+//        ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "Test on driver finished succssesfully");
 //        try {
 //            if(driver != null) {
 //

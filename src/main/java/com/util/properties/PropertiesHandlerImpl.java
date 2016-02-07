@@ -12,7 +12,8 @@ package com.util.properties;
  * @author asih
  */
 
-import com.util.genutil.GeneralUtils;
+import com.util.jenutil.GeneralUtils;
+import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -128,7 +129,7 @@ public class PropertiesHandlerImpl implements PropertyHandlerService
 			GeneralUtils.handleError("Problem with clearing property object", t);
 		}
 
-		logger.info("Clearing property object finished");
+		ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Clearing property object finished");
 	}
 
 }

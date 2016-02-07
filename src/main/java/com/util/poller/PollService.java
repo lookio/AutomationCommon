@@ -1,6 +1,7 @@
 package com.util.poller;
 
-import com.util.genutil.GeneralUtils;
+
+import com.util.jenutil.GeneralUtils;
 
 /**
  * Created by asih on 16/08/2015.
@@ -43,8 +44,9 @@ public abstract class PollService implements Pollable{
             return false;
         }
 
-
     }
+
+
 
 
 }
