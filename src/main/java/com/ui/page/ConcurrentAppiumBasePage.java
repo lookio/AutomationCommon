@@ -32,7 +32,7 @@ public abstract class ConcurrentAppiumBasePage extends BasePage {
             if(driverPageSource.contains(dynamicIdentifier)) {
                 ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "The expected message is contained in page source of page " + className +
                         ", you are in the correct location");
-                logger.info("You expected message msg : \"" + dynamicIdentifier + "\" You contained in : \"" + driverPageSource + "\"");
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "You expected message msg : \"" + dynamicIdentifier + "\" You contained in : \"" + driverPageSource + "\"");
                 return true;
             } else {
                 ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "The page is not as expected, you are not in the correct location");

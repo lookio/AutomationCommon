@@ -3,7 +3,7 @@ package com.ui.service;
 import com.ui.page.base.BasePage;
 import com.ui.service.base.DriverService;
 import com.ui.service.base.ElementService;
-import com.util.jenutil.GeneralUtils;
+import com.util.jaxb.GeneralUtils;
 import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 import org.junit.Assert;

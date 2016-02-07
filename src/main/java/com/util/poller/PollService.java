@@ -1,7 +1,7 @@
 package com.util.poller;
 
 
-import com.util.jenutil.GeneralUtils;
+import com.util.jaxb.GeneralUtils;
 
 /**
  * Created by asih on 16/08/2015.

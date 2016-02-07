@@ -1,7 +1,7 @@
 package com.config.lpadk;
 
 
-import com.util.jenutil.GeneralUtils;
+import com.util.jaxb.GeneralUtils;
 
 import java.util.HashSet;
 import java.util.Set;

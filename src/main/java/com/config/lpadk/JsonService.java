@@ -116,13 +116,13 @@
 //
 //    boolean handleResponse(HttpResponse response, String successMsg, String failMsg) throws IOException {
 //        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_CREATED) {
-//            logger.info(successMsg);
+//            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, successMsg);
 //            ConfigInjector.getInstance().getCreator().updateConfigurationInSite();
 //            return true;
 //        } else {
 //            HttpEntity entity = response.getEntity();
 //            String responseString = EntityUtils.toString(entity, "UTF-8");
-//            logger.info(responseString);
+//            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, responseString);
 //            if (responseString.contains("unique")) {
 //                logger.warn(failMsg);
 //                return true;

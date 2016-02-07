@@ -8,7 +8,7 @@ package com.test;
 import com.ui.service.AppiumService;
 import com.ui.service.SeleniumService;
 import com.ui.service.drivers.Drivers;
-import com.util.jenutil.GeneralUtils;
+import com.util.jaxb.GeneralUtils;
 import com.util.log.ColoredLog;
 import com.util.log.OutputGenerator;
 import com.util.poller.PollService;

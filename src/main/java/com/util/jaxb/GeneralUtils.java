@@ -1,4 +1,4 @@
-package com.util.jenutil;
+package com.util.jaxb;
 /**
  * General Utils
  * Performs util actions for test

@@ -14,7 +14,7 @@ import com.liveperson.automation.webdriver.session.WebDriverSessionManager;
 import com.test.AppiumScriptHandler;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
-import com.util.jenutil.GeneralUtils;
+import com.util.jaxb.GeneralUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.*;

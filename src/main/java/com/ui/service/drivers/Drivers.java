@@ -22,7 +22,7 @@ import com.liveperson.automation.webdriver.session.*;
 import com.test.AppiumScriptHandler;
 import com.ui.service.AppiumService;
 import com.ui.service.SeleniumService;
-import com.util.jenutil.GeneralUtils;
+import com.util.jaxb.GeneralUtils;
 import com.util.log.ColoredLog;
 import com.util.properties.PropertiesHandlerImpl;
 import io.appium.java_client.AppiumDriver;

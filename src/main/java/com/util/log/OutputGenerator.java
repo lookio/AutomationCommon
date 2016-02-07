@@ -9,7 +9,7 @@
 package com.util.log;
 
 //import com.agent.AgentService;
-import com.util.jenutil.GeneralUtils;
+import com.util.jaxb.GeneralUtils;
 import org.junit.Test;
 import com.util.log.TestSteps;
 

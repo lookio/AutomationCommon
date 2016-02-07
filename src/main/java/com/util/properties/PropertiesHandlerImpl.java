@@ -12,7 +12,7 @@ package com.util.properties;
  * @author asih
  */
 
-import com.util.jenutil.GeneralUtils;
+import com.util.jaxb.GeneralUtils;
 import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 

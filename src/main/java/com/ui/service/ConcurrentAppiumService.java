@@ -3,7 +3,7 @@ package com.ui.service;
 import com.test.AppiumScriptHandler;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
-import com.util.jenutil.GeneralUtils;
+import com.util.jaxb.GeneralUtils;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
