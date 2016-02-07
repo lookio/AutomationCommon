@@ -10,6 +10,7 @@ package com.util.jaxb;
 
 
 import com.ui.service.drivers.Drivers;
+import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -22,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 
 public class GeneralUtils {
 
-    private static final Logger logger = Logger.getLogger(GeneralUtils.class);
+//    private static final Logger logger = Logger.getLogger(GeneralUtils.class);
     private static boolean isTestFailed = false;
 
     /**
@@ -44,7 +45,7 @@ public class GeneralUtils {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         t.printStackTrace(pw);
-        logger.info("Stack trace parsed");
+        ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Stack trace parsed");
         return sw.toString();
     }
 
@@ -62,12 +63,12 @@ public class GeneralUtils {
         while ( stk.hasMoreTokens() ) {
             retValue.add(stk.nextToken());
         }
-        logger.debug("Tokenizer was parsed successfully");
+        ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Tokenizer was parsed successfully");
         return retValue;
     }
 
     public static <T extends Throwable> void handleError(String error , T t){
-        logger.error(error, t);
+        ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, error + t.getMessage());
         Assert.assertFalse(error + GeneralUtils.stacktraceToString(t), true);
     }
 
@@ -75,10 +76,10 @@ public class GeneralUtils {
         //		String trimmedExpected = expDataFileValue.trim();
         try{
             if(!expDataFileValue.equalsIgnoreCase("")){
-                logger.info("Going to validate :");
-                logger.info(elementName);
-                logger.info("Expected value :");
-                logger.info(expDataFileValue);
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Going to validate :");
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, elementName);
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Expected value :");
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, expDataFileValue);
                 assertEquals(elementName + " is not as expected", expDataFileValue, actualPageValue);
             }
         } catch(AssertionError e){
@@ -91,15 +92,15 @@ public class GeneralUtils {
         //		String trimmedExpected = expDataFileValue.trim();
         try{
             if(!expDataFileValue.equalsIgnoreCase("")){
-                logger.info("Going to validate :");
-                logger.info(elementName);
-                logger.info("Expected value :");
-                logger.info(expDataFileValue);
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Going to validate :");
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, elementName);
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Expected value :");
+                ColoredLog.printMessage(ColoredLog.LogLevel.INFO, expDataFileValue);
                 if(!actualPageValue.contains(expDataFileValue)){
                     Assert.assertFalse("Assertion error expected " + expDataFileValue + " actual " + actualPageValue, true);
                 }
                 else{
-                    logger.info("Assertion success for " +  elementName +
+                    ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Assertion success for " +  elementName +
                             " exp "+ expDataFileValue + " actual " + actualPageValue);
                 }
             }
@@ -169,24 +170,24 @@ public class GeneralUtils {
 //			Character[] bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()), 50000);
 
             String line;
-            logger.info("======================================================================================");
-            logger.info("============================ START OF ANDROID LOG CAT ================================");
-            logger.info("======================================================================================");
-            logger.info("======================================================================================");
-            logger.info("============================= " + logCatType.msg + "==================================");
-            logger.info("======================================================================================");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "======================================================================================");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "============================ START OF ANDROID LOG CAT ================================");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "======================================================================================");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "======================================================================================");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "============================= " + logCatType.msg + "==================================");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "======================================================================================");
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.contains("Liveperson")) {
-                    logger.info(line);
+                    ColoredLog.printMessage(ColoredLog.LogLevel.INFO, line);
 //                        LPMobileLog.i(TAG, "line " + line);
                     line = line.substring(line.indexOf("Liveperson") + "Liveperson".length());
                     deviceLogCapture.append(line);
                     deviceLogCapture.append("\n");
                 }
             }
-            logger.info("======================================================================================");
-            logger.info("============================== END OF ANDROID LOG CAT ================================");
-            logger.info("======================================================================================");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "======================================================================================");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "============================== END OF ANDROID LOG CAT ================================");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "======================================================================================");
 
         } catch (IOException e) {
             e.getMessage();

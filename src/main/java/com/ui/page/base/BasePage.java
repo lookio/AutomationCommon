@@ -37,7 +37,7 @@ public abstract class BasePage implements  Pagable{
             }
         }catch(NotInPageException t) {
             if (shouldFailTestOnLocation) {
-                logger.error("The page " + className + " is not in correct location and exit test was requested", t);
+                ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, "The page " + className + " is not in correct location and exit test was requested" + t.getMessage());
                 this.close();
                 throw new NotInPageException("Page " + className + "not in the right location");
             }

@@ -14,7 +14,7 @@ public abstract class SeleniumBasePage extends BasePage {
 
     protected SeleniumService service = SeleniumService.getInstance();
 
-    private static final Logger logger = Logger.getLogger(SeleniumBasePage.class);
+//    private static final Logger logger = Logger.getLogger(SeleniumBasePage.class);
 
     protected SeleniumBasePage(boolean shouldValidateOnPage, boolean shouldFailTestOnLocation){
         super(shouldValidateOnPage, shouldFailTestOnLocation);
@@ -24,7 +24,7 @@ public abstract class SeleniumBasePage extends BasePage {
 
     @Override
     public boolean validateInPage() throws NotInPageException {
-        logger.debug("Validating is in page to page " + this.getClass().getName());
+        ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Validating is in page to page " + this.getClass().getName());
         try {
             String url = service.getDriver().getCurrentUrl();
             String dynamicIdentifier = this.getPageUniqueIdentifier();

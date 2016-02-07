@@ -209,7 +209,7 @@ public class BaseTest {
                 execCommandByIsRemote(false, KILL_SELENIUM_PROCESSES_COMMAND, "");
                 ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Selenium instances closed successfully");
             } catch (Throwable t){
-                logger.warn("No selenium instances to close");
+                ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "No selenium instances to close");
             }
         }
 

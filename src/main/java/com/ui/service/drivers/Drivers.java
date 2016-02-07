@@ -89,7 +89,7 @@ public enum Drivers {
 
 //    FIREFOX, IE, CHROME;
 
-		private static final Logger logger = Logger.getLogger(Selenium.class);
+//		private static final Logger logger = Logger.getLogger(Selenium.class);
 
 		public static final String START_URL = "https://staging.feex.co.il/";
 
@@ -181,7 +181,7 @@ public enum Drivers {
 			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
 			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "========== Starting New Test In Internet Explorer Driver ===========");
 			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "====================================================================");
-			logger.debug("Internet explorer driver was created");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Internet explorer driver was created");
 		}
 
 		/**
@@ -367,7 +367,7 @@ public enum Drivers {
 
 //    ANDROID, IOS;
 
-		private static final Logger logger = Logger.getLogger(Appium.class);
+//		private static final Logger logger = Logger.getLogger(Appium.class);
 
 		public static final String APPIUM_SERVER_URL = "http://ip:port/wd/hub"; // 4723
 		private static final String IMPLICIT_WAIT = "implicitWait";

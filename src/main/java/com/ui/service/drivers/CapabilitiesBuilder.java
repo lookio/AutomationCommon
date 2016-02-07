@@ -17,8 +17,6 @@ public class CapabilitiesBuilder {
 
     private static final CapabilitiesBuilder CAPS_BUILDER_INSTANCE = new CapabilitiesBuilder();
 
-    private static final Logger logger = Logger.getLogger(CapabilitiesBuilder.class);
-
     private Properties appiumDriverProps;
 
     private String capFilePath;

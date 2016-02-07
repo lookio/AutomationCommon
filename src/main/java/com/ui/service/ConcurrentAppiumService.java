@@ -4,6 +4,7 @@ import com.test.AppiumScriptHandler;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
 import com.util.jaxb.GeneralUtils;
+import com.util.log.ColoredLog;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class ConcurrentAppiumService extends UIService<WebElement, AppiumDriver> {
 
     private AppiumDriver driver = null;
-    private static final Logger logger = Logger.getLogger(SeleniumService.class);
+//    private static final Logger logger = Logger.getLogger(SeleniumService.class);
     private final long waitForPageSourceInterval = 500;
     private static String lastPageSource = "";
     private UiMode requestedScreenMode;
@@ -41,9 +42,9 @@ public class ConcurrentAppiumService extends UIService<WebElement, AppiumDriver>
         try {
             driver = Drivers.Appium.setDriver(deviceDriver, capsFileFolder, machine, port, ip);
             this.setDriver(driver);
-            logger.info("Setting browser to driver finished successfully. \n\t");
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Setting browser to driver finished successfully. \n\t");
         } catch (Exception ex) {
-            logger.error("Problem in setting browser to driver ", ex);
+            ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, "Problem in setting browser to driver " + ex.getMessage());
             Assert.assertTrue(deviceDriver.name() + " driver was not created", false);
         }
     }
@@ -54,7 +55,7 @@ public class ConcurrentAppiumService extends UIService<WebElement, AppiumDriver>
 
     public final void setDriver(AppiumDriver _driver, String msg) {
         driver = _driver;
-        logger.info(msg);
+        ColoredLog.printMessage(ColoredLog.LogLevel.INFO, msg);
     }
 
     public final void closeDriver() {
@@ -124,7 +125,7 @@ public class ConcurrentAppiumService extends UIService<WebElement, AppiumDriver>
         implicitWait(1500);
         WebElement elem = driver.findElement(by);
         Assert.assertEquals("MESSAGE VALIDATION : \"" + msg + "\" WAS NOT FOUND in page " + page, msg, elem.getText() );
-        logger.info("MESSAGE VALIDATION : \"" + msg + "\" WAS FOUND in page \"" + page + "\"");
+        ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "MESSAGE VALIDATION : \"" + msg + "\" WAS FOUND in page \"" + page + "\"");
     }
 
     public final void closeApp() throws Exception {

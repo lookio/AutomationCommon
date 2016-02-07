@@ -15,6 +15,7 @@ import com.test.AppiumScriptHandler;
 import com.ui.page.base.BasePage;
 import com.ui.service.drivers.Drivers;
 import com.util.jaxb.GeneralUtils;
+import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.*;
@@ -25,7 +26,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 //private static volatile WebDriverSession driver = null;
 
 	private static final SeleniumService SELENIUM_SERVICE_INSTANCE = new SeleniumService();
-	private static final Logger logger = Logger.getLogger(SeleniumService.class);
+//	private static final Logger logger = Logger.getLogger(SeleniumService.class);
 	private static String originalHandle;
 //	public UIService<WebElement, WebDriver> baseService = new UIService<>();
 
@@ -42,9 +43,9 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		try {
 			driver = Drivers.Selenium.setBrowserToDriver(browser, machine);
 			this.setDriver(driver);
-			logger.info("Setting browser to driver finished successfully. \n\t");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Setting browser to driver finished successfully. \n\t");
 		} catch (Exception ex) {
-			logger.error("Problem in setting browser to driver ", ex);
+			ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, "Problem in setting browser to driver " + ex);
 			Assert.assertTrue(browser.name() + " driver was not created", false);
 		}
 	}
@@ -122,9 +123,9 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		try {
 			((JavascriptExecutor) getDriver()).executeScript(script);
 			implicitWait(1500);
-			logger.info("Script " + script + " performed successfully");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Script " + script + " performed successfully");
 		} catch (Exception e) {
-			logger.info("Script " + script + " failed");
+			ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "Script " + script + " failed");
 		}
 	}
 
@@ -132,11 +133,11 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		try {
 			//	    getDriver().findElement(by).click();
 			WebElement elem = getDriver().findElement(by);
-			logger.info("Scrolling to x : " + elem.getLocation().x + "Scrolling to y : " + elem.getLocation().y);
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Scrolling to x : " + elem.getLocation().x + "Scrolling to y : " + elem.getLocation().y);
 			((JavascriptExecutor) getDriver()).executeScript("window.scroll(" + elem.getLocation().x + "," + elem.getLocation().y + ")");
 			elem.click();
 		} catch (Exception e) {
-			logger.info("No clickable");
+			ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "No clickable");
 		}
 	}
 
@@ -148,7 +149,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 				return elem;
 			}
 		}
-		logger.error("Couldn't find elements displaied");
+		ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, "Couldn't find elements displaied");
 		return null;
 	}
 
@@ -174,7 +175,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 			By msgBy = By.xpath("//*[contains(text(),'" + msg + "')]");
 			implicitWait(1500);
 			WebElement elem = findElement(msgBy);
-			logger.info("Message " + msgBy + " was found");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Message " + msgBy + " was found");
 			if(elem.isDisplayed()){
 				return true;
 			}
@@ -267,7 +268,7 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 
 	public static void switchTabs(int tabNumber) throws Exception {
 
-		logger.info("Switching to tab number " + tabNumber);
+		ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Switching to tab number " + tabNumber);
 
 		originalHandle = SeleniumService.getInstance().getDriver().getWindowHandle();
 
@@ -275,24 +276,24 @@ public class SeleniumService extends UIService<WebElement, WebDriver> {
 		String newTab = (String) allWindowHandles.toArray()[tabNumber];
 		SeleniumService.getInstance().getDriver().switchTo().window(newTab);
 
-		logger.info("Switching to tab is succsussfull");
+		ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Switching to tab is succsussfull");
 
 	}
 
 	public static void closeTab() throws Exception {
 
-		logger.info("Start closing the tab driver is currently presenting");
+		ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Start closing the tab driver is currently presenting");
 
 		for (String handle : SeleniumService.getInstance().getDriver().getWindowHandles()) {
 
 			if (!handle.equals(originalHandle)) {
 				SeleniumService.getInstance().getDriver().switchTo().window(handle);
 				SeleniumService.getInstance().getDriver().close();
-				logger.info("Tab closed");
+				ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Tab closed");
 			}
 
 		}
-		logger.info("Switching back to main window, handle value : " + originalHandle);
+		ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Switching back to main window, handle value : " + originalHandle);
 		SeleniumService.getInstance().getDriver().switchTo().window(originalHandle);
 	}
 

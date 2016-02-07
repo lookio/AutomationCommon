@@ -7,6 +7,7 @@ package com.util.jaxb; /**
  * @author asih
  */
 
+import com.util.log.ColoredLog;
 import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
@@ -24,21 +25,21 @@ import java.io.FileOutputStream;
 
 public class JaxbHandler {
 
-	private static final Logger logger = Logger.getLogger(JaxbHandler.class);
+//	private static final Logger logger = Logger.getLogger(JaxbHandler.class);
 
 
 
 	public static <T> T unmarshal(String dataFileName, Class<T> clazz) {
-		logger.info("Parsing Jaxb objects");
+		ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Parsing Jaxb objects");
 		File file = null;
 		try {
 			file = new File(dataFileName);
 			JAXBContext jc = JAXBContext.newInstance(clazz);
 			Unmarshaller u = jc.createUnmarshaller();
-			logger.info("Parsing Jaxb objects completed");
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Parsing Jaxb objects completed");
 			return u.unmarshal(new StreamSource(file), clazz).getValue();
 		} catch (JAXBException ex) {
-			logger.error("in parsing locators data", ex);
+			ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, "in parsing locators data" + ex);
 		}
 		return null;
 	}
@@ -50,7 +51,7 @@ public class JaxbHandler {
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			m.marshal(data, new FileOutputStream(dataFileName));
 		} catch (JAXBException | FileNotFoundException e) {
-			logger.error("in parsing locators data", e);
+			ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "in parsing locators data" + e.getMessage());
 		}
 	}
 

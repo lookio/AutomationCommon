@@ -29,7 +29,7 @@ public class PropertiesHandlerImpl implements PropertyHandlerService
 
 	private final Properties props = new Properties();
 
-	private static final Logger logger = Logger.getLogger(PropertiesHandlerImpl.class);
+//	private static final Logger logger = Logger.getLogger(PropertiesHandlerImpl.class);
 
 	private static final String encodingAction  = "UTF-8";
 
@@ -57,7 +57,7 @@ public class PropertiesHandlerImpl implements PropertyHandlerService
 	@Override
 	public synchronized final Properties parse(String propFilePath)
 	{
-		logger.debug("Inside property parse");
+		ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Inside property parse");
 		File f = new File(propFilePath);
 		try (InputStream is = new FileInputStream(f);)
 		{

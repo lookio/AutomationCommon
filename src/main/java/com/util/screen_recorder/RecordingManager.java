@@ -36,7 +36,7 @@ public class RecordingManager {
     private String currentVideoFileNewNameNew;
 
 
-    private static final Logger logger = Logger.getLogger(RecordingManager.class);
+//    private static final Logger logger = Logger.getLogger(RecordingManager.class);
 
     private static final RecordingManager INSTANCE;
 
@@ -72,7 +72,7 @@ public class RecordingManager {
             this.screenRecorder.start();
         } catch (Exception e) {
             System.setProperty("videoRecord", null);
-            logger.warn("Can't start video recording.", e);
+            ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "Can't start video recording." + e.getMessage());
         }
     }
 
@@ -101,13 +101,13 @@ public class RecordingManager {
             ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Renaming video file from " + videoFile.getAbsolutePath() + " to " + videoFileNew.getAbsolutePath());
             if (videoFileNew.exists()) {
                 // In case the file exists (shouldn't occur !) - try second file name (*_1)
-                logger.warn("Target video file name already exists: " + videoFileNew.getAbsolutePath());
+                ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "Target video file name already exists: " + videoFileNew.getAbsolutePath());
                 currentVideoFileNewName = currentVideoFileNewName.replace(".avi", "_1.avi");
                 videoFileNew = new File(currentVideoFileNewName);
                 if (videoFileNew.exists()) {
                     // In case the second file exists - don't try to save file
-                    logger.warn("Target video file name already exists: " + videoFileNew.getAbsolutePath());
-                    logger.warn("Can't save video file !");
+                    ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "Target video file name already exists: " + videoFileNew.getAbsolutePath());
+                    ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "Can't save video file !");
                     return;
                 }
             }
@@ -120,7 +120,7 @@ public class RecordingManager {
             }
             currentVideoFileNewNameNew = videoFileNew.getName();
         } catch (Exception e) {
-            logger.warn("Can't stop video recording.", e);
+            ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "Can't stop video recording." + e.getMessage());
         }
     }
 
@@ -132,7 +132,7 @@ public class RecordingManager {
 
 
         } catch (Exception ioe){
-            logger.error("File : " + currentVideoFileNewNameNew + " could not be deleted");
+            ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, "File : " + currentVideoFileNewNameNew + " could not be deleted");
         }
     }
 

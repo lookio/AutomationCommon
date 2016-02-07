@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class UIService<E,T> implements ElementService<E>, DriverService {
 
     private WebDriver driver = null;
-    private static final Logger logger = Logger.getLogger(SeleniumService.class);
+//    private static final Logger logger = Logger.getLogger(SeleniumService.class);
     public static String elementClassName;
     public static String elementName;
 
@@ -45,7 +45,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
             driver = (T) _driver;
 //            ColoredLogMessages.printMessage(ColoredLogMessages.LogLevel.INFO, "Setting driver to service finished successfully. \n\t");
         } catch (Exception ex) {
-            logger.error("Problem in setting browser to driver ", ex);
+            ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "Problem in setting browser to driver " + ex.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
         try {
             driver.close();
         } catch (SessionNotFoundException e) {
-            logger.error("No session found");
+            ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, "No session found");
         } catch (Throwable t) {
             GeneralUtils.handleError("Problem in closing the driver", t);
         }
@@ -80,7 +80,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
             ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "**********************************************************************");
             return (E) element;
         } catch (NoSuchElementException e) {
-            logger.error(printErrorMessage(elementName));
+            ColoredLog.printMessage(ColoredLog.LogLevel.ERROR, printErrorMessage(elementName));
             GeneralUtils.handleError(GeneralUtils.stacktraceToString(e), e);
             return null;
         }
@@ -91,21 +91,21 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
         driver.switchTo().window(driver.getWindowHandle());
         WebDriverWait wait = new WebDriverWait(driver, explicitWait);
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
-        logger.debug("Excplicit wait finished");
+        ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Excplicit wait finished");
     }
 
     @Override
     public synchronized void implicitWait(long implicitWait, TimeUnit time) {
         driver.switchTo().window(driver.getWindowHandle());
         driver.manage().timeouts().implicitlyWait(implicitWait, time);
-        logger.debug("Implicit wait finished");
+        ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Implicit wait finished");
     }
 
     public synchronized void implicitWait(long implicitWait) {
         try {
-            logger.debug("Sleeping for " + implicitWait + " mili");
+            ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Sleeping for " + implicitWait + " mili");
             Thread.sleep(implicitWait);
-            logger.debug("Implicit wait finished");
+            ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Implicit wait finished");
         } catch (InterruptedException e) {
             GeneralUtils.handleError("Problem while sleeping", e);
         }
@@ -210,7 +210,7 @@ public class UIService<E,T> implements ElementService<E>, DriverService {
             }
         }
         ColoredLog.printMessage(ColoredLog.LogLevel.INFO, "No match for item title : " + text);
-        logger.warn("Element not found");
+        ColoredLog.printMessage(ColoredLog.LogLevel.WARN, "Element not found");
         return null;
     }
 

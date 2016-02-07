@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
  */
 public abstract class AppiumBasePage extends BasePage {
 
-    private static final Logger logger = Logger.getLogger(AppiumBasePage.class);
     // problem in wait for page
     private long waitForPageContextTimeOut = 15000;
     protected static AppiumService service = AppiumService.getInstance();
@@ -24,7 +23,7 @@ public abstract class AppiumBasePage extends BasePage {
 
     @Override
     public boolean validateInPage() throws NotInPageException {
-        logger.debug("Validating is in page to page " + this.getClass().getName());
+        ColoredLog.printMessage(ColoredLog.LogLevel.DEBUG, "Validating is in page to page " + this.getClass().getName());
         try {
             String driverPageSource = service.getPageSource(waitForPageContextTimeOut);
             String dynamicIdentifier = this.getPageUniqueIdentifier();
