@@ -166,7 +166,7 @@ public class GeneralUtils {
         StringBuilder deviceLogCapture = new StringBuilder();
         try {
             Process process = Runtime.getRuntime().exec(logCatType.command);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()), 50000);
 //			Character[] bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()), 50000);
 
             String line;
