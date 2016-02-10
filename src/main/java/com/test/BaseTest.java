@@ -219,6 +219,7 @@ public class BaseTest {
                 DefaultExecuteResultHandler resultHandler = new DefaultExecuteResultHandler();
                 DefaultExecutor executor = new DefaultExecutor();
                 executor.setExitValue(1);
+                System.out.println("Now running command " + command.toString());
                 executor.execute(command, resultHandler);
             } else {
                 Runtime.getRuntime().exec(command.toString());
