@@ -300,12 +300,12 @@ public class BaseTest {
     public static class Logging {
 
         public void configureLog4J() {
-            java.net.URL url = getClass().getResource(
-                    getProps().getProperty(
-                            LOG4J_PROP_FILE_PATH_KEY_VALUE)
-            );
-            PropertyConfigurator.configure(url);
-            BasicConfigurator.configure();
+//            java.net.URL url = getClass().getResource(
+//                    getProps().getProperty(
+//                            LOG4J_PROP_FILE_PATH_KEY_VALUE)
+//            );
+//            PropertyConfigurator.configure(url);
+//            BasicConfigurator.configure();
         }
 
         public static <T> void generateTestClassOutput(Class<T> testClass, StringBuilder desc) {
