@@ -36,7 +36,7 @@ public class BaseTest {
     private static final String ENV_PROP_FILE_PATH = "/environment/env.properties";
     private static final String LOG4J_PROP_FILE_PATH_KEY_VALUE = "Log4jPropFilePath";
     protected static final String OUTPUT_METHOD_POSTFIX = "Desc";
-    private static final String EMULATORS_FILE_DIR = "C:\\Users\\asih\\AppData\\Local\\Temp\\AndroidEmulator";
+    private static final String EMULATORS_FILE_DIR = "C:\\Users\\asih\\AppData\\Local\\Temp";
     private static final CommandLine KILL_SELENIUM_PROCESSES_COMMAND = new CommandLine("Taskkill /IM chromedriver.exe /F");
 
     protected static StaticRouter staticRouter = new StaticRouter();
